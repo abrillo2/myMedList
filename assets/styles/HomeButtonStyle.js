@@ -184,8 +184,6 @@ export default StyleSheet.create({
         "fontStyle": "normal",
         "letterSpacing": 1,
         "fontFamily": "Roboto-Regular",
-        //"textAlign": "right",
-        //"lineHeight": 16,
         "marginTop": 0,
         "marginRight": 0,
         "marginBottom": 0,
@@ -194,10 +192,6 @@ export default StyleSheet.create({
         "paddingRight": 0,
         "paddingBottom": 0,
         "paddingLeft": 0,
-        //"width": wp(wrp(47)),
-        //"height": hp(hrp(21)),
-        //"left": wp(wrp(149)),
-        //"top": hp(hrp(18))
       }, 
       "iconStyle": {
         "opacity": 1,

@@ -32,17 +32,11 @@ export default StyleSheet.create({
     "opacity": 1,
     "backgroundColor":"#189AB4",
     "position": "relative",
-    "marginTop": hp(hrp(0)),
-    "marginRight": wp(wrp(0)),
-    "marginBottom": hp(hrp(0)),
-    "marginLeft": wp(wrp(0)),
-    "paddingTop": hp(hrp(0)),
-    "paddingRight": wp(wrp(0)),
-    "paddingBottom": hp(hrp(0)),
-    "paddingLeft": wp(wrp(0)),
     "width": wp(wrp(366)),
     "height": hp(hrp(36)),
-    "flexDirection":"column"
+    "flexDirection":"row",
+    "justifyContent":"flex-start",
+    "alignItems":"center"
   },
   
   "labelText": {
@@ -53,8 +47,14 @@ export default StyleSheet.create({
     "fontWeight": "500",
     "fontStyle": "normal",
     "fontFamily": "Roboto-Medium",
-    "textAlign": "left",
-    "width": wp(wrp(157)),
-    "height": hp(hrp(21))
-  }
+    "textAlign":"center",
+    "marginLeft":hp(hrp(5))
+  },
+  "iconStyle": {
+    "opacity": 1,
+    "position": "relative",
+    "width": wp(wrp(24)),
+    "height": hp(hrp(24)),
+    "backgroundColor": "transparent",
+  },
 });

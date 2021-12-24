@@ -10,17 +10,47 @@ import styles from '../assets/styles/FullInputStyle.js'
 //Header section
 export default class FullInputContainer extends React.Component{
     //  this.setState(...)
+
+        //select input icon
+    icon = () =>{
+            var icon = "";
+           if(this.props.iconName == "dateRange"){
+               
+              icon = require("../assets/icons/date_range_black.png");
+              console.log(icon)
+           }else if(this.props.iconName == "dropDown"){
+               icon = require("../assets/icons/drop_down_circle_black.png");
+           }else if(this.props.iconName == "autorenew"){
+               icon = require("../assets/icons/autorenew_white.png");
+           }else{
+               icon = null;
+           }
+   
+           return icon
+    }
+
     render() { 
     return(
                
-        <View data-layer="0c2eef8d-3923-43e3-a4a4-ef437d136fe0" style={styles.fullInputContainer}>
-            <View data-layer="beeab6dc-c9c7-45e0-bf4d-59c73a4b8457" style={styles.fullInputContainerElevation}>
-                <View data-layer="b6115b71-74fa-41e7-a2b5-c69a147294e8" style={styles.fullInputContainerElevationRec1}>
-                <View data-layer="77862100-b316-45a5-af7b-2eec7dce09bc" style={styles.fullInputContainerColor}>
-                <View data-layer="71ef25a5-656b-4884-b395-e0a01be66c60" style={styles.fullInputContainerStates}>
-                        <View data-layer="8376f954-f7b8-4ca7-95b2-52231ca7e1f6" style={styles.fullInputContainerStates2}>
-                        <Text data-layer="e793267b-94a7-49ba-904d-5ad71848683d" style={styles.FullInputLabel}>Name of Medicine *</Text>
-                        <TextInput data-layer="18f458f0-7447-45e4-a473-acf944de2d43" style={styles.fullInputInput}>Name of medicine</TextInput>
+        <View  style={styles.fullInputContainer}>
+            <View  style={styles.fullInputContainerElevation}>
+                <View  style={styles.fullInputContainerElevationRec1}>
+                <View  style={styles.fullInputContainerColor}>
+                    <View  style={styles.fullInputContainerStates}>
+                        <View  style={styles.fullInputContainerStates2}>
+                            <Text  style={styles.FullInputLabel}>{this.props.inputLabel}</Text>
+                            <View  style={styles.halfinputLabelIcon}>
+                                <TextInput placeholder={this.props.inputLabel} 
+                                        placeholderTextColor={"rgba(0, 0, 0, 0.4)"} 
+                                        keyboardType={this.props.keyboard}
+                                        style={styles.fullInputInput}
+                                        editable= {this.props.editAble ? false:true}
+                                        value={this.props.inputContent}>
+                                </TextInput>
+                                <TouchableOpacity onPress={this.props.onPress}>
+                                {this.props.iconName? <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon()}/> : null}    
+                                </TouchableOpacity>
+                            </View>   
                         </View>
                     
                     </View>
@@ -28,7 +58,7 @@ export default class FullInputContainer extends React.Component{
 
                 </View>
             </View>
-            <View data-layer="b62817eb-33a7-498f-b774-853c13024ed7" style={styles.fullInputContainerStatesIndicator}></View>
+            <View  style={styles.fullInputContainerStatesIndicator}></View>
         </View>
 
 

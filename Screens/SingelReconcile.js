@@ -131,10 +131,6 @@ const styles = StyleSheet.create({
     "paddingRight": wp(wrp(0)),
     "paddingBottom": hp(hrp(0)),
     "paddingLeft": wp(wrp(0)),
-    //"width": wp("100%"),
-    //"height": hp("100%"),
-    //"left": wp(wrp(0)),
-    //"top": hp(hrp(0)),
     "flex":1
   },
   "bodycontainer": {
@@ -142,17 +138,12 @@ const styles = StyleSheet.create({
     "position": "relative",
     "backgroundColor": "transparent",
     "marginTop": hp(hrp(81)),
-    //"marginRight": wp(wrp(0)),
-    //"marginBottom": hp(hrp(0)),
-    //"marginLeft": wp(wrp(20)),
     "paddingTop": hp(hrp(0)),
     "paddingRight": wp(wrp(0)),
     "paddingBottom": hp(hrp(0)),
     "paddingLeft": wp(wrp(0)),
     "width": wp("100%"),
-    "height": hp("100%"),
-    //"left": wp(wrp(20)),
-    //"top": hp(hrp(81)),
+    "height": hp("100%")
   },
 
 });

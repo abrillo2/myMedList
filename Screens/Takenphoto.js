@@ -44,9 +44,14 @@ export default class Takenphoto extends Component {
 
   }
 
+  //cancel
+  cancel = ()=>{
+    this.props.navigation.navigate("Home")
+  }
+
   //save slip image
   save = () =>{
-    
+    this.props.navigation.navigate("AddSlipInfo")
   }
 
 
@@ -62,8 +67,9 @@ export default class Takenphoto extends Component {
                     }
                     
                     <View style={styles.twinButtonContainer}>
-                      <TwinButtonContainer label="Retake" onPress={this.retake}/>
+                      <TwinButtonContainer label="Cancel" onPress={this.cancel}/>
                       <TwinButtonContainer label="Save"  onPress={this.save}/>
+                      <TwinButtonContainer label="Retake"  onPress={this.retake}/>
                     </View>
             </View>
     </ScrollView>

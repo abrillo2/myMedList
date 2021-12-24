@@ -24,10 +24,7 @@ export default StyleSheet.create({
     "paddingRight": wp(wrp(0)),
     "paddingBottom": hp(hrp(0)),
     "paddingLeft": wp(wrp(0)),
-    //"width": wp(wrp(36)),
     "height": hp(hrp(60)),
-    //"left": wp(wrp(4)),
-    //"top": hp(hrp(250)),
   }, 
   "fullInputContainerElevation": {
     "opacity": 1,
@@ -43,8 +40,6 @@ export default StyleSheet.create({
     "paddingLeft": wp(wrp(0)),
     "width": wp(wrp(366)),
     "height": hp(hrp(56)),
-    //"left": wp(wrp(0)),
-    //"top": hp(hrp(4))
   },
   "fullInputContainerElevationRec1": {
     "opacity": 1,
@@ -64,8 +59,6 @@ export default StyleSheet.create({
     "borderBottomRightRadius": wp(wrp(0)),
     "width": wp(wrp(366)),
     "height": hp(hrp(56)),
-    //"left": wp(wrp(0)),
-    //"top": hp(hrp(0))
   },
   "fullInputContainerColor": {
     "opacity": 1,
@@ -85,8 +78,6 @@ export default StyleSheet.create({
     "borderBottomRightRadius": wp(wrp(0)),
     "width": wp(wrp(366)),
     "height": hp(hrp(56)),
-    //"left": wp(wrp(0)),
-    //"top": hp(hrp(4))
   },
   "fullInputContainerStates": {
     "opacity": 1,
@@ -102,8 +93,6 @@ export default StyleSheet.create({
     "paddingLeft": wp(wrp(0)),
     "width": wp(wrp(366)),
     "height": hp(hrp(60)),
-    //"left": wp(wrp(0)),
-    //"top": hp(hrp(0))
   },
   "fullInputContainerStates2": {
     "opacity": 1,
@@ -145,7 +134,6 @@ export default StyleSheet.create({
     "width": wp(wrp(366)),
     "height": hp(hrp(2)),
     "left": wp(wrp(0)),
-    //"top": hp(hrp(58))
   },
   "fullInputInput": {
     "opacity": 1,
@@ -157,7 +145,6 @@ export default StyleSheet.create({
     "fontStyle": "normal",
     "fontFamily": "Roboto-Medium",
     "textAlign": "left",
-    //"lineHeight": wp(wrp(24)),
     "marginTop": hp(hrp(0)),
     "marginRight": wp(wrp(0)),
     "marginBottom": hp(hrp(0)),
@@ -166,33 +153,28 @@ export default StyleSheet.create({
     "paddingRight": wp(wrp(0)),
     "paddingBottom": hp(hrp(0)),
     "paddingLeft": wp(wrp(0)),
-    "width": wp(wrp(132)),
-    //"height": hp(hrp(29)),
-    //"left": wp(wrp(16)),
-    //"top": hp(hrp(24.5))
   },
   "FullInputLabel": {
     "opacity": 1,
     "position": "relative",
     "backgroundColor": "rgba(255, 255, 255, 0)",
     "color": "rgba(34, 171, 226, 1)",
-    "fontSize": wp(wrp(12)),
-    "fontWeight": "400",
-    "fontStyle": "normal",
+    "fontSize": wp(wrp(14)),
+    "fontWeight": "500",
     "fontFamily": "Roboto-Medium",
     "textAlign": "left",
-    //"lineHeight": wp(wrp(16)),
-    "marginTop": hp(hrp(0)),
-    "marginRight": wp(wrp(0)),
-    "marginBottom": hp(hrp(0)),
-    "marginLeft": wp(wrp(0)),
-    "paddingTop": hp(hrp(0)),
-    "paddingRight": wp(wrp(0)),
-    "paddingBottom": hp(hrp(0)),
-    "paddingLeft": wp(wrp(0)),
-    "width": wp(wrp(113)),
-    //"height": hp(hrp(20)),
-    //"left": wp(wrp(16)),
-    //"top": hp(hrp(12))
+  }, 
+  "halfinputLabelIconColor":{
+    "width":wp(wrp(24)),
+    "height":hp(hrp(24)),
+    "marginRight":10,
+  },
+  "halfinputLabelIcon": {
+    "opacity": 1,
+    "position": "relative",
+    "backgroundColor": "transparent",
+    "flexDirection":"row",
+    "alignItems":'center',
+    "justifyContent":"space-between"
   },
 });
