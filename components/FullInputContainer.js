@@ -17,7 +17,6 @@ export default class FullInputContainer extends React.Component{
            if(this.props.iconName == "dateRange"){
                
               icon = require("../assets/icons/date_range_black.png");
-              console.log(icon)
            }else if(this.props.iconName == "dropDown"){
                icon = require("../assets/icons/drop_down_circle_black.png");
            }else if(this.props.iconName == "autorenew"){
@@ -45,7 +44,10 @@ export default class FullInputContainer extends React.Component{
                                         keyboardType={this.props.keyboard}
                                         style={styles.fullInputInput}
                                         editable= {this.props.editAble ? false:true}
-                                        value={this.props.inputContent}>
+                                        value={this.props.inputContent}
+                                        onChangeText={ text => {this.props.onChangeText ? 
+                                            this.props.onChangeText(this.props.objectKey,text):console.log("null")}}
+                                        >
                                 </TextInput>
                                 <TouchableOpacity onPress={this.props.onPress}>
                                 {this.props.iconName? <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon()}/> : null}    

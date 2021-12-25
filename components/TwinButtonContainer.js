@@ -28,8 +28,8 @@ export default class TwinButtonContainer extends React.Component{
     }
 
     render() { 
-    return(<TouchableHighlight underlayColor={"#61DBE6"} onPressIn={() => this.onButtonPress(true)} 
-          style={styles.buttonLayer}> 
+    return(<TouchableHighlight disabled={this.props.disabled} underlayColor={"#61DBE6"} onPressIn={() => this.onButtonPress(true)} 
+          style={[this.props.disabled ? {opacity:0.5}:{},styles.buttonLayer]}> 
                     <Text  style={styles.buttonLabel}>{this.props.label}
                     </Text>
           </TouchableHighlight>

@@ -12,18 +12,20 @@ import styles from '../assets/styles/HalfInputStyle.js'
 export default class HalfInputContainer extends React.Component{
     
     //select input icon
-    icon = () =>{
-         var icon = "";
-        if(this.props.iconName == "dateRange"){
-            
+    icon = (iconName) =>{
+        var icon = "";
+        if(iconName== "dateRange"){
            icon = require("../assets/icons/date_range_black.png");
-           console.log(icon)
-        }else if(this.props.iconName == "dropDown"){
+        }else if(iconName== "dropDown"){
             icon = require("../assets/icons/drop_down_circle_black.png");
-        }else if(this.props.iconName == "autorenew"){
+        }else if(iconName== "autorenew"){
             icon = require("../assets/icons/autorenew_white.png");
+        }else if(iconName == "arrowRightBlack"){
+            icon = require("../assets/icons/arrow_right_black.png");
+        }else if(iconName == "arrowLefttBlack"){
+            icon = require("../assets/icons/arrow_left_black.png");
         }else{
-            icon = null;
+            icon=null
         }
 
         return icon
@@ -50,18 +52,19 @@ export default class HalfInputContainer extends React.Component{
                     onFocus={() => {}}
                     onBlur={() =>{}}
                     onChange={item => {
-                        console.log("input")
                     }}
                     
               />)
         }else{
             return(
-                <TextInput  style={styles.halfinputInput}
-                    editable= {this.props.editAble ? false:true}
+                <TextInput  style={this.props.iconName2 ? styles.halfinputInput2 : styles.halfinputInput}
+                    editable= {this.props.editAble}
                     placeholder={this.props.inputLabel}
                     value={this.props.inputContent}
                     placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
                     keyboardType={this.props.keyboard}
+                    onChangeText={ text => {this.props.onChangeText ? 
+                        this.props.onChangeText(this.props.objectKey,text):console.log("null")}}
                     >
                  </TextInput>
             )
@@ -72,12 +75,16 @@ export default class HalfInputContainer extends React.Component{
     render() { 
     return(
                     <View  style={styles.halfinput}>
+                        
                          <Text  style={styles.halfinputLabel}>{this.props.inputLabel}</Text>
                          <View  style={styles.halfinputLabelIcon}>
+                         {this.props.iconName2? <TouchableOpacity onPress={this.props.onPress2}>
+                                <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon(this.props.iconName2)}/>     
+                            </TouchableOpacity> : null}
                             {this.setInputType()}
-                            <TouchableOpacity onPress={this.props.onPress}>
-                               {this.props.iconName? <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon()}/> : null}    
-                            </TouchableOpacity>     
+                         {this.props.iconName?<TouchableOpacity onPress={this.props.onPress}>
+                               <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon(this.props.iconName)}/>     
+                            </TouchableOpacity>: null}     
                         </View>                   
                         <View  style={styles.halfinputLayer2Indicator}></View>
                     </View>
