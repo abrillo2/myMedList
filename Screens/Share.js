@@ -46,18 +46,15 @@ export default function Share(){
             <View  style={styles.shareNavContainer}>
                 <View  style={styles.shareNavToggelContainer}>
                     <View  style={styles.toggelRightContainer}>
-                        
                         <View  style={styles.toggelRightContainerInnerLight}>
                         <Text  style={styles.toggelRightLabel}>ACTIVE</Text>
                         </View>
-                        
                     </View>
+
                     <View  style={styles.toggelRightContainer}>
-                        
                         <View  style={styles.toggelleftinnerlight}>
                         <Text  style={styles.toggelRightLabel}>DISCONTINUED</Text>
                         </View>
-                        
                     </View>
                 </View>
                 <View  style={styles.shareNavSocialMediaContainer}>

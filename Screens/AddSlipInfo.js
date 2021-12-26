@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableHighlight} from 'react-native';
-import {Image as ReactImage} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {View, ScrollView} from 'react-native';
 import DatePicker from 'react-native-date-picker'
 
 //components import
 import HeaderSection from '../components/HeaderSection';
-import SlipPicEditContainer from '../components/SlipPicEditContainer';
 import FullInputContainer from '../components/FullInputContainer';
 import HalfInputContainer from '../components/HalfInputContainer';
 import TwinButtonContainer from '../components/TwinButtonContainer';
 import LabelContainer from '../components/LabelContainer';
+//styles
+import styles from '../assets/styles/AddSlipInfoStyle'
 
 export default class AddSlipInfo extends Component {
 
@@ -139,13 +137,28 @@ export default class AddSlipInfo extends Component {
 
   //check if required field vaues are fullfilled
   requiredFieldsFullfilled = () =>{
+    let item = {...this.state.pharmacyDetails}
+    let item2 = {...this.state.medicationDetails}
+    if(item["name"] !=null && item2["name"] != null &&  item2["dateRefilled"]
+        && item2["refillsLeft"]){
+          if(this.state.disabled){
 
-    if(this.state.medicationDetails["name"] == null && this.state.medicationDetails["strength"] == null){
-      return false;
-    }else if(this.state.disabled){
+              this.setState({disabled:false})
+          }
 
-        this.setState({disabled:false})
-      }
+    }
+  }
+
+
+  /*******************************
+   *  Handel Form Submission
+   *****************************/
+  CancelPressed =()=>{
+    console.log("cancel pressed")
+    this.props.navigation.goBack()
+  }
+  savePressed = () => {
+
   }
 
  componentDidUpdate(){
@@ -171,7 +184,7 @@ export default class AddSlipInfo extends Component {
              <LabelContainer Title="MEDICATION DETAILS"/>
              <View style={styles.hallfInputContainer}>
                 <HalfInputContainer 
-                inputLabel={"Name of medicine"}
+                inputLabel={"Name of medicine *"}
                 keyboard="default"
                 input
                 onChangeText={this.onChangeMedicationDetails}
@@ -241,7 +254,9 @@ export default class AddSlipInfo extends Component {
                                  objectKey="dianosis"
                                  inputContent={this.state.medicationDetails["diagnosis"]}/>
              <View style={styles.twinButtonContainer}>
-                <TwinButtonContainer label="Cancel" disabled={false}/>
+                <TwinButtonContainer label="Cancel" 
+                                     disabled={false}
+                                     onPress={this.CancelPressed}/>
                 <TwinButtonContainer label="Save" disabled={this.state.disabled}/>
              </View>
           </ScrollView>
@@ -249,54 +264,3 @@ export default class AddSlipInfo extends Component {
       );
   }
 }
-
-function hrp(value){
-  return value*100 / 736;
-}
-
-function wrp(value){
-  return value*100 / 414;
-}
-
-const styles = StyleSheet.create({
-  "singlereconcile": {
-    "opacity": 1,
-    "position": "relative",
-    "backgroundColor": "rgba(255, 255, 255, 1)",
-    "flex":1
-  },
-  "bodycontainer": {
-    "opacity": 1,
-    "position": "relative",
-    "backgroundColor": "transparent",
-    "marginTop": hp(hrp(10)),
-    "paddingTop": hp(hrp(0)),
-    "paddingRight": wp(wrp(0)),
-    "paddingBottom": hp(hrp(0)),
-    "paddingLeft": wp(wrp(0)),
-
-    "shadowColor": "rgb(0,  0,  0)",
-    "shadowOpacity": 0.2,
-    "elevation": wp(wrp(7)),
-    "shadowOffset": {
-      "width": 0,
-      "height": wp(wrp(1))
-    },
-    "shadowRadius": wp(wrp(5)),
-  },
-  "twinButtonContainer":{
-    "marginTop":hp(hrp(10)),
-    "flexDirection":"row",
-    "width" : wp("90%"),
-    "justifyContent":"space-between"
- },  
- "hallfInputContainer": {
-  "opacity": 1,
-  "position": "relative",
-  "backgroundColor": "transparent",
-  "width": wp("88.5%"),
-  "flexDirection": "row",
-  "justifyContent": "space-between"
-},
-
-});

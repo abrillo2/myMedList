@@ -25,6 +25,10 @@ export default class Takenphoto extends Component {
     
   }
 
+  componentWillUnmount(){
+    this.setState({imageData:null})
+  }
+
   //retake photo
   retake = ()=>{
 
@@ -51,6 +55,7 @@ export default class Takenphoto extends Component {
 
   //save slip image
   save = () =>{
+    console.log("save")
     this.props.navigation.navigate("AddSlipInfo")
   }
 

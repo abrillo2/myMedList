@@ -22,12 +22,11 @@ export default class Button extends React.Component{
     }
 
     //handel button pres
-    onButtonPress(pressed) {
+    onButtonPress() {
 
         //animate button press
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        this.setState({pressed: pressed});
-
+        this.setState({pressed: true});
         this.props.onPress()
     }
 
@@ -35,7 +34,6 @@ export default class Button extends React.Component{
 
 
         var icon = "";
-    
         if(this.props.iconName == "share"){
             
            icon = require("../assets/icons/share_white.png");
@@ -56,8 +54,7 @@ export default class Button extends React.Component{
                             <Text  style={styles.homeButtonLabel}>{this.props.buttonLabel}</Text>
                     </View>
                 </TouchableHighlight>
-            </View>
-    )
-  }
+            </View>)
+    }
 }
 /**End of header section */

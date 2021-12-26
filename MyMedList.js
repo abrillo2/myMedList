@@ -7,6 +7,7 @@ import Share from './Screens/Share';
 import Reconcilelist from './Screens/Reconcilelist';
 import Addslip from './Screens/Addslip';
 import Takenphoto from './Screens/Takenphoto'
+import AddSlipInfo from './Screens/AddSlipInfo';
 
 
 //react navigation 
@@ -21,6 +22,7 @@ function MyMedList() {
         <Stack.Screen options={{headerShown: false}} name="Reconcile" component={Reconcilelist} />
         <Stack.Screen options={{headerShown: false}} name="Add slip" component={Addslip} />
         <Stack.Screen options={{headerShown: false}} name="Takenphoto" component={Takenphoto} />
+        <Stack.Screen options={{headerShown: false}} name="AddSlipInfo" component={AddSlipInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
