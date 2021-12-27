@@ -21,7 +21,6 @@ export default class ScrollabelItemContainer extends Component {
   }
 
   render() {
-
     return (
         <ScrollView horizontal={true}  style={ReconcileStyle.scroll}>
             <View  style={ReconcileStyle.reconcilelist1_bodycontainer} >
@@ -40,7 +39,9 @@ export default class ScrollabelItemContainer extends Component {
                 {/** reconcile list item value container begins here */}
                 
                 <ScrollView horizontal ={false} style={ReconcileStyle.scroll2}>
-                     <ReconcileItems listButton={this.props.listButton}/>
+                     <ReconcileItems listButton={this.props.listButton}
+                                     data={this.props.data}
+                                     dataKeys={this.props.dataKeys}/>
                 </ScrollView>
                 {/** reconcile list item value container ends here */}
                 

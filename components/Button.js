@@ -1,6 +1,6 @@
 //imports
-import React, {Component} from 'react';
-import {Text, View,TouchableOpacity,LayoutAnimation, Platform, UIManager, TouchableWithoutFeedbackBase, TouchableHighlight} from 'react-native';
+import React from 'react';
+import {Text, View,LayoutAnimation, Platform, UIManager, TouchableHighlight} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 
 //import heaader style

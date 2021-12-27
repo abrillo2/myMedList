@@ -19,10 +19,7 @@ export default class Takenphoto extends Component {
   }
 
   componentDidMount(){
-
-    console.log(this.props.route.params.response.assets[0].uri)
     this.setState({imageData:this.props.route.params.response.assets[0]})
-    
   }
 
   componentWillUnmount(){
@@ -55,8 +52,9 @@ export default class Takenphoto extends Component {
 
   //save slip image
   save = () =>{
-    console.log("save")
-    this.props.navigation.navigate("AddSlipInfo")
+    this.props.navigation.navigate("AddSlipInfo",{
+      response:this.state.imageData
+    })
   }
 
 

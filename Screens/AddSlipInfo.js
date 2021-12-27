@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
-import DatePicker from 'react-native-date-picker'
+import DatePicker from 'react-native-date-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 //components import
 import HeaderSection from '../components/HeaderSection';
@@ -17,13 +19,14 @@ export default class AddSlipInfo extends Component {
       super(props);
       this.state = {
         medicationDetails:{
-          "dateRefilled": new Date(),
-          "dateAppointed": new Date(),
+          "dateRefilled": new Date().toLocaleDateString("en-US"),
+          "dateAppointed": new Date().toLocaleDateString("en-US"),
           "refillsLeft": 0,
           "name":null,
           "strength":null,
           "direction":null,
-          "diagnosis":null
+          "diagnosis":null,
+          "imageData":null,
         },
         pharmacyDetails:{
           "name":null,
@@ -31,7 +34,7 @@ export default class AddSlipInfo extends Component {
         },
         physicianDetails:{
           "name":null,
-          "phonee":null
+          "phone":null
         },
         opendateAppointed : false,
         opendateRefilled : false,
@@ -83,12 +86,12 @@ export default class AddSlipInfo extends Component {
           mode='date'
           textColor='white'
           open={this.state.openDatePicker}
-          date={this.state.opendateRefilled?this.state.medicationDetails["dateRefilled"]:this.state.medicationDetails["dateAppointed"]}
+          date={new Date()}
           onConfirm={(date) => {
             if(this.state.opendateRefilled){
-              items["dateRefilled"] = date 
+              items["dateRefilled"] = date.toLocaleDateString("en-US") 
             }else if(this.state.opendateAppointed){
-              items["dateAppointed"] = date
+              items["dateAppointed"] = date.toLocaleDateString("en-US")
             }
             this.setState({openDatePicker:false,
                            opendateAppointed:false,
@@ -134,7 +137,6 @@ export default class AddSlipInfo extends Component {
       }
     }))
   }
-
   //check if required field vaues are fullfilled
   requiredFieldsFullfilled = () =>{
     let item = {...this.state.pharmacyDetails}
@@ -142,7 +144,6 @@ export default class AddSlipInfo extends Component {
     if(item["name"] !=null && item2["name"] != null &&  item2["dateRefilled"]
         && item2["refillsLeft"]){
           if(this.state.disabled){
-
               this.setState({disabled:false})
           }
 
@@ -154,11 +155,58 @@ export default class AddSlipInfo extends Component {
    *  Handel Form Submission
    *****************************/
   CancelPressed =()=>{
-    console.log("cancel pressed")
     this.props.navigation.goBack()
   }
-  savePressed = () => {
+  savePressed = async (value,itemId) => {
+   //console.log(itemId+"")
+   try {
+      let data = await  this.getData()
+      let slipInfo = null;
+      if(data == null){
+        slipInfo = {"slipInfo":[]}
+        slipInfo["slipInfo"].push(
+          {[itemId]:value}
+        )
+      }else{
+        data["slipInfo"].push({[itemId]:value})
+        slipInfo = data
+      }
 
+      const jsonValue = JSON.stringify(slipInfo)
+      await AsyncStorage.setItem("@myMedList", jsonValue)
+      this.props.navigation.navigate("Share")
+    }catch (e) {
+      // saving error
+      console.log(e)
+    }
+  }
+
+  addSlipInfo=()=>{
+    var date = new Date();
+    var itemId =   date.getFullYear()+ ""+ date.getMonth()+ "" 
+                 + date.getDate()+ ""+date.getHours()+ ""
+                 + date.getMinutes()+ "" + date.getSeconds()+ "" + date.getMilliseconds()+"";
+
+    let stateData = {
+                    medicationDetails: {...this.state.medicationDetails},
+                    pharmacyDetails:{...this.state.pharmacyDetails},
+                    physicianDetails:{...this.state.physicianDetails}
+                }
+    this.savePressed(stateData,itemId+"");
+
+  }
+
+  getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@myMedList')
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  componentDidMount(){
+    this.onChangeMedicationDetails("imageData",this.props.route.params.response)
   }
 
  componentDidUpdate(){
@@ -190,14 +238,17 @@ export default class AddSlipInfo extends Component {
                 onChangeText={this.onChangeMedicationDetails}
                 objectKey="name"
                 inputContent={this.state.medicationDetails["name"]}/>
-                <HalfInputContainer inputLabel={"Strength"}/>
+                <HalfInputContainer inputLabel={"Strength"}
+                                    objectKey={"strength"}
+                                    onChangeText={this.onChangeMedicationDetails}
+                                    inputContent={this.state.medicationDetails["strength"]}/>
              </View>
              <View style={styles.hallfInputContainer}>
                 <HalfInputContainer inputLabel={"Date filled"} 
                                     iconName={"dateRange"}
                                     onPress={this.dateRefilledPicker}
                                     editAble={false}
-                                    inputContent={this.state.medicationDetails.dateRefilled.toLocaleDateString("en-US")}/>
+                                    inputContent={this.state.medicationDetails.dateRefilled+""}/>
                                                  {this.state.openDatePicker? this.datePicker():null}
                 <HalfInputContainer
                     iconName = "arrowRightBlack"
@@ -209,7 +260,10 @@ export default class AddSlipInfo extends Component {
                     editAble={false}/>
              </View>
              <FullInputContainer inputLabel={"Medicine directions"}
-                                 keyboard="default"/>
+                                 keyboard="default"
+                                 objectKey={"direction"}
+                                 onChangeText={this.onChangeMedicationDetails}
+                                 inputContent={this.state.medicationDetails["direction"]}/>
              {/*******************************
               * PHARMACY DETAILS
               */}
@@ -231,7 +285,7 @@ export default class AddSlipInfo extends Component {
              <FullInputContainer  inputLabel={"Name of physician"}
                                   inputContent={this.state.physicianDetails["name"]}
                                   onChangeText={this.onChangePhysicianDetails}
-                                  key={"name"}/>
+                                  objectKey={"name"}/>
              <FullInputContainer  inputLabel={"Phone"}
                                   keyboard="phone-pad"
                                   inputContent={this.state.physicianDetails["phone"]}
@@ -241,7 +295,7 @@ export default class AddSlipInfo extends Component {
                                   iconName={"dateRange"}
                                   onPress={this.dateAppointedPicker}
                                   editAble={false}
-                                  inputContent={this.state.medicationDetails.dateAppointed.toLocaleDateString("en-US")}                   
+                                  inputContent={this.state.medicationDetails.dateAppointed+""}                   
              />
               {/*******************************
               * ADDITIONAL DETAILS
@@ -251,13 +305,14 @@ export default class AddSlipInfo extends Component {
                                  keyboard="phone-pad"
                                  keyboard="default"
                                  onChangeText={this.onChangeMedicationDetails}
-                                 objectKey="dianosis"
+                                 objectKey="diagnosis"
                                  inputContent={this.state.medicationDetails["diagnosis"]}/>
              <View style={styles.twinButtonContainer}>
                 <TwinButtonContainer label="Cancel" 
                                      disabled={false}
                                      onPress={this.CancelPressed}/>
-                <TwinButtonContainer label="Save" disabled={this.state.disabled}/>
+                <TwinButtonContainer label="Save" disabled={this.state.disabled}
+                                      onPress={this.addSlipInfo}/>
              </View>
           </ScrollView>
       </View>

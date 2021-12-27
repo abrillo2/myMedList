@@ -1,14 +1,14 @@
-import React, {Component,Suspense,useEffect,useRef, useState } from 'react';
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableHighlight} from 'react-native';
-import {Image as ReactImage,InteractionManager} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
-import { Bullets, InstagramLoader } from 'react-native-easy-content-loader';
+import React, {Suspense,useEffect,useState} from 'react';
+import {Text, View} from 'react-native';
+import {Image as ReactImage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Bullets} from 'react-native-easy-content-loader';
 
 //components import
 import HeaderSection from '../components/HeaderSection';
 //import styles
 import styles from '../assets/styles/ShareStyles'
+import { useRef } from 'react/cjs/react.development';
 
 
 export default function Share(){
@@ -16,28 +16,37 @@ export default function Share(){
 
     const state = {
       itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
+      dataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
+                 '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]'],
       interactionsComplete: false
     }
 
-    const ScrollabelItemContainer= React.lazy(() => {
+    let ScrollabelItemContainer= React.lazy(() => {
         return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
           () => import("../components/ScrollabelItemContainer")
         );
       });
 
-    useEffect(() => {
-        return () => {
-            ScrollabelItemContainer = null;
-            
-        }
-      }, []);
-
-    
+    const [listOfdata,setlistOfdata] = useState(null)
+    const [dataFetched, setdataFetched] = useState(false)
     //import item list
-    function importListOfItems(){
-        return
+    async function getData(){
+                try {
+                    const jsonValue = await AsyncStorage.getItem('@myMedList')
+                    setlistOfdata(JSON.parse(jsonValue));
+                    setdataFetched(true)
+                } catch(e) {
+                // error reading value
+                }
     }
 
+
+    useEffect(() => {
+        getData()
+        return () => {
+            ScrollabelItemContainer = null; 
+        }
+      }, []);
     return (
         <View  style={styles.share}>
 
@@ -65,7 +74,9 @@ export default function Share(){
             
             </View>
             <Suspense fallback={<Bullets active listSize={10} />}>
-                  <ScrollabelItemContainer  listButton={false}/>
+                 {dataFetched ? <ScrollabelItemContainer  listButton={false}
+                 data={listOfdata["slipInfo"]}
+    dataKeys={state.dataKeys}/>:null}
             </Suspense>
           
             

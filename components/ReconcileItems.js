@@ -13,30 +13,40 @@ export default class ReconcileItems extends React.Component{
         super(props);
         this.renderReconcileList = this.renderReconcileList.bind(this);
         this.state = {
-            itemValues :["Name of Medicine", "DD/MM/YY", "Name of Doctor", "# Refills Left"],
-            itemCount : Array.apply(null, {length: 100}).map(Function.call, Number),
-            content : []
+            itemHeaderCount : 4,
+            data : null,
+            content : null,
+            dataKeys:null,
         };
     }
 
+    byString = (o, s) => {
+        let kk = s.split("][");
+        let rK = kk[0].replace('[','').replace('"','').replace('"','')
+        let lK = kk[1].replace(']','').replace('"','').replace('"','')
+
+        return (o[rK][lK]) 
+    }
+
     //render list
-    renderReconcileList(){
+    renderReconcileList(itemVal){
 
         let content = [];
 
-        for (let item of this.state.itemValues) {
-            content.push(<View  key={item}  style={ReconcileStyle.listItemLabelTopContainer}>
+        for (let index = 0; index < this.state.itemHeaderCount; index++) {
+            let elementVal = this.byString(itemVal,this.state.dataKeys[index])
+
+            content.push(<View  key={elementVal}  style={ReconcileStyle.listItemLabelTopContainer}>
                             <View  style={ReconcileStyle.listItemLabelInnerContainer}>
                                 <View  style={ReconcileStyle.listItemLabelInnerColorContainer}>
                                   <View  style={ReconcileStyle.listItemTextContainer}>
-                                    <Text  style={ReconcileStyle.listItemLText}>{item}</Text>
+                                    <Text  style={ReconcileStyle.listItemLText}>{elementVal}</Text>
                                 </View>
                                 </View>
                             </View>
       
                         </View>)
           }
-
           if(this.props.listButton){
 
             content.push(
@@ -95,28 +105,51 @@ export default class ReconcileItems extends React.Component{
     loadListofItems = () =>{
 
         let content2 = [];
-        
-        let content = this.renderReconcileList()
-
-        for (let item of this.state.itemCount) {
-            content2.push(
-              <View style={ReconcileStyle.listItemContainer}>
-               {content}
-              </View>
-            )
+        for (let index = 0; index < this.state.data.length; index++) {
+            let item = this.state.data[index]
+            Object.keys(item).forEach( rootKey => {
+                let content = this.renderReconcileList(item[rootKey])
+                content2.push(
+                    <View key={rootKey} style={ReconcileStyle.listItemContainer}>
+                     {content}
+                    </View>
+                  )
+            })
         }
+        /*for (let index = 0; index < this.state.data.length; index++) {
+           /* Object.keys(item).forEach( rootKey => {
+
+               let content = this.renderReconcileList(item[this.state.data[rootKey]])
+                content2.push(
+                  <View key={rootKey} style={ReconcileStyle.listItemContainer}>
+                   {content}
+                  </View>
+                )
+                
+            });
+
+        }*/
         this.setState({content:content2});
+        return content2
 
     }
 
     componentDidMount() {
-        this.loadListofItems();
+        this.setState({data:this.props.data,
+                       dataKeys: this.props.dataKeys})
      }
+
+     componentDidUpdate(){
+         console.log(this.state.content)
+         if(this.state.content == null){
+            this.loadListofItems();
+        }
+     }
+
     render() { 
 
         return(
-            /*this.state.isLoaded ? this.state.content : <View  style={ReconcileStyle.listItemContainer}><Text>Loading...</Text></View>*/
-            this.state.content
+           this.state.content
         )
   }
 }
