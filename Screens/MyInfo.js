@@ -240,7 +240,11 @@ export default class MyInfo extends Component {
                     <SolidInput width={"98%"}/>
 
                 <View style={styles.hallfInputContainer}>
-                    <SolidInput width={"49%"} inputLabel={"Phone"}/>
+                    <SolidInput width={"49%"} inputLabel={"Phone"}
+                                 iconName = "arrowRightBlack"
+                                 onPress = {this.increamentRefillsLeft} 
+                                 editAble={false}
+                    />
                     <SolidInput width={"49%"}/>
                 </View>
              </Fold>

@@ -34,6 +34,9 @@ export default StyleSheet.create({
         borderBottomLeftRadius: wp(wrp( 4)),
         borderBottomRightRadius: wp(wrp( 4)),
         height: hp(hrp(56)),
+        flexDirection: 'row',
+        alignItems:"center",
+        justifyContent:"space-between"
   },
     labelContainer: {
         opacity: 1,
