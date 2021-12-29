@@ -3,17 +3,13 @@ import {Text, View} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Bullets} from 'react-native-easy-content-loader';
-
 //components import
 import HeaderSection from '../components/HeaderSection';
 //import styles
 import styles from '../assets/styles/ShareStyles'
-import { useRef } from 'react/cjs/react.development';
 
 
 export default function Share(){
-
-
     const state = {
       itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
       dataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
@@ -67,13 +63,13 @@ export default function Share(){
                     </View>
                 </View>
                 <View  style={styles.shareNavSocialMediaContainer}>
-                    <ReactImage  source={require('../assets/whatsupIcon.png')} style={styles.iconContainer} />
-                    <ReactImage  source={require('../assets/gmailIcon.png')} style={styles.iconContainer} />
-                    <ReactImage  source={require('../assets/smsIcon.png')} style={styles.iconContainer} />
+                    <ReactImage  source={require('../assets/img/whatsupIcon.png')} style={styles.iconContainer} />
+                    <ReactImage  source={require('../assets/img/gmailIcon.png')} style={styles.iconContainer} />
+                    <ReactImage  source={require('../assets/img/smsIcon.png')} style={styles.iconContainer} />
                 </View>
             
             </View>
-            <Suspense fallback={<Bullets active listSize={10} />}>
+            <Suspense fallback={<Bullets active listSize={dataFetched ? listOfdata["slipInfo"].length:10}  />}>
                  {dataFetched ? <ScrollabelItemContainer  listButton={false}
                  data={listOfdata["slipInfo"]}
     dataKeys={state.dataKeys}/>:null}

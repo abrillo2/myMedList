@@ -6,7 +6,7 @@ import {Image as ReactImage} from 'react-native';
 import { Bullets, InstagramLoader } from 'react-native-easy-content-loader';
 //import reconcile items
 import ReconcileStyle from '../assets/styles/ReconcileStyle.js';
-
+import ListActionButton from './ListActionButton.js';
 //reconcileitems section
 export default class ReconcileItems extends React.Component{
     constructor(props) {
@@ -36,66 +36,19 @@ export default class ReconcileItems extends React.Component{
         for (let index = 0; index < this.state.itemHeaderCount; index++) {
             let elementVal = this.byString(itemVal,this.state.dataKeys[index])
 
-            content.push(<View  key={elementVal}  style={ReconcileStyle.listItemLabelTopContainer}>
-                            <View  style={ReconcileStyle.listItemLabelInnerContainer}>
-                                <View  style={ReconcileStyle.listItemLabelInnerColorContainer}>
-                                  <View  style={ReconcileStyle.listItemTextContainer}>
-                                    <Text  style={ReconcileStyle.listItemLText}>{elementVal}</Text>
-                                </View>
-                                </View>
-                            </View>
-      
-                        </View>)
+            content.push(< View key={index}  style={ReconcileStyle.itemTextContainer}>
+                                        <Text numberOfLines={1}  style={ReconcileStyle.itemValStyle}>{elementVal}</Text>
+                         </View>
+                        )
           }
           if(this.props.listButton){
 
             content.push(
-                <View  style={ReconcileStyle.listItemButtonContainer}>
-                                          <View  style={ReconcileStyle.butonIconContainer}>
-                                              <View  style={ReconcileStyle.butonIconContainer2}>
-                                                  <View  style={ReconcileStyle.butonIconContainer3}>
-                                                      <View  style={ReconcileStyle.butonIconContainer3Elevation}>
-                                                          <View  style={ReconcileStyle.butonIconContainer3ElevationShadow}>
-                                                              <View  style={ReconcileStyle.butonIconContainer3ElevationShadowBox1}></View>
-                                                              <View  style={ReconcileStyle.butonIconContainer3ElevationShadowBox2}></View>
-                                                              <View  style={ReconcileStyle.butonIconContainer3ElevationShadowBox3}></View>
-                                                          </View>
-                                                      </View>
-                                                      <View  style={ReconcileStyle.buttonIconContainerLevel1}>
-                                                        <View  style={ReconcileStyle.buttonIconContainerLevel2}>
-                                                            <View  style={ReconcileStyle.buttonIconContainerLevel3}>
-                                                            <ReactImage  source={require('../assets/icons/edit_white.png')} style={ReconcileStyle.editIcon} />
-                                                            </View>
-                                                        </View>
-                                                      </View>
-          
-                                                  </View>
-                                              </View>
-                                              
-                                          </View>
-                                          <View  style={ReconcileStyle.butonIconContainer}>
-                                              <View  style={ReconcileStyle.butonIconContainer2}>
-                                                  <View  style={ReconcileStyle.butonIconContainer3}>
-                                                      <View  style={ReconcileStyle.butonIconContainer3Elevation}>
-                                                          <View  style={ReconcileStyle.butonIconContainer3ElevationShadow}>
-                                                              <View  style={ReconcileStyle.butonIconContainer3ElevationShadowBox1}></View>
-                                                              <View  style={ReconcileStyle.butonIconContainer3ElevationShadowBox2}></View>
-                                                              <View  style={ReconcileStyle.butonIconContainer3ElevationShadowBox3}></View>
-                                                          </View>
-                                                      </View>
-                                                      <View  style={ReconcileStyle.buttonIconContainerLevel1}>
-                                                        <View  style={ReconcileStyle.buttonIconContainerLevel2}>
-                                                            <View  style={ReconcileStyle.buttonIconContainerLevel3}>
-                                                            <ReactImage  source={require('../assets/icons/delete_white.png')} style={ReconcileStyle.editIcon} />
-                                                            </View>
-                                                        </View>
-                                                      </View>
-          
-                                                  </View>
-                                            </View>
-                                              
-                                          </View>
-                                      </View>
+                <View style={ReconcileStyle.butonIconContainer2}>
+                    <ListActionButton icon = {require('../assets/icons/edit_white.png')}/>
+                    <ListActionButton icon = {require('../assets/icons/edit_white.png')}/>
+                </View>
+                
               )
 
           } 
@@ -110,25 +63,12 @@ export default class ReconcileItems extends React.Component{
             Object.keys(item).forEach( rootKey => {
                 let content = this.renderReconcileList(item[rootKey])
                 content2.push(
-                    <View key={rootKey} style={ReconcileStyle.listItemContainer}>
+                    <View key={rootKey} style={ReconcileStyle.listItemsContainer}>
                      {content}
                     </View>
                   )
             })
         }
-        /*for (let index = 0; index < this.state.data.length; index++) {
-           /* Object.keys(item).forEach( rootKey => {
-
-               let content = this.renderReconcileList(item[this.state.data[rootKey]])
-                content2.push(
-                  <View key={rootKey} style={ReconcileStyle.listItemContainer}>
-                   {content}
-                  </View>
-                )
-                
-            });
-
-        }*/
         this.setState({content:content2});
         return content2
 
@@ -140,7 +80,6 @@ export default class ReconcileItems extends React.Component{
      }
 
      componentDidUpdate(){
-         console.log(this.state.content)
          if(this.state.content == null){
             this.loadListofItems();
         }

@@ -37,7 +37,10 @@ export default class FullInputContainer extends React.Component{
                 <View  style={styles.fullInputContainerColor}>
                     <View  style={styles.fullInputContainerStates}>
                         <View  style={styles.fullInputContainerStates2}>
-                            <Text  style={styles.FullInputLabel}>{this.props.inputLabel}</Text>
+                            <Text  style={styles.FullInputLabel}>{this.props.inputLabel}
+                                {this.props.required?<Text style={[styles.halfinputLabel,
+                                {color:"red"}]}> *</Text>:null}        
+                            </Text>
                             <View  style={styles.halfinputLabelIcon}>
                                 <TextInput placeholder={this.props.inputLabel} 
                                         placeholderTextColor={"rgba(0, 0, 0, 0.4)"} 

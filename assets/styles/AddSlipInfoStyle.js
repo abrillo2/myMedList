@@ -12,44 +12,53 @@ function wrp(value){
 
 
 export default StyleSheet.create({
-    "singlereconcile": {
-      "opacity": 1,
-      "position": "relative",
-      "backgroundColor": "rgba(255, 255, 255, 1)",
-      "flex":1
+    singlereconcile: {
+      opacity: 1,
+      position: "relative",
+      backgroundColor: "rgba(255, 255, 255, 1)",
+      flex:1
     },
-    "bodycontainer": {
-      "opacity": 1,
-      "position": "relative",
-      "backgroundColor": "transparent",
-      "marginTop": hp(hrp(10)),
-      "paddingTop": hp(hrp(0)),
-      "paddingRight": wp(wrp(0)),
-      "paddingBottom": hp(hrp(0)),
-      "paddingLeft": wp(wrp(0)),
+    bodycontainer: {
+      opacity: 1,
+      position: "relative",
+      backgroundColor: "transparent",
+      marginTop: hp(hrp(10)),
+      paddingTop: hp(hrp(0)),
+      paddingRight: wp(wrp(0)),
+      paddingBottom: hp(hrp(0)),
+      paddingLeft: wp(wrp(0)),
   
-      "shadowColor": "rgb(0,  0,  0)",
-      "shadowOpacity": 0.2,
-      "elevation": wp(wrp(7)),
-      "shadowOffset": {
-        "width": 0,
-        "height": wp(wrp(1))
+      shadowColor: "rgb(0,  0,  0)",
+      shadowOpacity: 0.2,
+      elevation: wp(wrp(7)),
+      shadowOffset: {
+        width: 0,
+        height: wp(wrp(1))
       },
-      "shadowRadius": wp(wrp(5)),
+      shadowRadius: wp(wrp(5)),
     },
-    "twinButtonContainer":{
-      "marginTop":hp(hrp(10)),
-      "flexDirection":"row",
-      "width" : wp("90%"),
-      "justifyContent":"space-between"
+    twinButtonContainer:{
+      position:"relative",
+      marginTop:hp(hrp(10)),
+      marginBottom:hp(hrp(10)),
+      paddingLeft:"5%",
+      paddingRight:"5%",
+      flexDirection:"row",
+      width: wp("100%"),
+      justifyContent:"space-between"
    },  
-   "hallfInputContainer": {
-    "opacity": 1,
-    "position": "relative",
-    "backgroundColor": "transparent",
-    "width": wp("88.5%"),
-    "flexDirection": "row",
-    "justifyContent": "space-between"
+   hallfInputContainer: {
+    opacity: 1,
+    position: "relative",
+    backgroundColor: "transparent",
+    width: wp("88.5%"),
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
+
+  //collapseable view stye
+  collapseStyle:{
+    position:"relative"
+  }
   
   });

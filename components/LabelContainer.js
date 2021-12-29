@@ -1,8 +1,6 @@
 //imports
-import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {Text, TouchableHighlight, View} from 'react-native';
-import Svg from 'react-native-svg';
+import React from 'react';
+import {Text, TouchableHighlight, TouchableOpacity, View} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 
 //import heaader style
@@ -11,14 +9,19 @@ import styles from '../assets/styles/LabelContainerStyle.js'
 //Header section
 export default class LabelContainer extends React.Component{
     //  this.setState(...)
+    
     render() { 
+    console.log(this.props.icon)
     return(
-        <TouchableHighlight underlayColor={"#61DBE6"} style={styles.labelContainer}>
+        <TouchableOpacity underlayColor={"#61DBE6"} style={styles.labelContainer}
+                          onPress={this.props.onPress}
+                          onLayout={this.props.onLayout}
+            >
             <View  style={styles.labelItemContainer}>
-                    <ReactImage  source={require("../assets/icons/expand_less_white.png")} style={styles.iconStyle} />
+                    <ReactImage  source={this.props.icon} style={styles.iconStyle} />
                  <Text  style={styles.labelText}>{this.props.Title}</Text>
             </View>
-        </TouchableHighlight>   
+        </TouchableOpacity>   
     )
   }s
 }

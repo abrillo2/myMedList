@@ -22,7 +22,6 @@ export default class Addslip extends Component {
 
   //open camera to take photo
   openCamera = () => {
-    console.log("take photo")
     launchCamera({mediaType:'photo',cameraType:'back'}, (response)=>{
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -39,17 +38,38 @@ export default class Addslip extends Component {
     
     });
   }
+  //open Gallery
+  openGalery=()=>{
+    launchImageLibrary({mediaType:'photo'}, (response)=>{
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.uri };
+        this.props.navigation.navigate("Takenphoto",{
+          response:response
+        })
+      }
+    
+    });
+
+  }
 
   render() {
     return (
     <View  style={styles.addslip}>
         <HeaderSection Title={"ADD SLIP PHOTO"}/>
         <View style={styles.bodyContainer}>
-          <Text  style={styles.addSlipDescription}>Add photo of prescription slip or medicine bottle</Text>
-          <TouchableOpacity>
-            <ReactImage  source={require('../assets/photoCamera.png')} style={styles.cameraIconStyle} />
+          <Text  style={styles.addSlipDescription}>Add photo of prescription slip or medicine bottle
+          {"\n\n"} Press The camera Icon to take a photo
+          </Text>
+          <TouchableOpacity onPress={this.openCamera}>
+            <ReactImage  source={require('../assets/img/photoCamera.png')} style={styles.cameraIconStyle} />
           </TouchableOpacity>
-          <Button buttonLabel="Take Photo" iconName="add" onPress={this.openCamera}/>
+          <Button buttonLabel="Add Photo" iconName="add" onPress={this.openGalery}/>
         </View>
 
     </View>

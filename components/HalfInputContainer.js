@@ -57,7 +57,7 @@ export default class HalfInputContainer extends React.Component{
               />)
         }else{
             return(
-                <TextInput  style={this.props.iconName2 ? styles.halfinputInput2 : styles.halfinputInput}
+                <TextInput  style={this.props.iconName ? styles.halfinputInput2 : styles.halfinputInput}
                     editable= {this.props.editAble}
                     placeholder={this.props.inputLabel}
                     value={this.props.inputContent}
@@ -76,7 +76,11 @@ export default class HalfInputContainer extends React.Component{
     return(
                     <View  style={styles.halfinput}>
                         
-                         <Text  style={styles.halfinputLabel}>{this.props.inputLabel}</Text>
+                         <Text  style={styles.halfinputLabel}>
+                            {this.props.inputLabel}
+                            {this.props.required?<Text style={[styles.halfinputLabel,
+                             {color:"red"}]}> *</Text>:null}
+                        </Text>
                          <View  style={styles.halfinputLabelIcon}>
                          {this.props.iconName2? <TouchableOpacity onPress={this.props.onPress2}>
                                 <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon(this.props.iconName2)}/>     

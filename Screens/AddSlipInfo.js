@@ -10,6 +10,7 @@ import FullInputContainer from '../components/FullInputContainer';
 import HalfInputContainer from '../components/HalfInputContainer';
 import TwinButtonContainer from '../components/TwinButtonContainer';
 import LabelContainer from '../components/LabelContainer';
+import Fold from '../components/callBacks/Fold';
 //styles
 import styles from '../assets/styles/AddSlipInfoStyle'
 
@@ -205,6 +206,11 @@ export default class AddSlipInfo extends Component {
     }
   }
 
+  //fold or expand components
+  foldExpand = () =>{
+
+  }
+
   componentDidMount(){
     this.onChangeMedicationDetails("imageData",this.props.route.params.response)
   }
@@ -229,18 +235,22 @@ export default class AddSlipInfo extends Component {
               {/*******************************
                   * MEDICATION DETAILS
               */}
-             <LabelContainer Title="MEDICATION DETAILS"/>
+             <Fold
+                labelTitle = {"MEDICATION DETAILS"}
+             
+             >
              <View style={styles.hallfInputContainer}>
                 <HalfInputContainer 
-                inputLabel={"Name of medicine *"}
+                inputLabel={"Name of medicine"}
                 keyboard="default"
-                input
+                required={this.state.medicationDetails["name"] == null || this.state.medicationDetails["name"] == ""}
                 onChangeText={this.onChangeMedicationDetails}
                 objectKey="name"
                 inputContent={this.state.medicationDetails["name"]}/>
                 <HalfInputContainer inputLabel={"Strength"}
                                     objectKey={"strength"}
                                     onChangeText={this.onChangeMedicationDetails}
+                                    required={this.state.medicationDetails["strength"] == null || this.state.medicationDetails["strength"] == ""}
                                     inputContent={this.state.medicationDetails["strength"]}/>
              </View>
              <View style={styles.hallfInputContainer}>
@@ -264,11 +274,16 @@ export default class AddSlipInfo extends Component {
                                  objectKey={"direction"}
                                  onChangeText={this.onChangeMedicationDetails}
                                  inputContent={this.state.medicationDetails["direction"]}/>
+             </Fold>
+
              {/*******************************
               * PHARMACY DETAILS
               */}
-             <LabelContainer Title = {"PHARMACY DETAILS"}/>
+             <Fold
+                labelTitle = {"PHARMACY DETAILS"}
+             >
              <FullInputContainer inputLabel={"Name of pharmacy"}
+                                 required={this.state.pharmacyDetails["name"] == null || this.state.pharmacyDetails["name"] == ""}                
                                  keyboard="default"
                                  inputContent={this.state.pharmacyDetails["name"]}
                                  onChangeText={this.onchangePharmacyDetails}
@@ -278,11 +293,16 @@ export default class AddSlipInfo extends Component {
                                  inputContent={this.state.pharmacyDetails["phone"]}
                                  onChangeText={this.onchangePharmacyDetails}
                                  objectKey={"phone"}/>
+             </Fold>
+             
              {/*******************************
               * PHYICIAN DETAILS
               */}
-             <LabelContainer Title = {"PHYSICIAN DETAILS"}/>
+             <Fold
+                 labelTitle = {"PHYSICIAN DETAILS"}
+             >
              <FullInputContainer  inputLabel={"Name of physician"}
+                                  required={this.state.physicianDetails["name"] == null || this.state.physicianDetails["name"] == ""}  
                                   inputContent={this.state.physicianDetails["name"]}
                                   onChangeText={this.onChangePhysicianDetails}
                                   objectKey={"name"}/>
@@ -297,25 +317,30 @@ export default class AddSlipInfo extends Component {
                                   editAble={false}
                                   inputContent={this.state.medicationDetails.dateAppointed+""}                   
              />
+             </Fold>
+             
               {/*******************************
               * ADDITIONAL DETAILS
               */}        
-             <LabelContainer     Title = {"ADDITIONAL DETAILS"}/>
+             <Fold
+                labelTitle = {"ADDITIONAL DETAILS"}>
              <FullInputContainer inputLabel={"Reason for taking/ Diagnosis"}
                                  keyboard="phone-pad"
                                  keyboard="default"
                                  onChangeText={this.onChangeMedicationDetails}
                                  objectKey="diagnosis"
                                  inputContent={this.state.medicationDetails["diagnosis"]}/>
-             <View style={styles.twinButtonContainer}>
+             </Fold>
+          </ScrollView>
+          <View style={styles.twinButtonContainer}>
                 <TwinButtonContainer label="Cancel" 
                                      disabled={false}
                                      onPress={this.CancelPressed}/>
                 <TwinButtonContainer label="Save" disabled={this.state.disabled}
                                       onPress={this.addSlipInfo}/>
-             </View>
-          </ScrollView>
-      </View>
+              </View>
+
+        </View>
       );
   }
 }

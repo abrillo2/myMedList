@@ -22,23 +22,23 @@ export default class ScrollabelItemContainer extends Component {
 
   render() {
     return (
-        <ScrollView horizontal={true}  style={ReconcileStyle.scroll}>
-            <View  style={ReconcileStyle.reconcilelist1_bodycontainer} >
-                <View  style={ReconcileStyle.listlabelcontainer}>
+        <ScrollView horizontal={true}  style={ReconcileStyle.scrollr}>
+            <View  style={ReconcileStyle.reconcilelist1_bodycontainerr} >
+                <View  style={ReconcileStyle.listlabelcontainerr}>
                     
                     {this.state.itemLabels.map((item,index)=>{
-                        return <View  key={item.key}  style={ReconcileStyle.labelTopContainer}>
-                                <View  style={ReconcileStyle.labelContainer}>
-                                  <Text  style={ReconcileStyle.labelTextStyle}>{item}</Text>
+                        return  <View  key={index}  style={ReconcileStyle.labelTopContainerR}>
+                                  <View  style={ReconcileStyle.labelContainerR}>
+                                    <Text  style={ReconcileStyle.labelTextStyleR}>{item}</Text>
+                                  </View>
                                 </View>
-                              </View>
                     })}
 
                 </View>
 
                 {/** reconcile list item value container begins here */}
                 
-                <ScrollView horizontal ={false} style={ReconcileStyle.scroll2}>
+                <ScrollView horizontal ={false} style={ReconcileStyle.scroll2r}>
                      <ReconcileItems listButton={this.props.listButton}
                                      data={this.props.data}
                                      dataKeys={this.props.dataKeys}/>

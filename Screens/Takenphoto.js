@@ -7,6 +7,8 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 //local components import
 import HeaderSection from '../components/HeaderSection';
 import TwinButtonContainer from '../components/TwinButtonContainer'
+//import styles
+import styles from '../assets/styles/TakenPhotoStyle';
 
 
 export default class Takenphoto extends Component {
@@ -66,7 +68,7 @@ export default class Takenphoto extends Component {
             <View style ={styles.takenPhotoBody}>
                     {
                       this.state.imageData != null ? <ReactImage  source={{uri:this.state.imageData.uri}} style={styles.slipimagecontainer} /> :
-                      <ReactImage  source={require('../assets/xImage.png')} style={styles.slipimagecontainer} />
+                      <ReactImage  source={require('../assets/img/xImage.png')} style={styles.slipimagecontainer} />
                     }
                     
                     <View style={styles.twinButtonContainer}>
@@ -79,40 +81,3 @@ export default class Takenphoto extends Component {
     );
   }
 }
-function hrp(value){
-  return value*100 / 736;
-}
-
-function wrp(value){
-  return value*100 / 414;
-}
-
-const styles = StyleSheet.create({
-  "takenphoto": {
-    "opacity": 1,
-    "position": "relative",
-    "backgroundColor": "rgba(255, 255, 255, 1)",
-    "width":"100%",
-    "height":"100%"
-  },
-  "slipimagecontainer": {
-    "position": "relative",
-    "width": wp("90%"),
-    "height": hp(hrp(400)),
-  },
-  "takenPhotoBody":{
-    "position":"relative",
-    "marginTop":hp(hrp(10)),
-    "flex":1,
-    "justifyContent":"center",
-    "alignItems":"center"
-  },
-  "twinButtonContainer":{
-     "marginTop":hp(hrp(10)),
-     "flexDirection":"row",
-     "width" : wp("90%"),
-     "justifyContent":"space-between",
-
-  }
-
-});

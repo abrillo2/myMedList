@@ -1,9 +1,7 @@
-import React, {useEffect,Suspense} from 'react';
-import PropTypes from "prop-types";
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
-import {Image as ReactImage} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { Bullets, InstagramLoader } from 'react-native-easy-content-loader';
+import React, {Suspense,useEffect,useState} from 'react';
+import {View} from 'react-native';
+import { Bullets} from 'react-native-easy-content-loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import header section
 import  HeaderSection  from '../components/HeaderSection';
 //import body style
@@ -13,19 +11,46 @@ export default function Reconcilelist() {
 
 
     const state = {
-        itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"]
+        itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
+        dataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
+                   '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]'],
+        interactionsComplete: false
       };
 
+      const [listOfdata,setlistOfdata] = useState(null)
+      const [dataFetched, setdataFetched] = useState(false)
+
+    //import lazy component
+    const [ScrollabelItemContainer,setScrollabelItemContainer]= useState(null)
     
-    const ScrollabelItemContainer= React.lazy(() => {
+    function getComponent(){
+
+      setScrollabelItemContainer(React.lazy(() => {
         return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
           () => import("../components/ScrollabelItemContainer")
         );
-    });
+      }));
+
+    } 
+    //import item list
+    async function getData(){
+        
+        try {
+              
+              const jsonValue = await AsyncStorage.getItem('@myMedList')
+              setlistOfdata(JSON.parse(jsonValue));
+              setdataFetched(true)
+        } catch(e) {
+          // error reading value
+          console.log(e)
+        }
+}
 
     useEffect(() => {
+        getComponent();
+        getData();
         return () => {
-            ScrollabelItemContainer = null;    
+          setScrollabelItemContainer(null);    
         }
       }, []);
 
@@ -37,9 +62,11 @@ export default function Reconcilelist() {
         {/** APP BAR View ends */}
 
         {/** RECONCILE list view begins */}
-
-        <Suspense fallback={<Bullets active listSize={10} />}>
-                  <ScrollabelItemContainer  listButton={true}/>
+        <Suspense fallback={<Bullets active  listSize={dataFetched ? listOfdata["slipInfo"].length:10}/>}>
+          {dataFetched ? <ScrollabelItemContainer  listButton={true}
+                              data={listOfdata["slipInfo"]}
+                              dataKeys={state.dataKeys}/>:
+          null}
         </Suspense>
 
     </View>

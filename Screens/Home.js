@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {ImageBackground } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native';
 //component import
 import HomeButton from '../components/HomeButton';
 import TwinButtonContainer from '../components/TwinButtonContainer';
@@ -24,7 +23,7 @@ export default class Home extends Component {
       <View  style={styles.Home}>
 
 
-          <ImageBackground resizeMode="cover"  imageStyle={{opacity:0.6}}  source={require('../assets/bgIcon.android.png')} style={styles.homeBgStyle}>
+          <ImageBackground resizeMode="cover"  imageStyle={{opacity:0.6}}  source={require('../assets/img/bgIcon.android.png')} style={styles.homeBgStyle}>
                 <Text style={styles.homeTitleTextStyle}  >MY MED LIST</Text>
                 <HomeButton iconName="add" buttonLabel="ADD SLIP" navigation={this.props.navigation}/>
                 <HomeButton iconName="autorenew" buttonLabel="RECONCILE" navigation={this.props.navigation}/>
