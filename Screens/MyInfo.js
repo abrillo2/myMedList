@@ -9,12 +9,13 @@ import HeaderSection from '../components/HeaderSection';
 import FullInputContainer from '../components/FullInputContainer';
 import HalfInputContainer from '../components/HalfInputContainer';
 import TwinButtonContainer from '../components/TwinButtonContainer';
-import LabelContainer from '../components/LabelContainer';
 import Fold from '../components/callBacks/Fold';
+import SolidInput from '../components/SolidInput';
 //styles
-import styles from '../assets/styles/AddSlipInfoStyle'
+import styles from '../assets/styles/AddSlipInfoStyle';
 
-export default class AddSlipInfo extends Component {
+
+export default class MyInfo extends Component {
 
   constructor(props) {
       super(props);
@@ -212,11 +213,11 @@ export default class AddSlipInfo extends Component {
   }
 
   componentDidMount(){
-    this.onChangeMedicationDetails("imageData",this.props.route.params.response)
+    //this.onChangeMedicationDetails("imageData",this.props.route.params.response)
   }
 
  componentDidUpdate(){
-   this.requiredFieldsFullfilled()
+   //this.requiredFieldsFullfilled()
   }
 
 
@@ -227,110 +228,21 @@ export default class AddSlipInfo extends Component {
       <View style={styles.singlereconcile}>
             {/** Header Section */}
             
-          <HeaderSection Title={"Add Slip Details"}/>
+          <HeaderSection Title={"My Info"}/>
           <ScrollView style={styles.bodycontainer}
                       contentContainerStyle={    {
                         justifyContent:"flex-start",
                       alignItems:"center"}} >
               {/*******************************
-                  * MEDICATION DETAILS
+                  * MEDICATION Information
               */}
-             <Fold
-                labelTitle = {"MEDICATION DETAILS"}
-             
-             >
-             <View style={styles.hallfInputContainer}>
-                <HalfInputContainer 
-                inputLabel={"Name of medicine"}
-                keyboard="default"
-                required={this.state.medicationDetails["name"] == null || this.state.medicationDetails["name"] == ""}
-                onChangeText={this.onChangeMedicationDetails}
-                objectKey="name"
-                inputContent={this.state.medicationDetails["name"]}/>
-                <HalfInputContainer inputLabel={"Strength"}
-                                    objectKey={"strength"}
-                                    onChangeText={this.onChangeMedicationDetails}
-                                    required={this.state.medicationDetails["strength"] == null || this.state.medicationDetails["strength"] == ""}
-                                    inputContent={this.state.medicationDetails["strength"]}/>
-             </View>
-             <View style={styles.hallfInputContainer}>
-                <HalfInputContainer inputLabel={"Date filled"} 
-                                    iconName={"dateRange"}
-                                    onPress={this.dateRefilledPicker}
-                                    editAble={false}
-                                    inputContent={this.state.medicationDetails.dateRefilled+""}/>
-                                                 {this.state.openDatePicker? this.datePicker():null}
-                <HalfInputContainer
-                    iconName = "arrowRightBlack"
-                    iconName2 = "arrowLefttBlack"
-                    onPress = {this.increamentRefillsLeft}
-                    onPress2 = {this.decrementRefillsLeft}
-                    inputLabel={"Refills Left"}
-                    inputContent={this.state.medicationDetails.refillsLeft+""}
-                    required={this.state.medicationDetails["refillsLeft"] == 0 || this.state.medicationDetails["strength"] == ""}
-                    editAble={false}/>
-             </View>
-             <FullInputContainer inputLabel={"Medicine directions"}
-                                 keyboard="default"
-                                 objectKey={"direction"}
-                                 onChangeText={this.onChangeMedicationDetails}
-                                 inputContent={this.state.medicationDetails["direction"]}/>
-             </Fold>
+             <Fold labelTitle = {"PERSONAL INFORMATION"}>
+                    <SolidInput width={"98%"}/>
 
-             {/*******************************
-              * PHARMACY DETAILS
-              */}
-             <Fold
-                labelTitle = {"PHARMACY DETAILS"}
-             >
-             <FullInputContainer inputLabel={"Name of pharmacy"}
-                                 required={this.state.pharmacyDetails["name"] == null || this.state.pharmacyDetails["name"] == ""}                
-                                 keyboard="default"
-                                 inputContent={this.state.pharmacyDetails["name"]}
-                                 onChangeText={this.onchangePharmacyDetails}
-                                 objectKey={"name"}/>
-             <FullInputContainer inputLabel={"Pharmacy Phone"}
-                                 keyboard="phone-pad"
-                                 inputContent={this.state.pharmacyDetails["phone"]}
-                                 onChangeText={this.onchangePharmacyDetails}
-                                 objectKey={"phone"}/>
-             </Fold>
-             
-             {/*******************************
-              * PHYICIAN DETAILS
-              */}
-             <Fold
-                 labelTitle = {"PHYSICIAN DETAILS"}
-             >
-             <FullInputContainer  inputLabel={"Name of physician"}
-                                  required={this.state.physicianDetails["name"] == null || this.state.physicianDetails["name"] == ""}  
-                                  inputContent={this.state.physicianDetails["name"]}
-                                  onChangeText={this.onChangePhysicianDetails}
-                                  objectKey={"name"}/>
-             <FullInputContainer  inputLabel={"Phone"}
-                                  keyboard="phone-pad"
-                                  inputContent={this.state.physicianDetails["phone"]}
-                                  onChangeText={this.onChangePhysicianDetails}
-                                  objectKey={"phone"}/>         
-             <FullInputContainer  inputLabel={"Next Appointment"}
-                                  iconName={"dateRange"}
-                                  onPress={this.dateAppointedPicker}
-                                  editAble={false}
-                                  inputContent={this.state.medicationDetails.dateAppointed+""}                   
-             />
-             </Fold>
-             
-              {/*******************************
-              * ADDITIONAL DETAILS
-              */}        
-             <Fold
-                labelTitle = {"ADDITIONAL DETAILS"}>
-             <FullInputContainer inputLabel={"Reason for taking/ Diagnosis"}
-                                 keyboard="phone-pad"
-                                 keyboard="default"
-                                 onChangeText={this.onChangeMedicationDetails}
-                                 objectKey="diagnosis"
-                                 inputContent={this.state.medicationDetails["diagnosis"]}/>
+                <View style={styles.hallfInputContainer}>
+                    <SolidInput width={"49%"} inputLabel={"Phone"}/>
+                    <SolidInput width={"49%"}/>
+                </View>
              </Fold>
           </ScrollView>
           <View style={styles.twinButtonContainer}>
