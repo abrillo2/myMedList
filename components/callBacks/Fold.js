@@ -73,7 +73,6 @@ export default class Fold extends Component {
         let icon = require("../../assets/icons/expand_less_white.png");
         
         if(!(this.state.toggle)){
-            console.log("okay: ",this.state.toggle);
            this._initAnimated();
         }
         if(!(this.state.expanded)){
