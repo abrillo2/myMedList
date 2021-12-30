@@ -15,16 +15,38 @@ export default class SolidInput extends Component {
   constructor(props) {
       super(props);
       this.state = {
-          
+        openDatePicker:false,
+        value:null,
       };
+  }
+
+  onPress=()=>{
+      let func = this.props.func
+      switch(func){
+        case "datePicker":
+                this.setState({
+                    openDatePicker:true
+                })
+            
+      }
+  }
+
+  setValue=(val)=>{
+      this.setState({
+          value:val+"",
+          openDatePicker:false
+      });
+
+      this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
+      
   }
 
   render() {
     return (
         <View  style={[styles.solidInputContainer,{width:this.props.width}]}>
             <View  style={styles.solidInputBorderContainer}>
-                    <InputType {...this.props}/>
-                    {this.props.iconName?<TouchableOpacity onPress={this.props.onPress}>
+                    <InputType {...this.props} setVal={this.setValue} getval={this.state.value}/>
+                    {this.props.iconName?<TouchableOpacity onPress={this.onPress}>
                                <ReactImage style={HalfInputStyle.halfinputLabelIconColor}  source={Icon(this.props.iconName)}/>     
                     </TouchableOpacity>: null}
             </View>
@@ -35,9 +57,7 @@ export default class SolidInput extends Component {
                             {color:"red"}]}> *</Text>:null}
                 </Text>
             </View>
-            <DatePickerHelper
-                {...this.props}
-            />     
+            {this.state.openDatePicker?<DatePickerHelper open={this.state.openDatePicker} setVal={this.setValue}/>:null}
         </View>
     );
   }

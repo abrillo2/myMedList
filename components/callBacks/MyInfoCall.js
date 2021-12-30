@@ -61,7 +61,6 @@ export default function MyInfoCall(props){
     let sateData = {...staticData}
     sateData[props.rootKey][props.childKey] = props.value
     setStaticData(sateData)
-    console.log(staticData)
     
   }
 

@@ -21,6 +21,9 @@ export default class MyInfo extends Component {
       rootKey:null,
       childKey:null,
       value:null,
+      sexChoice: [
+        { label: 'Male', value: 'Male' },
+        { label: 'Female', value: 'Female'}]
     }
   }
   onChangeData=(rootKey,childKey, value)=>{
@@ -66,19 +69,51 @@ export default class MyInfo extends Component {
                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
                                  inputLabel={"Birthdate"}
-                                 onChangeText={this.onChangeData}
                                  childKey={"birthDate"}
                                  rootKey = {"personalInformation"}
                                  iconName={"dateRange"}
+                                 func="datePicker"
                                  editAble={false}
-                                 onPress={this.dateRefilledPicker}/>
-                    <SolidInput  width={"49%"} 
-                                 inputLabel={"Birthdate"}
                                  onChangeText={this.onChangeData}
-                                 childKey={"birthDate"}
+                                 />
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"Sex"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"sex"}
+                                 inputType={"dropDown"}
+                                 data={this.state.sexChoice}
                                  rootKey = {"personalInformation"}/>
                 </View>
              </Fold>
+             <Fold labelTitle = {"Address"}>
+                {/* Street# and City inputs*/}
+                <View style={styles.hallfInputContainer}>
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"Street #"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"street"}
+                                 rootKey = {"address"}/>
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"City"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"city"}
+                                 rootKey = {"address"}/>
+                </View>
+
+                                {/* Street# and City inputs*/}
+                                <View style={styles.hallfInputContainer}>
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"Street #"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"street"}
+                                 rootKey = {"address"}/>
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"City"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"city"}
+                                 rootKey = {"address"}/>
+                </View>
+              </Fold>
           </ScrollView>
 
         </MyInfoCall>
