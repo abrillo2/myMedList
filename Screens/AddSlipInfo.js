@@ -150,8 +150,6 @@ export default class AddSlipInfo extends Component {
 
     }
   }
-
-
   /*******************************
    *  Handel Form Submission
    *****************************/

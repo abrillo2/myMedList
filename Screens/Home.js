@@ -31,8 +31,8 @@ export default class Home extends Component {
 
                 <View style={{"position":"absolute","bottom":10}}>
                     <View style={styles.twinButtonContainer}>
-                      < TwinButtonContainer rLabel label="MY INFO"/>
-                        <TwinButtonContainer rLabel label="EXIT"/>
+                      <TwinButtonContainer onPress={()=>{this.props.navigation.navigate("MyInfo")}}label="MY INFO"/>
+                        <TwinButtonContainer label="EXIT"/>
                     </View>
 
                 </View>

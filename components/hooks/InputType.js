@@ -14,15 +14,15 @@ export default function InputType(props){
                 searchPlaceholder={props.inputLabel}
                 iconStyle={styles.iconStyle}
                 data={props.data}
-                labelField="label"
-                valueField="value"
+                labelField="value"
+                valueField="label"
                 value={"value"}
-                maxHeight={100}
+                maxHeight={200}
                 placeholder={props.inputLabel}
                 onFocus={() => {}}
                 onBlur={() =>{}}
                 onChange={item => {
-                    props.setVal(item)
+                    props.setVal(item["label"])
                 }}
                 
           />)

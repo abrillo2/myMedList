@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 //components import
@@ -23,7 +22,8 @@ export default class MyInfo extends Component {
       value:null,
       sexChoice: [
         { label: 'Male', value: 'Male' },
-        { label: 'Female', value: 'Female'}]
+        { label: 'Female', value: 'Female'}],
+      stateData: require("../assets/data/states.json")
     }
   }
   onChangeData=(rootKey,childKey, value)=>{
@@ -35,13 +35,13 @@ export default class MyInfo extends Component {
   }
 
   render() {
-    
     return (
 
       <MyInfoCall 
                   rootKey={this.state.rootKey}
                   childKey={this.state.childKey}
-                  value={this.state.value}>
+                  value={this.state.value}
+                  navigation={this.props.navigation}>
             {/** Header Section */}
           <HeaderSection Title={"My Info"}/>
           <ScrollView style={styles.bodycontainer}
@@ -89,7 +89,7 @@ export default class MyInfo extends Component {
                 {/* Street# and City inputs*/}
                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
-                                 inputLabel={"Street #"}
+                                 inputLabel={"Street"}
                                  onChangeText={this.onChangeData}
                                  childKey={"street"}
                                  rootKey = {"address"}/>
@@ -100,22 +100,63 @@ export default class MyInfo extends Component {
                                  rootKey = {"address"}/>
                 </View>
 
-                                {/* Street# and City inputs*/}
+                                {/* state and zipcode inputs*/}
                                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
-                                 inputLabel={"Street #"}
+                                 inputLabel={"State"}
                                  onChangeText={this.onChangeData}
-                                 childKey={"street"}
-                                 rootKey = {"address"}/>
+                                 childKey={"state"}
+                                 rootKey = {"address"}
+                                 inputType={"dropDown"}
+                                 data={this.state.stateData}/>
                     <SolidInput  width={"49%"} 
-                                 inputLabel={"City"}
+                                 inputLabel={"Zip code"}
                                  onChangeText={this.onChangeData}
-                                 childKey={"city"}
+                                 childKey={"zipCode"}
                                  rootKey = {"address"}/>
                 </View>
+                <SolidInput  width={"100%"} 
+                                 inputLabel={"Phone"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"phone"}
+                                 rootKey = {"address"}/>
               </Fold>
-          </ScrollView>
+              
+              <Fold labelTitle = {"PHYSICIAN INFORMATION"}>
+                {/* First name and last name input*/}
+                <View style={styles.hallfInputContainer}>
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"First Name"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"firstName"}
+                                 rootKey = {"physicianDetails"}/>
+                    <SolidInput  width={"49%"} 
+                                 inputLabel={"Last Name"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"lastName"}
+                                 rootKey = {"physicianDetails"}/>
+                </View>
+                <SolidInput  width={"100%"} 
+                                 inputLabel={"Phone"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"phone"}
+                                 rootKey = {"physicianDetails"}/>
+             </Fold>
 
+             <Fold labelTitle = {"PREFERED PHARMACY INFORMATION"}>
+                {/*PHARMACY NAME AND PHONE*/}
+                <SolidInput  width={"100%"} 
+                                 inputLabel={"Name"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"name"}
+                                 rootKey = {"pharmacyDetails"}/>
+                <SolidInput  width={"100%"} 
+                                 inputLabel={"Phone"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"phone"}
+                                 rootKey = {"pharmacyDetails"}/>
+             </Fold>
+          </ScrollView>
         </MyInfoCall>
       );
   }
