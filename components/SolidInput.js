@@ -9,7 +9,6 @@ import HalfInputStyle from '../assets/styles/HalfInputStyle';
 import Icon from './hooks/Icon'
 import InputType from './hooks/InputType';
 
-
 export default class SolidInput extends Component {
 
   constructor(props) {
@@ -39,6 +38,14 @@ export default class SolidInput extends Component {
 
       this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
       
+  }
+
+  async componentDidMount(){
+      let val = await this.props.inputContent(this.props.rootKey,this.props.childKey)
+      this.setState({
+          value:val
+      })
+      this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
   }
 
   render() {

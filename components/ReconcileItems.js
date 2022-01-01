@@ -29,12 +29,12 @@ export default class ReconcileItems extends React.Component{
     }
 
     //render list
-    renderReconcileList(itemVal){
+    renderReconcileList(itemVal,rootKey){
 
         let content = [];
 
         for (let index = 0; index < this.state.itemHeaderCount; index++) {
-            let elementVal = this.byString(itemVal,this.state.dataKeys[index])
+            let elementVal = this.byString(itemVal[rootKey],this.state.dataKeys[index])
 
             content.push(< View key={index}  style={ReconcileStyle.itemTextContainer}>
                                         <Text numberOfLines={1}  style={ReconcileStyle.itemValStyle}>{elementVal}</Text>
@@ -45,8 +45,14 @@ export default class ReconcileItems extends React.Component{
 
             content.push(
                 <View style={ReconcileStyle.butonIconContainer2}>
-                    <ListActionButton icon = {require('../assets/icons/edit_white.png')}/>
-                    <ListActionButton icon = {require('../assets/icons/edit_white.png')}/>
+                    <ListActionButton icon = {require('../assets/icons/edit_white.png')}
+                                      onPress={this.props.listButtonPressed}
+                                      action={"edit"}
+                                      itemId={rootKey}/>
+                    <ListActionButton icon = {require('../assets/icons/delete_white.png')}
+                                      onPress={this.props.listButtonPressed}
+                                      action={"delete"}
+                                      itemId={rootKey}/>
                 </View>
                 
               )
@@ -61,7 +67,7 @@ export default class ReconcileItems extends React.Component{
         for (let index = 0; index < this.state.data.length; index++) {
             let item = this.state.data[index]
             Object.keys(item).forEach( rootKey => {
-                let content = this.renderReconcileList(item[rootKey])
+                let content = this.renderReconcileList(item,rootKey)
                 content2.push(
                     <View key={rootKey} style={ReconcileStyle.listItemsContainer}>
                      {content}

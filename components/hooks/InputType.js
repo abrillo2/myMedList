@@ -16,7 +16,7 @@ export default function InputType(props){
                 data={props.data}
                 labelField="value"
                 valueField="label"
-                value={"value"}
+                value={props.getval}
                 maxHeight={200}
                 placeholder={props.inputLabel}
                 onFocus={() => {}}

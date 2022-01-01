@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 //components import
 import HeaderSection from '../components/HeaderSection';
-import FullInputContainer from '../components/FullInputContainer';
 import HalfInputContainer from '../components/HalfInputContainer';
-import TwinButtonContainer from '../components/TwinButtonContainer';
-import LabelContainer from '../components/LabelContainer';
 import Fold from '../components/callBacks/Fold';
+import MyInfoCall from '../components/callBacks/MyInfoCall';
 //styles
 import styles from '../assets/styles/AddSlipInfoStyle'
 
@@ -19,210 +16,99 @@ export default class AddSlipInfo extends Component {
   constructor(props) {
       super(props);
       this.state = {
-        medicationDetails:{
-          "dateRefilled": new Date().toLocaleDateString("en-US"),
-          "dateAppointed": new Date().toLocaleDateString("en-US"),
-          "refillsLeft": 0,
-          "name":null,
-          "strength":null,
-          "direction":null,
-          "diagnosis":null,
-          "imageData":null,
-        },
-        pharmacyDetails:{
-          "name":null,
-          "phone":null,
-        },
-        physicianDetails:{
-          "name":null,
-          "phone":null
-        },
+
+        rootKey:null,
+        childKey:null,
+        value:null,
+        savedData:null,
+        sexChoice: [
+          { label: 'Male', value: 'Male' },
+          { label: 'Female', value: 'Female'}],
+        stateData: require("../assets/data/states.json"),
+        requiredItems:[["medicationDetails","name"],["medicationDetails","strength"],
+                       ["medicationDetails","dateRefilled"],["physicianDetails","name"]],
         opendateAppointed : false,
         opendateRefilled : false,
         openDatePicker : false,
         disabled:true,
-
-        refillDropDownData: [
-          { label: '1', value: '1' },
-          { label: '2', value: '2' },
-          { label: '3', value: '3' },
-          { label: '4', value: '4' },
-          { label: '5', value: '5' },
-          { label: '6', value: '6' },
-          { label: '7', value: '7' },
-          { label: '8', value: '8' },
-        ]
-          
       };
   }
 
-  /****************************************************** 
-   * Date picker functions
-  */
-  dateRefilledPicker=()=>{
-    this.setState({opendateRefilled:true,openDatePicker:true})
-  }
-  dateAppointedPicker=()=>{
-    this.setState({opendateAppointed:true,openDatePicker:true})
-  }
-  /**************************************************
-   * Increment decrement function
-   */
-  increamentRefillsLeft=()=>{
-    let items = {...this.state.medicationDetails};
-    items.refillsLeft= items.refillsLeft+1;
-    this.setState({medicationDetails:items})
-  }
-  decrementRefillsLeft=()=>{
-    let items = {...this.state.medicationDetails};
-    items.refillsLeft = items.refillsLeft - 1
-    items.refillsLeft >= 0 ? this.setState({medicationDetails:items}) : null
+
+  onChangeData=(rootKey,childKey, value)=>{
+    this.setState({
+      rootKey,
+      childKey,
+      value
+    })
   }
 
-  datePicker=()=>{
-      //open modal
-      let items = {...this.state.medicationDetails}
-      return (<><DatePicker
-          modal
-          mode='date'
-          textColor='white'
-          open={this.state.openDatePicker}
-          date={new Date()}
-          onConfirm={(date) => {
-            if(this.state.opendateRefilled){
-              items["dateRefilled"] = date.toLocaleDateString("en-US") 
-            }else if(this.state.opendateAppointed){
-              items["dateAppointed"] = date.toLocaleDateString("en-US")
-            }
-            this.setState({openDatePicker:false,
-                           opendateAppointed:false,
-                           opendateRefilled:false,
-                           medicationDetails:items
-            })
-            
-          }}
-          onCancel={() => {
-            this.setState({openDatePicker:false})
-          }}
-      /></>)
-  }
-
-  //handel other text input changes for medicationDetils
-  onChangeMedicationDetails=(objectKey,value)=>{
-    let item = {...this.state.medicationDetails}
-    item[objectKey] = value
-    this.setState(prevState => ({
-      medicationDetails: {         
-             ...item,
-      }
-    }))
-  }
-  //handel other text input changes for pharmacyDetails
-  onchangePharmacyDetails=(objectKey,value)=>{
-    let item = {...this.state.pharmacyDetails}
-    item[objectKey] = value
-    this.setState(prevState => ({
-      pharmacyDetails: {         
-             ...item,
-      }
-    }))
-  }
-
-  //handel other text input changes for physicianDetails
-  onChangePhysicianDetails=(objectKey,value)=>{
-    let item = {...this.state.physicianDetails}
-    item[objectKey] = value
-    this.setState(prevState => ({
-      physicianDetails: {         
-             ...item,
-      }
-    }))
-  }
-  //check if required field vaues are fullfilled
-  requiredFieldsFullfilled = () =>{
-    let item = {...this.state.pharmacyDetails}
-    let item2 = {...this.state.medicationDetails}
-    if(item["name"] !=null && item2["name"] != null &&  item2["dateRefilled"]
-        && item2["refillsLeft"]){
-          if(this.state.disabled){
-              this.setState({disabled:false})
-          }
-
-    }
-  }
-  /*******************************
-   *  Handel Form Submission
-   *****************************/
-  CancelPressed =()=>{
-    this.props.navigation.goBack()
-  }
-  savePressed = async (value,itemId) => {
-   //console.log(itemId+"")
-   try {
-      let data = await  this.getData()
-      let slipInfo = null;
-      if(data == null){
-        slipInfo = {"slipInfo":[]}
-        slipInfo["slipInfo"].push(
-          {[itemId]:value}
-        )
-      }else{
-        data["slipInfo"].push({[itemId]:value})
-        slipInfo = data
-      }
-
-      const jsonValue = JSON.stringify(slipInfo)
-      await AsyncStorage.setItem("@myMedList", jsonValue)
-      this.props.navigation.navigate("Share")
-    }catch (e) {
-      // saving error
-      console.log(e)
-    }
-  }
-
-  addSlipInfo=()=>{
-    var date = new Date();
-    var itemId =   date.getFullYear()+ ""+ date.getMonth()+ "" 
-                 + date.getDate()+ ""+date.getHours()+ ""
-                 + date.getMinutes()+ "" + date.getSeconds()+ "" + date.getMilliseconds()+"";
-
-    let stateData = {
-                    medicationDetails: {...this.state.medicationDetails},
-                    pharmacyDetails:{...this.state.pharmacyDetails},
-                    physicianDetails:{...this.state.physicianDetails}
-                }
-    this.savePressed(stateData,itemId+"");
-
-  }
-
-  getData = async () => {
+  getData=async()=>{
     try {
-      const jsonValue = await AsyncStorage.getItem('@myMedList')
+      const jsonValue = await AsyncStorage.getItem("@myMedListSlipInfo")
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch(e) {
       // error reading value
     }
   }
 
-  //fold or expand components
-  foldExpand = () =>{
-
+  getDataCurrent=async(parent,child)=>{
+    let sateData = await this.getData()
+    sateData = {...sateData[this.props.itemId]}
+    sateData = {...sateData["slipInfo"]}
+    let parentData = {...sateData[parent]}
+    let result =  parentData[child] ? parentData[child] :null
+    return result
+    
   }
 
-  componentDidMount(){
-    this.onChangeMedicationDetails("imageData",this.props.route.params.response)
+  saveData=async(data,currentData)=>{
+
+    var date = new Date();
+    var itemId =   date.getFullYear()+ ""+ date.getMonth()+ "" 
+                 + date.getDate()+ ""+date.getHours()+ ""
+                 + date.getMinutes()+ "" + date.getSeconds()+ "" + date.getMilliseconds()+"";
+
+    let slipInfo = null;
+    try{
+      if(data == null){
+        slipInfo = {"slipInfo":[]}
+        slipInfo["slipInfo"].push(
+          {[itemId]:currentData}
+        )
+      }else{
+        data["slipInfo"].push({[itemId]:currentData})
+        slipInfo = data
+      }
+      const jsonValue = JSON.stringify(slipInfo)
+      await AsyncStorage.setItem("@myMedListSlipInfo", jsonValue)
+      this.props.navigation.navigate("Home")
+    }catch (e) {
+    // saving error
+      console.log(e)
+    }
   }
 
- componentDidUpdate(){
-   this.requiredFieldsFullfilled()
-  }
+  componentDidMount=async()=>{
 
+    let data = await this.getData();
+    this.setState({
+        //savedData:{...data["slipInfo"]}
+    })
+  }
 
   render() {
     
     return (
 
-      <View style={styles.singlereconcile}>
+      <MyInfoCall 
+                  rootKey={this.state.rootKey}
+                  childKey={this.state.childKey}
+                  value={this.state.value}
+                  navigation={this.props.navigation}
+                  requiredItems={this.state.requiredItems}
+                  savedData={this.saveData}
+                  saveKey={"@myMedListSlipInfo"}>
             {/** Header Section */}
             
           <HeaderSection Title={"Add Slip Details"}/>
@@ -238,60 +124,75 @@ export default class AddSlipInfo extends Component {
              
              >
              <View style={styles.hallfInputContainer}>
-                <HalfInputContainer 
-                inputLabel={"Name of medicine"}
-                keyboard="default"
-                required={this.state.medicationDetails["name"] == null || this.state.medicationDetails["name"] == ""}
-                onChangeText={this.onChangeMedicationDetails}
-                objectKey="name"
-                inputContent={this.state.medicationDetails["name"]}/>
-                <HalfInputContainer inputLabel={"Strength"}
-                                    objectKey={"strength"}
-                                    onChangeText={this.onChangeMedicationDetails}
-                                    required={this.state.medicationDetails["strength"] == null || this.state.medicationDetails["strength"] == ""}
-                                    inputContent={this.state.medicationDetails["strength"]}/>
+                      <HalfInputContainer 
+                                          width={"49%"} 
+                                          inputLabel={"Name of medicine"}
+                                          onChangeText={this.onChangeData}
+                                          childKey={"name"}
+                                          rootKey = {"medicationDetails"}
+                                          inputContent={this.getDataCurrent}
+
+                                          />
+                      <HalfInputContainer 
+                                          width={"49%"} 
+                                          inputLabel={"Strength"}
+                                          onChangeText={this.onChangeData}
+                                          childKey={"strength"}
+                                          rootKey = {"medicationDetails"}
+                                          inputContent={this.getDataCurrent}
+                                          />
              </View>
              <View style={styles.hallfInputContainer}>
-                <HalfInputContainer inputLabel={"Date filled"} 
+                <HalfInputContainer 
+                                    width={"49%"} 
+                                    inputLabel={"Date filled"}
+                                    childKey={"dateRefilled"}
+                                    rootKey = {"medicationDetails"}
                                     iconName={"dateRange"}
-                                    onPress={this.dateRefilledPicker}
+                                    func="datePicker"
                                     editAble={false}
-                                    inputContent={this.state.medicationDetails.dateRefilled+""}/>
-                                                 {this.state.openDatePicker? this.datePicker():null}
+                                    onChangeText={this.onChangeData}
+                                    inputContent={this.getDataCurrent}/>
+                                                
                 <HalfInputContainer
-                    iconName = "arrowRightBlack"
-                    iconName2 = "arrowLefttBlack"
-                    onPress = {this.increamentRefillsLeft}
-                    onPress2 = {this.decrementRefillsLeft}
-                    inputLabel={"Refills Left"}
-                    inputContent={this.state.medicationDetails.refillsLeft+""}
-                    required={this.state.medicationDetails["refillsLeft"] == 0 || this.state.medicationDetails["strength"] == ""}
-                    editAble={false}/>
+                                     width={"49%"}
+                                    iconName = "arrowRightBlack"
+                                    iconName2 = "arrowLefttBlack"
+                                    onChangeText={this.onChangeData}
+                                    func="numberPicker"
+                                    inputLabel={"Refills Left"}
+                                    editAble={false}/>
              </View>
-             <FullInputContainer inputLabel={"Medicine directions"}
-                                 keyboard="default"
-                                 objectKey={"direction"}
-                                 onChangeText={this.onChangeMedicationDetails}
-                                 inputContent={this.state.medicationDetails["direction"]}/>
+             <HalfInputContainer 
+                                 width={"100%"} 
+                                 inputLabel={"Medicine directions"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"direction"}
+                                 rootKey = {"medicationDetails"}
+                                 inputContent={this.getDataCurrent}/>
              </Fold>
-
              {/*******************************
               * PHARMACY DETAILS
               */}
              <Fold
                 labelTitle = {"PHARMACY DETAILS"}
              >
-             <FullInputContainer inputLabel={"Name of pharmacy"}
-                                 required={this.state.pharmacyDetails["name"] == null || this.state.pharmacyDetails["name"] == ""}                
-                                 keyboard="default"
-                                 inputContent={this.state.pharmacyDetails["name"]}
-                                 onChangeText={this.onchangePharmacyDetails}
-                                 objectKey={"name"}/>
-             <FullInputContainer inputLabel={"Pharmacy Phone"}
-                                 keyboard="phone-pad"
-                                 inputContent={this.state.pharmacyDetails["phone"]}
-                                 onChangeText={this.onchangePharmacyDetails}
-                                 objectKey={"phone"}/>
+             <HalfInputContainer 
+                                 width={"100%"} 
+                                 inputLabel={"Name of pharmacy"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"name"}
+                                 rootKey = {"pharmacyDetails"}
+                                 inputContent={this.getDataCurrent}/>
+
+             <HalfInputContainer 
+                                 width={"100%"} 
+                                 inputLabel={"Pharmacy Phone"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"phone"}
+                                 rootKey = {"pharmacyDetails"}
+                                 inputContent={this.getDataCurrent}
+                                 keyboard="phone-pad"/>
              </Fold>
              
              {/*******************************
@@ -300,22 +201,32 @@ export default class AddSlipInfo extends Component {
              <Fold
                  labelTitle = {"PHYSICIAN DETAILS"}
              >
-             <FullInputContainer  inputLabel={"Name of physician"}
-                                  required={this.state.physicianDetails["name"] == null || this.state.physicianDetails["name"] == ""}  
-                                  inputContent={this.state.physicianDetails["name"]}
-                                  onChangeText={this.onChangePhysicianDetails}
-                                  objectKey={"name"}/>
-             <FullInputContainer  inputLabel={"Phone"}
-                                  keyboard="phone-pad"
-                                  inputContent={this.state.physicianDetails["phone"]}
-                                  onChangeText={this.onChangePhysicianDetails}
-                                  objectKey={"phone"}/>         
-             <FullInputContainer  inputLabel={"Next Appointment"}
+             <HalfInputContainer  
+                                  width={"100%"} 
+                                  inputLabel={"Name of physician"}
+                                  onChangeText={this.onChangeData}
+                                  childKey={"name"}
+                                  rootKey = {"physicianDetails"}
+                                  inputContent={this.getDataCurrent}
+                                  keyboard="phone-pad"/>
+
+             <HalfInputContainer  
+                                  width={"100%"} 
+                                  inputLabel={"Phone"}
+                                  onChangeText={this.onChangeData}
+                                  childKey={"phone"}
+                                  rootKey = {"physicianDetails"}
+                                  inputContent={this.getDataCurrent}
+                                  keyboard="phone-pad"/>         
+             <HalfInputContainer  
+                                  inputLabel={"Next Appointment"}
+                                  childKey={"dateAppointed"}
+                                  rootKey = {"medicationDetails"}
                                   iconName={"dateRange"}
-                                  onPress={this.dateAppointedPicker}
+                                  func="datePicker"
                                   editAble={false}
-                                  inputContent={this.state.medicationDetails.dateAppointed+""}                   
-             />
+                                  onChangeText={this.onChangeData}
+                                  inputContent={this.getDataCurrent}/>
              </Fold>
              
               {/*******************************
@@ -323,23 +234,18 @@ export default class AddSlipInfo extends Component {
               */}        
              <Fold
                 labelTitle = {"ADDITIONAL DETAILS"}>
-             <FullInputContainer inputLabel={"Reason for taking/ Diagnosis"}
-                                 keyboard="phone-pad"
-                                 keyboard="default"
-                                 onChangeText={this.onChangeMedicationDetails}
-                                 objectKey="diagnosis"
-                                 inputContent={this.state.medicationDetails["diagnosis"]}/>
+                <HalfInputContainer 
+                
+                                 width={"100%"} 
+                                 inputLabel={"Reason for taking/ Diagnosis"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"diagnosis"}
+                                 rootKey = {"medicationDetails"}
+                                 inputContent={this.getDataCurrent}
+                                 keyboard="phone-pad"/>
              </Fold>
           </ScrollView>
-          <View style={styles.twinButtonContainer}>
-                <TwinButtonContainer label="Cancel" 
-                                     disabled={false}
-                                     onPress={this.CancelPressed}/>
-                <TwinButtonContainer label="Save" disabled={this.state.disabled}
-                                      onPress={this.addSlipInfo}/>
-              </View>
-
-        </View>
+        </MyInfoCall>
       );
   }
 }

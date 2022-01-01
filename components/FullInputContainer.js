@@ -30,7 +30,7 @@ export default class FullInputContainer extends React.Component{
 
     render() { 
     return(
-               
+                
         <View  style={styles.fullInputContainer}>
             <View  style={styles.fullInputContainerElevation}>
                 <View  style={styles.fullInputContainerElevationRec1}>

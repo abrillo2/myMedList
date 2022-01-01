@@ -1,80 +1,83 @@
 //imports
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
 import {Text, View, TextInput,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import InputType from './hooks/InputType';
+import Icon from './hooks/Icon'
+import DatePickerHelper from './DatePicker';
 
 //import heaader style
 import styles from '../assets/styles/HalfInputStyle.js'
 
 //Header section
 export default class HalfInputContainer extends React.Component{
-    
-    //select input icon
-    icon = (iconName) =>{
-        var icon = "";
-        if(iconName== "dateRange"){
-           icon = require("../assets/icons/date_range_black.png");
-        }else if(iconName== "dropDown"){
-            icon = require("../assets/icons/drop_down_circle_black.png");
-        }else if(iconName== "autorenew"){
-            icon = require("../assets/icons/autorenew_white.png");
-        }else if(iconName == "arrowRightBlack"){
-            icon = require("../assets/icons/arrow_right_black.png");
-        }else if(iconName == "arrowLefttBlack"){
-            icon = require("../assets/icons/arrow_left_black.png");
-        }else{
-            icon=null
-        }
 
-        return icon
+    constructor(props) {
+        super(props);
+        this.state = {
+          openDatePicker:false,
+          value:null,
+        };
     }
-    //setInputType
-    setInputType=()=>{
-
-        if(this.props.inputType =="dropDown"){
-            return (
-                <Dropdown
-                    style={styles.dropdown}
-                    search
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    searchPlaceholder={this.props.inputLabel}
-                    iconStyle={styles.iconStyle}
-                    data={this.props.data}
-                    labelField="label"
-                    valueField="value"
-                    value={"value"}
-                    placeholder={this.props.inputLabel}
-                    maxHeight={300}
-                    onFocus={() => {}}
-                    onBlur={() =>{}}
-                    onChange={item => {
-                    }}
-                    
-              />)
-        }else{
-            return(
-                <TextInput  style={this.props.iconName ? styles.halfinputInput2 : styles.halfinputInput}
-                    editable= {this.props.editAble}
-                    placeholder={this.props.inputLabel}
-                    value={this.props.inputContent}
-                    placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
-                    keyboardType={this.props.keyboard}
-                    onChangeText={ text => {this.props.onChangeText ? 
-                        this.props.onChangeText(this.props.objectKey,text):console.log("null")}}
-                    >
-                 </TextInput>
-            )
+  
+    onPress=()=>{
+        let func = this.props.func
+        switch(func){
+         
+          case "datePicker":
+                  this.setState({
+                      openDatePicker:true
+                  });
+                  break;
+          case "numberPicker":
+                  let val = this.state.value
+                  val = Number(val) + Number(1)
+                  this.setValue(val);
+                  break;
+          default:
+                 console.log("default");
+              break;
+              
         }
     }
     
 
+    onPressLeft=()=>{
+        let func = this.props.func
+        switch(func){
+          case "numberPicker":
+            let val = this.state.value
+
+            val = Number(val)> 0 ? Number(val) - Number(1): val
+            this.setValue(val);
+            break; 
+        }
+    }
+
+
+  
+    setValue=(val)=>{
+        this.setState({
+            value:val+"",
+            openDatePicker:false
+        });
+        this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
+        
+    }
+
+    async componentDidMount(){
+        if(this.props.loadSingleItem){
+            let val = await this.props.inputContent(this.props.rootKey,this.props.childKey)
+            this.setState({
+                value:val
+            })
+            this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
+        }
+    }
+    
     render() { 
     return(
-                    <View  style={styles.halfinput}>
+                    <View  style={[styles.halfinput,{width:this.props.width}]}>
                         
                          <Text  style={styles.halfinputLabel}>
                             {this.props.inputLabel}
@@ -82,15 +85,16 @@ export default class HalfInputContainer extends React.Component{
                              {color:"red"}]}> *</Text>:null}
                         </Text>
                          <View  style={styles.halfinputLabelIcon}>
-                         {this.props.iconName2? <TouchableOpacity onPress={this.props.onPress2}>
-                                <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon(this.props.iconName2)}/>     
+                         {this.props.iconName2? <TouchableOpacity onPress={this.onPressLeft}>
+                                <ReactImage style={styles.halfinputLabelIconColor}  source={Icon(this.props.iconName2)}/>     
                             </TouchableOpacity> : null}
-                            {this.setInputType()}
-                         {this.props.iconName?<TouchableOpacity onPress={this.props.onPress}>
-                               <ReactImage style={styles.halfinputLabelIconColor}  source={this.icon(this.props.iconName)}/>     
+                            <InputType {...this.props} setVal={this.setValue} getval={this.state.value}/>
+                         {this.props.iconName?<TouchableOpacity onPress={this.onPress}>
+                               <ReactImage style={styles.halfinputLabelIconColor}  source={Icon(this.props.iconName)}/>     
                             </TouchableOpacity>: null}     
                         </View>                   
-                        <View  style={styles.halfinputLayer2Indicator}></View>
+                        {/*<View  style={styles.halfinputLayer2Indicator}></View>*/}
+                        {this.state.openDatePicker?<DatePickerHelper open={this.state.openDatePicker} setVal={this.setValue}/>:null}
                     </View>
     )
   }

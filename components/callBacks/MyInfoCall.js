@@ -7,53 +7,31 @@ import TwinButtonContainer from '../../components/TwinButtonContainer';
 import styles from '../../assets/styles/AddSlipInfoStyle';
 
 export default function MyInfoCall(props){
-      let sData = {
-        "personalInformation":{
-          "birthDate": new Date().toLocaleDateString("en-US"),
-          "firstName":null,
-          "lastName":null,
-          "sex": null
-        },
-        "address":{
-          "street":null,
-          "city":null,
-          "state":null,
-          "zipCode":null,
-          "phone":null
-        },
-        "physicianDetails":{
-          "firstName":null,
-          "lastName":null,
-          "phone":null
-        },
-        "pharmacyDetails":{
-          "name": null,
-          "phone":null
-        }};
 
-  const [staticData, setStaticData] = useState(sData)
+  const [staticData, setStaticData] = useState({})
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
-    
-    requiredFieldsFullfilled()
     if(props.rootKey && props.childKey && props.value){
-        onChangeData(props)
-    }/*else if(props.savePressed){
-        savePressed()
-    }else if(props.cancelPressed){
-        cancelPressed()
-    }*/
+      onChangeData()
+    }
+    requiredFieldsFullfilled()
     return () => {
     }
   }, [props]);
   
   //handel other text input changes for personalDetail
-  function onChangeData(props){
-    
+  function onChangeData(){
     let sateData = {...staticData}
-    sateData[props.rootKey][props.childKey] = props.value
+    sateData[props.rootKey] = {...sateData[props.rootKey],[props.childKey]:props.value}
     setStaticData(sateData)
+    
+  }
+
+  function getData(parent,child){
+    let sateData = {...staticData}
+    let parentData = {...sateData[parent]}
+    return parentData[child]
     
   }
 
@@ -64,30 +42,14 @@ export default function MyInfoCall(props){
     props.navigation.goBack()
   }
   async function savePressed(){
-   try {
-      let data = await  getData()
-      
-      console.log("saved already: ",data)
-      let slipInfo = null;
-      if(data == null){
-        slipInfo = {"myInfo":{}}
-        slipInfo["myInfo"]={...staticData}
-      }else{
-        data["myInfo"]={...staticData}
-        slipInfo = data
-      }
+      console.log("save pressed")
+      let data = await  getData(props.saveKey)
+      await props.savedData(data,{...staticData})
 
-      const jsonValue = JSON.stringify(slipInfo)
-      await AsyncStorage.setItem("@myMedListMyInfo", jsonValue)
-      props.navigation.navigate("Share")
-    }catch (e) {
-      // saving error
-      console.log(e)
-    }
   }
-  async function getData(){
+  async function getData(key){
     try {
-      const jsonValue = await AsyncStorage.getItem('@myMedListMyInfo')
+      const jsonValue = await AsyncStorage.getItem(key)
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch(e) {
       // error reading value
@@ -96,16 +58,22 @@ export default function MyInfoCall(props){
 
   function requiredFieldsFullfilled(){
     let item = {...staticData}
-    if(item["personalInformation"]["firstName"]!=null
-       && item["personalInformation"]["lastName"] !=null
-       && item["physicianDetails"]["firstName"]!=null
-       && item["physicianDetails"]["lastName"] !=null){
-         setDisabled(false)
+    let requiredItemsLen = props.requiredItems.length
+    props.requiredItems.forEach(element => {
+       let rootKey = element[0]
+       let childKey = element[1]
+       let data = {...item[rootKey]}
+       if(data[childKey]){
+          requiredItemsLen-=1;
        }
+    });
+
+    if(requiredItemsLen==0){
+      setDisabled(false)
+    }
   }
   return <View style={styles.singlereconcile}>
                 {props.children}
-                
           <View style={styles.twinButtonContainer}>
                 <TwinButtonContainer label="Cancel" 
                                      disabled={false}

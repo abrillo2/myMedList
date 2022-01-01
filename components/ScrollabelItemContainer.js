@@ -41,7 +41,8 @@ export default class ScrollabelItemContainer extends Component {
                 <ScrollView horizontal ={false} style={ReconcileStyle.scroll2r}>
                      <ReconcileItems listButton={this.props.listButton}
                                      data={this.props.data}
-                                     dataKeys={this.props.dataKeys}/>
+                                     dataKeys={this.props.dataKeys}
+                                     listButtonPressed={this.props.listButtonPressed}/>
                 </ScrollView>
                 {/** reconcile list item value container ends here */}
                 

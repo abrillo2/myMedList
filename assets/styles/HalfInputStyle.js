@@ -17,7 +17,6 @@ export default StyleSheet.create({
      opacity: 1,
      position: "relative",
      backgroundColor: "rgba(0, 0, 0, 0.043137254901960784)",
-     width: wp("42%"),
      marginTop: hp(hrp(5)),
      marginRight: wp(wrp(0)),
      marginBottom: hp(hrp(0)),
