@@ -42,7 +42,6 @@ export default class ReconcileItems extends React.Component{
                         )
           }
           if(this.props.listButton){
-
             content.push(
                 <View style={ReconcileStyle.butonIconContainer2}>
                     <ListActionButton icon = {require('../assets/icons/edit_white.png')}

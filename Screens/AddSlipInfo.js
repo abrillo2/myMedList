@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {removeItem,getItem} from '../components/helpers/editItemHelper';
+import { getData,saveData} from '../components/helpers/AsyncHelper';
 
 //components import
 import HeaderSection from '../components/HeaderSection';
 import HalfInputContainer from '../components/HalfInputContainer';
 import Fold from '../components/callBacks/Fold';
 import MyInfoCall from '../components/callBacks/MyInfoCall';
+import SlipPicEditContainer from '../components/SlipPicEditContainer';
 //styles
 import styles from '../assets/styles/AddSlipInfoStyle'
+
 
 export default class AddSlipInfo extends Component {
 
@@ -21,6 +24,7 @@ export default class AddSlipInfo extends Component {
         childKey:null,
         value:null,
         savedData:null,
+        itemKey:null,
         sexChoice: [
           { label: 'Male', value: 'Male' },
           { label: 'Female', value: 'Female'}],
@@ -43,23 +47,35 @@ export default class AddSlipInfo extends Component {
     })
   }
 
-  getData=async()=>{
-    try {
-      const jsonValue = await AsyncStorage.getItem("@myMedListSlipInfo")
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-      // error reading value
+  getNavData = ()=>{
+    let item=this.props.route.params.item
+    let key = this.props.route.params.key
+    if(item){
+      return item[key]
+    }else{
+      return false
     }
   }
 
-  getDataCurrent=async(parent,child)=>{
-    let sateData = await this.getData()
-    sateData = {...sateData[this.props.itemId]}
-    sateData = {...sateData["slipInfo"]}
-    let parentData = {...sateData[parent]}
-    let result =  parentData[child] ? parentData[child] :null
-    return result
-    
+  getDataCurrent =(parent,child)=>{
+    let currentData = this.getNavData()
+    if(currentData){
+      let parentData = {...currentData[parent]}
+      let result =  parentData[child] ? parentData[child] :null
+      return result
+    }else{
+      return false
+    }
+  }
+
+  componentDidMount(){
+    let currentData = this.getNavData()
+    if(currentData){
+      this.setState({
+        savedData:currentData,
+        itemKey: this.props.route.params.key
+      })
+    }
   }
 
   saveData=async(data,currentData)=>{
@@ -70,35 +86,27 @@ export default class AddSlipInfo extends Component {
                  + date.getMinutes()+ "" + date.getSeconds()+ "" + date.getMilliseconds()+"";
 
     let slipInfo = null;
-    try{
+
       if(data == null){
         slipInfo = {"slipInfo":[]}
         slipInfo["slipInfo"].push(
           {[itemId]:currentData}
         )
       }else{
-        data["slipInfo"].push({[itemId]:currentData})
-        slipInfo = data
+        if(this.state.itemKey != null){
+           slipInfo = removeItem(data["slipInfo"],this.state.itemKey)
+           slipInfo["slipInfo"].push({[this.state.itemKey]:currentData})
+        }else{
+          data["slipInfo"].push({[itemId]:currentData})
+          slipInfo = data
+        }
+
       }
-      const jsonValue = JSON.stringify(slipInfo)
-      await AsyncStorage.setItem("@myMedListSlipInfo", jsonValue)
+      saveData(slipInfo,"@myMedListSlipInfo")
       this.props.navigation.navigate("Home")
-    }catch (e) {
-    // saving error
-      console.log(e)
-    }
   }
-
-  componentDidMount=async()=>{
-
-    let data = await this.getData();
-    this.setState({
-        //savedData:{...data["slipInfo"]}
-    })
-  }
-
+  
   render() {
-    
     return (
 
       <MyInfoCall 
@@ -107,15 +115,19 @@ export default class AddSlipInfo extends Component {
                   value={this.state.value}
                   navigation={this.props.navigation}
                   requiredItems={this.state.requiredItems}
-                  savedData={this.saveData}
+                  saveData={this.saveData}
+                  savedData={this.state.savedData}
                   saveKey={"@myMedListSlipInfo"}>
             {/** Header Section */}
             
           <HeaderSection Title={"Add Slip Details"}/>
+          
+          
           <ScrollView style={styles.bodycontainer}
                       contentContainerStyle={    {
                         justifyContent:"flex-start",
                       alignItems:"center"}} >
+              <SlipPicEditContainer/>
               {/*******************************
                   * MEDICATION DETAILS
               */}
@@ -131,7 +143,7 @@ export default class AddSlipInfo extends Component {
                                           childKey={"name"}
                                           rootKey = {"medicationDetails"}
                                           inputContent={this.getDataCurrent}
-
+                                          loadSingleItem={this.state.loadSingleItem}
                                           />
                       <HalfInputContainer 
                                           width={"49%"} 
@@ -140,6 +152,7 @@ export default class AddSlipInfo extends Component {
                                           childKey={"strength"}
                                           rootKey = {"medicationDetails"}
                                           inputContent={this.getDataCurrent}
+                                          loadSingleItem={this.state.loadSingleItem}
                                           />
              </View>
              <View style={styles.hallfInputContainer}>
@@ -152,7 +165,8 @@ export default class AddSlipInfo extends Component {
                                     func="datePicker"
                                     editAble={false}
                                     onChangeText={this.onChangeData}
-                                    inputContent={this.getDataCurrent}/>
+                                    inputContent={this.getDataCurrent}
+                                    loadSingleItem={this.state.loadSingleItem}/>
                                                 
                 <HalfInputContainer
                                      width={"49%"}
@@ -161,7 +175,9 @@ export default class AddSlipInfo extends Component {
                                     onChangeText={this.onChangeData}
                                     func="numberPicker"
                                     inputLabel={"Refills Left"}
-                                    editAble={false}/>
+                                    editAble={false}
+                                    inputContent={this.getDataCurrent}
+                                    loadSingleItem={this.state.loadSingleItem}/>
              </View>
              <HalfInputContainer 
                                  width={"100%"} 
@@ -169,7 +185,8 @@ export default class AddSlipInfo extends Component {
                                  onChangeText={this.onChangeData}
                                  childKey={"direction"}
                                  rootKey = {"medicationDetails"}
-                                 inputContent={this.getDataCurrent}/>
+                                 inputContent={this.getDataCurrent}
+                                 loadSingleItem={this.state.loadSingleItem}/>
              </Fold>
              {/*******************************
               * PHARMACY DETAILS
@@ -183,7 +200,8 @@ export default class AddSlipInfo extends Component {
                                  onChangeText={this.onChangeData}
                                  childKey={"name"}
                                  rootKey = {"pharmacyDetails"}
-                                 inputContent={this.getDataCurrent}/>
+                                 inputContent={this.getDataCurrent}
+                                 loadSingleItem={this.state.loadSingleItem}/>
 
              <HalfInputContainer 
                                  width={"100%"} 
@@ -192,7 +210,8 @@ export default class AddSlipInfo extends Component {
                                  childKey={"phone"}
                                  rootKey = {"pharmacyDetails"}
                                  inputContent={this.getDataCurrent}
-                                 keyboard="phone-pad"/>
+                                 keyboard="phone-pad"
+                                 loadSingleItem={this.state.loadSingleItem}/>
              </Fold>
              
              {/*******************************
@@ -208,7 +227,8 @@ export default class AddSlipInfo extends Component {
                                   childKey={"name"}
                                   rootKey = {"physicianDetails"}
                                   inputContent={this.getDataCurrent}
-                                  keyboard="phone-pad"/>
+                                  keyboard="phone-pad"
+                                  loadSingleItem={this.state.loadSingleItem}/>
 
              <HalfInputContainer  
                                   width={"100%"} 
@@ -217,7 +237,8 @@ export default class AddSlipInfo extends Component {
                                   childKey={"phone"}
                                   rootKey = {"physicianDetails"}
                                   inputContent={this.getDataCurrent}
-                                  keyboard="phone-pad"/>         
+                                  keyboard="phone-pad"
+                                  loadSingleItem={this.state.loadSingleItem}/>         
              <HalfInputContainer  
                                   inputLabel={"Next Appointment"}
                                   childKey={"dateAppointed"}
@@ -226,7 +247,8 @@ export default class AddSlipInfo extends Component {
                                   func="datePicker"
                                   editAble={false}
                                   onChangeText={this.onChangeData}
-                                  inputContent={this.getDataCurrent}/>
+                                  inputContent={this.getDataCurrent}
+                                  loadSingleItem={this.state.loadSingleItem}/>
              </Fold>
              
               {/*******************************
@@ -242,7 +264,8 @@ export default class AddSlipInfo extends Component {
                                  childKey={"diagnosis"}
                                  rootKey = {"medicationDetails"}
                                  inputContent={this.getDataCurrent}
-                                 keyboard="phone-pad"/>
+                                 keyboard="phone-pad"
+                                 loadSingleItem={this.state.loadSingleItem}/>
              </Fold>
           </ScrollView>
         </MyInfoCall>

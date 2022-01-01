@@ -14,11 +14,27 @@ export default function MyInfoCall(props){
   useEffect(() => {
     if(props.rootKey && props.childKey && props.value){
       onChangeData()
+    }else if(props.savedData && disabled){
+      loadSavedData()
     }
     requiredFieldsFullfilled()
     return () => {
     }
   }, [props]);
+
+  //populate saved data 
+  function loadSavedData() {
+    let sateData = {...staticData}
+    Object.keys(props.savedData).forEach( rootKey => {
+      Object.keys(props.savedData[rootKey]).forEach(childKey=>{
+          
+          sateData[rootKey] = {...sateData[rootKey],[childKey]:props.savedData[rootKey][childKey]}
+          
+      })
+  })
+  setStaticData(sateData)
+  setDisabled(false)
+  }
   
   //handel other text input changes for personalDetail
   function onChangeData(){
@@ -42,9 +58,8 @@ export default function MyInfoCall(props){
     props.navigation.goBack()
   }
   async function savePressed(){
-      console.log("save pressed")
       let data = await  getData(props.saveKey)
-      await props.savedData(data,{...staticData})
+      props.saveData(data,{...staticData})
 
   }
   async function getData(key){
@@ -58,16 +73,17 @@ export default function MyInfoCall(props){
 
   function requiredFieldsFullfilled(){
     let item = {...staticData}
-    let requiredItemsLen = props.requiredItems.length
+    let requiredItemsLen = Number(props.requiredItems.length)
     props.requiredItems.forEach(element => {
        let rootKey = element[0]
        let childKey = element[1]
        let data = {...item[rootKey]}
+       
        if(data[childKey]){
-          requiredItemsLen-=1;
+          requiredItemsLen =Number(requiredItemsLen)- 1;
        }
     });
-
+  
     if(requiredItemsLen==0){
       setDisabled(false)
     }

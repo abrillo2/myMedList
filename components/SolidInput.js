@@ -45,7 +45,6 @@ export default class SolidInput extends Component {
       this.setState({
           value:val
       })
-      this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
   }
 
   render() {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getData,saveData} from '../components/helpers/AsyncHelper'
 
 
 //components import
@@ -38,64 +38,53 @@ export default class MyInfo extends Component {
     })
   }
 
-  getData=async()=>{
-    try {
-      const jsonValue = await AsyncStorage.getItem("@myMedListMyInfo")
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-      // error reading value
-    }
-  }
-
   getDataCurrent=async(parent,child)=>{
-    let sateData = await this.getData()
-    sateData = {...sateData["myInfo"]}
-    let parentData = {...sateData[parent]}
-    let result =  parentData[child] ? parentData[child] :null
-    console.log("wtf",parent)
-    
-    return result
+    let currentData = await getData("@myMedListMyInfo")
+    currentData = JSON.parse(currentData)
+    if(currentData){
+      currentData = currentData["myInfo"]
+      let parentData = {...currentData[parent]}
+      let result =  parentData[child] ? parentData[child] :null
+      
+      return result
+    }
+    return null
     
   }
 
-  saveData=async(data,currentData)=>{
+  saveDataCurrent=(data,currentData)=>{
     let slipInfo = null;
-    try{
-      if(data == null){
-        slipInfo = {"myInfo":{}}
-        slipInfo["myInfo"]={...currentData}
-      }else{
-        data["myInfo"]={...currentData}
-        slipInfo = data
-      }
-      const jsonValue = JSON.stringify(slipInfo)
-      await AsyncStorage.setItem("@myMedListMyInfo", jsonValue)
-      this.props.navigation.navigate("Home")
-    }catch (e) {
-    // saving error
-      console.log(e)
-    }
+   
+    slipInfo = {"myInfo":{}}
+    slipInfo["myInfo"]={...currentData}
+    
+    const jsonValue = JSON.stringify(slipInfo)
+    saveData(jsonValue,"@myMedListMyInfo")
+    this.props.navigation.navigate("Home")
   }
 
   componentDidMount=async()=>{
 
-    let data = await this.getData();
-    this.setState({
+    let data = await getData("@myMedListMyInfo");
+    data = JSON.parse(data)
+    if(data){
+      this.setState({
         savedData:{...data["myInfo"]}
     })
+    }
   }
 
   render() {
-    
     return (
-
+      
       <MyInfoCall 
                   rootKey={this.state.rootKey}
                   childKey={this.state.childKey}
                   value={this.state.value}
                   navigation={this.props.navigation}
                   requiredItems={this.state.requiredItems}
-                  savedData={this.saveData}
+                  saveData={this.saveDataCurrent}
+                  savedData={this.state.savedData}
                   saveKey={"@myMedListMyInfo"}>
             {/** Header Section */}
           <HeaderSection Title={"My Info"}/>

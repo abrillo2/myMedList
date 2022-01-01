@@ -2,6 +2,7 @@ import React, {Suspense,useEffect,useState} from 'react';
 import {View} from 'react-native';
 import { Bullets} from 'react-native-easy-content-loader';
 import {getData, saveData} from '../components/helpers/AsyncHelper';
+import { removeItem,getItem} from '../components/helpers/editItemHelper';
 
 //import header section
 import  HeaderSection  from '../components/HeaderSection';
@@ -20,52 +21,29 @@ export default function Reconcilelist(props) {
 
       const [listOfdata,setlistOfdata] = useState(null)
       const [dataFetched, setdataFetched] = useState(false)
+      const [dataChanged, setdataChanged] = useState(false)
 
     //import lazy component
     const [ScrollabelItemContainer,setScrollabelItemContainer]= useState(null)
 
     function listButtonPressed(action,itemId){
+
           switch (action){
               case "delete":
-
-                let items = {...listOfdata["slipInfo"]}
-                let updatedItems = removeItem(items);
+                let items = [...listOfdata["slipInfo"]]
+                let updatedItems = removeItem(items,itemId);
+                console.log("updatedItems ", updatedItems)
                 saveData(updatedItems,"@myMedListSlipInfo")
-                setlistOfdata(updatedItems)
+                setdataChanged(true)
                 break
               case "edit":
-                items = {...listOfdata["slipInfo"]}
+                items = [...listOfdata["slipInfo"]]
+                let item = getItem(items,itemId)
                 props.navigation.navigate("AddSlipInfo",{
-                  response:getItem(items,itemId)
+                  item:item,key:itemId
                 })
                 break  
           }    
-    }
-
-    function getItem(items,itemId) {
-      for (let index = 0; index < items.length; index++) {
-        let item = items[index]
-        let rootKey = Object.keys(item)[0]
-        if(rootKey == itemId){
-              return item
-        }
-      }
-      return {}
-    }
-    
-    function removeItem(items,itemId) {
-
-      let updatedItems = {"slipInfo":[]}
-
-      for (let index = 0; index < items.length; index++) {
-        let item = items[index]
-        let rootKey = Object.keys(item)[0]
-        if(rootKey != itemId){
-              updatedItems["slipInfo"].push(item)
-        }
-      }
-      return updatedItems
-      
     }
 
     function getComponent(){
@@ -79,7 +57,6 @@ export default function Reconcilelist(props) {
     //import item list
     async function getSlipInfoData(){
         const slipInfoData = await getData('@myMedListSlipInfo')
-        console.log("slip ", slipInfoData)
         setlistOfdata(slipInfoData);
         setdataFetched(true)
     }
@@ -90,7 +67,7 @@ export default function Reconcilelist(props) {
         return () => {
           setScrollabelItemContainer(null);    
         }
-      }, []);
+      }, [dataChanged]);
 
     return (
     <View data-layer="7efa9ff4-a5ac-46ee-9a8f-90047aa52600" style={ReconcileStyle.reconcilelist}>

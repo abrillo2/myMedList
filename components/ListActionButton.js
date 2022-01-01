@@ -8,10 +8,10 @@ import ReconcileStyle from '../assets/styles/ReconcileStyle.js';
 export default function ListActionButton(props) {
 
     function pressed(){
-        props.onPress(props.action,props.itemID)
+        props.onPress(props.action,props.itemId)
     }
-
     return (
+        
        <TouchableOpacity  style={ReconcileStyle.actionButonContainer}
                           onPressIn={pressed}>
             <View  style={ReconcileStyle.butonIconContainer}>

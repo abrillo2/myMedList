@@ -65,13 +65,12 @@ export default class HalfInputContainer extends React.Component{
         
     }
 
-    async componentDidMount(){
-        if(this.props.loadSingleItem){
-            let val = await this.props.inputContent(this.props.rootKey,this.props.childKey)
+    componentDidMount(){
+        let val = this.props.inputContent(this.props.rootKey,this.props.childKey)
+        if(val){
             this.setState({
                 value:val
             })
-            this.props.onChangeText(this.props.rootKey,this.props.childKey,val)
         }
     }
     
