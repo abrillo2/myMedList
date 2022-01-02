@@ -30,11 +30,11 @@ export default function Reconcilelist(props) {
 
           switch (action){
               case "delete":
-                let items = [...listOfdata["slipInfo"]]
+                let items = listOfdata
                 let updatedItems = removeItem(items,itemId);
                 console.log("updatedItems ", updatedItems)
                 saveData(updatedItems,"@myMedListSlipInfo")
-                setdataChanged(true)
+                setdataChanged(!dataChanged)
                 break
               case "edit":
                 items = [...listOfdata["slipInfo"]]
@@ -48,7 +48,7 @@ export default function Reconcilelist(props) {
 
     function getComponent(){
       setScrollabelItemContainer(React.lazy(() => {
-        return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
+        return new Promise(resolve => setTimeout(resolve, 1 * 100)).then(
           () => import("../components/ScrollabelItemContainer")
         );
       }));

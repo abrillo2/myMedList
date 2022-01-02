@@ -55,7 +55,7 @@ export default class Takenphoto extends Component {
   //save slip image
   save = () =>{
     this.props.navigation.navigate("AddSlipInfo",{
-      response:this.state.imageData
+      imageData:this.state.imageData
     })
   }
 

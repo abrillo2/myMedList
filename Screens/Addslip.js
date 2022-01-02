@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableHighlight, TouchableOpacity, TouchableHighlightBase} from 'react-native';
+import {Text, View,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 //local components
 import HeaderSection from '../components/HeaderSection';
 import Button from '../components/Button'
-
-
+//helper funciton
+import {openCamera, openGalery} from '../components/helpers/slipPhotohelper';
 import styles from '../assets/styles/AddSlipPhotoStyle'
 
 export default class Addslip extends Component {
@@ -20,42 +19,15 @@ export default class Addslip extends Component {
       };
   }
 
-  //open camera to take photo
-  openCamera = () => {
-    launchCamera({mediaType:'photo',cameraType:'back'}, (response)=>{
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = { uri: response.uri };
-        this.props.navigation.navigate("Takenphoto",{
-          response:response
-        })
-      }
-    
-    });
-  }
-  //open Gallery
-  openGalery=()=>{
-    launchImageLibrary({mediaType:'photo'}, (response)=>{
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = { uri: response.uri };
-        this.props.navigation.navigate("Takenphoto",{
-          response:response
-        })
-      }
-    
-    });
+  openCam = async(funcArg) => {
 
+    let result = funcArg=="photo"? await openCamera() : await openGalery()
+    if(result.assets){
+      result.assets[0]
+      this.props.navigation.navigate("Takenphoto",{
+        response:result
+      })
+    }
   }
 
   render() {
@@ -66,10 +38,10 @@ export default class Addslip extends Component {
           <Text  style={styles.addSlipDescription}>Add photo of prescription slip or medicine bottle
           {"\n\n"} Press The camera Icon to take a photo
           </Text>
-          <TouchableOpacity onPress={this.openCamera}>
+          <TouchableOpacity onPress={() => this.openCam("photo")}>
             <ReactImage  source={require('../assets/img/photoCamera.png')} style={styles.cameraIconStyle} />
           </TouchableOpacity>
-          <Button buttonLabel="Add Photo" iconName="add" onPress={this.openGalery}/>
+          <Button buttonLabel="Add Photo" iconName="add" onPress={this.openCam}/>
         </View>
 
     </View>

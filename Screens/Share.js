@@ -1,7 +1,7 @@
 import React, {Suspense,useEffect,useState} from 'react';
 import {Text, View,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData } from '../components/helpers/AsyncHelper';
 import { Bullets} from 'react-native-easy-content-loader';
 //components import
 import HeaderSection from '../components/HeaderSection';
@@ -18,7 +18,7 @@ export default function Share(){
     }
 
     let ScrollabelItemContainer= React.lazy(() => {
-        return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
+        return new Promise(resolve => setTimeout(resolve, 5 * 100)).then(
           () => import("../components/ScrollabelItemContainer")
         );
       });
@@ -27,20 +27,14 @@ export default function Share(){
     const [dataFetched, setdataFetched] = useState(false)
     const [activeToggel, setActiveToggel] = useState(true)
     //import item list
-    async function getData(){
-                console.log("current data: ", activeToggel)
-                try {
-                    const jsonValue = await AsyncStorage.getItem('@myMedList')
-                    let allData = JSON.parse(jsonValue)
-                    let currentData = activeToggel ? allData["slipInfo"] : (allData["slipInfoDiscontinued"]?allData["slipInfoDiscontinued"]:[] )
-                    setlistOfdata(currentData);
-                    setdataFetched(true)
-                } catch(e) {
-                // error reading value
-                }
+    async function getSavedData(){
+        const jsonValue = await getData('@myMedListSlipInfo')
+        let currentData = activeToggel ? jsonValue["slipInfo"] : (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:[] )
+        setlistOfdata(currentData);
+        setdataFetched(true)
     }
     useEffect(() => {
-        getData()
+        getSavedData()
         return () => {
             ScrollabelItemContainer = null; 
         }
@@ -82,7 +76,7 @@ export default function Share(){
             <Suspense fallback={<Bullets active listSize={dataFetched ? listOfdata.length:10}  />}>
                  {dataFetched ? <ScrollabelItemContainer  listButton={false}
                  data={listOfdata}
-    dataKeys={state.dataKeys}/>:null}
+                 dataKeys={state.dataKeys}/>:null}
             </Suspense>
           
             

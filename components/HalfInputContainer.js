@@ -69,12 +69,12 @@ export default class HalfInputContainer extends React.Component{
         let val = this.props.inputContent(this.props.rootKey,this.props.childKey)
         if(val){
             this.setState({
-                value:val
+                value:val+""
             })
         }
     }
     
-    render() { 
+    render() {
     return(
                     <View  style={[styles.halfinput,{width:this.props.width}]}>
                         
