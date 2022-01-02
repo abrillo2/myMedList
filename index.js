@@ -3,7 +3,7 @@
  */
 
 import {AppRegistry} from 'react-native';
-import App from './components/hooks/CreateReport';
+import App from './MyMedList';
 import {name as appName} from './app.json';
 
 AppRegistry.registerComponent(appName, () => App);

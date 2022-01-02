@@ -67,6 +67,7 @@ export default class MyInfo extends Component {
 
     let data = await getData("@myMedListMyInfo");
     data = JSON.parse(data)
+    console.log("my info data ",data)
     if(data){
       this.setState({
         savedData:{...data["myInfo"]}

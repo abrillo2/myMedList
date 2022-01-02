@@ -3,6 +3,7 @@ import {Text, View,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 import { getData } from '../components/helpers/AsyncHelper';
 import { Bullets} from 'react-native-easy-content-loader';
+import { makeHtmlBody, createPDF } from '../components/helpers/shareHelper';
 //components import
 import HeaderSection from '../components/HeaderSection';
 //import styles
@@ -25,11 +26,14 @@ export default function Share(){
 
     const [listOfdata,setlistOfdata] = useState(null)
     const [dataFetched, setdataFetched] = useState(false)
-    const [activeToggel, setActiveToggel] = useState(true)
+    const [activeToggel, setActiveToggel] = useState(false)
     //import item list
     async function getSavedData(){
         const jsonValue = await getData('@myMedListSlipInfo')
         let currentData = activeToggel ? jsonValue["slipInfo"] : (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:[] )
+       
+        /*let htmlString = await makeHtmlBody("ACTIVE",currentData)
+        await createPDF(htmlString)*/
         setlistOfdata(currentData);
         setdataFetched(true)
     }

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {removeItem,getItem} from '../components/helpers/editItemHelper';
 import { getData,saveData} from '../components/helpers/AsyncHelper';
 
