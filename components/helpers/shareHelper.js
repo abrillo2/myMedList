@@ -38,13 +38,13 @@ export function makeTabelHeaderData() {
 }
 
 
-export async function makeHeaderData(status) {
+export async function makeHeaderData(status,sharedWit) {
 
     let data = await getMyInfoData();
     const pdfheader = {
         "headerTitle": status+ " prescription list for "+data["personalInformation"]["firstName"] + " "+data["personalInformation"]["lastName"],
         "dateCreated": new Date(),
-        "sharedWith":"TO DO... data",
+        "sharedWith":sharedWit[0] +": " + sharedWit[1],
         "primaryCareDoctor": data["physicianDetails"]["firstName"] + " "+data["physicianDetails"]["lastName"] 
                             + " PHONE: " +data["physicianDetails"]["phone"],
         "preferredPharmacy": data["pharmacyDetails"]["name"] 
@@ -93,8 +93,8 @@ export function makeHeaderHtml(header) {
     })
     return tabelHTML
 }
-export async function makeHtmlBody(reportType,itemList) {
-    let headerHtml = makeHeaderHtml(await makeHeaderData(reportType))
+export async function makeHtmlBody(reportType,sharedWithInfo,itemList) {
+    let headerHtml = makeHeaderHtml(await makeHeaderData(reportType,sharedWithInfo))
     let tabelHtml = makeTabelHtml(makeTabelHeaderData(),makeTabelRowData(itemList))
     return '<html>'+headerHtml+tabelHtml+"</html>"
 }
@@ -114,6 +114,6 @@ export async function createPDF(htmlString) {
       directory: 'Documents',
     };
     let file = await RNHTMLtoPDF.convert(options)
-    // console.log(file.filePath);
-    alert(file.filePath);
+    console.log(file.filePath);
+    return file.filePath
   }

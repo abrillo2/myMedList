@@ -9,6 +9,7 @@ import Addslip from './Screens/Addslip';
 import Takenphoto from './Screens/Takenphoto'
 import AddSlipInfo from './Screens/AddSlipInfo';
 import MyInfo from './Screens/MyInfo';
+import PdfViewer from './Screens/PdfViewer'
 
 
 //react navigation 
@@ -25,6 +26,7 @@ function MyMedList() {
         <Stack.Screen options={{headerShown: false}} name="Takenphoto" component={Takenphoto} />
         <Stack.Screen options={{headerShown: false}} name="AddSlipInfo" component={AddSlipInfo} />
         <Stack.Screen options={{headerShown: false}} name="MyInfo" component={MyInfo} />
+        <Stack.Screen options={{headerShown: false}} name="PdfViewer" component={PdfViewer} />
       </Stack.Navigator>
     </NavigationContainer>
   );

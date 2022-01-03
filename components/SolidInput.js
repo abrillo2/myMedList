@@ -42,9 +42,13 @@ export default class SolidInput extends Component {
 
   async componentDidMount(){
       let val = await this.props.inputContent(this.props.rootKey,this.props.childKey)
-      this.setState({
-          value:val
-      })
+
+      if(val){
+        this.setState({
+            value:val
+        })
+      }
+
   }
 
   render() {

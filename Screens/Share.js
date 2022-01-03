@@ -4,13 +4,14 @@ import {Image as ReactImage} from 'react-native';
 import { getData } from '../components/helpers/AsyncHelper';
 import { Bullets} from 'react-native-easy-content-loader';
 import { makeHtmlBody, createPDF } from '../components/helpers/shareHelper';
+import InputModal from '../components/hooks/InputModal';
 //components import
 import HeaderSection from '../components/HeaderSection';
 //import styles
 import styles from '../assets/styles/ShareStyles'
 
 
-export default function Share(){
+export default function Share(props){
     const state = {
       itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
       dataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
@@ -26,16 +27,39 @@ export default function Share(){
 
     const [listOfdata,setlistOfdata] = useState(null)
     const [dataFetched, setdataFetched] = useState(false)
-    const [activeToggel, setActiveToggel] = useState(false)
+    const [activeToggel, setActiveToggel] = useState(true)
+    const [openModal, setopenModal] = useState(false)
     //import item list
     async function getSavedData(){
         const jsonValue = await getData('@myMedListSlipInfo')
         let currentData = activeToggel ? jsonValue["slipInfo"] : (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:[] )
        
-        /*let htmlString = await makeHtmlBody("ACTIVE",currentData)
-        await createPDF(htmlString)*/
         setlistOfdata(currentData);
         setdataFetched(true)
+    }
+
+    async function modalData(data){
+        setopenModal(false)
+        if(data!=null){
+
+            let shareInfo = data["sharedWith"]
+            let saredWithLabel = []
+
+            Object.keys(shareInfo).forEach( key => {
+                saredWithLabel.push(shareInfo[key])
+            })
+
+            const statusShare = activeToggel ? "ACTIVE" : "DISCONTINUED"
+            let htmlString = await makeHtmlBody(statusShare,saredWithLabel,listOfdata)
+            let pdfURIString = await createPDF(htmlString)
+
+            props.navigation.navigate("PdfViewer",{
+                pdfURI:pdfURIString
+            })            
+
+            
+            
+        }
     }
     useEffect(() => {
         getSavedData()
@@ -46,8 +70,6 @@ export default function Share(){
     
     return (
         <View  style={styles.share}>
-
-          
             <HeaderSection Title={"SHARE"}/> 
             <View  style={styles.shareNavContainer}>
                 <View  style={styles.shareNavToggelContainer}>
@@ -71,7 +93,11 @@ export default function Share(){
                     </TouchableOpacity>
                 </View>
                 <View  style={styles.shareNavSocialMediaContainer}>
-                    <ReactImage  source={require('../assets/img/whatsupIcon.png')} style={styles.iconContainer} />
+                    <TouchableOpacity
+                            onPress={()=> setopenModal(true)}
+                        >
+                        <ReactImage  source={require('../assets/img/whatsupIcon.png')} style={styles.iconContainer} />
+                    </TouchableOpacity>
                     <ReactImage  source={require('../assets/img/gmailIcon.png')} style={styles.iconContainer} />
                     <ReactImage  source={require('../assets/img/smsIcon.png')} style={styles.iconContainer} />
                 </View>
@@ -84,6 +110,10 @@ export default function Share(){
             </Suspense>
           
             
+            <InputModal
+                modalVisible={openModal}
+                onPress={modalData}
+            />
         </View>
     );
   }
