@@ -216,6 +216,16 @@ export default class MyInfo extends Component {
                                  rootKey = {"pharmacyDetails"}
                                  inputContent={this.getDataCurrent}/>
              </Fold>
+             <Fold labelTitle = {"PREFERED PHARMACY INFORMATION"}>
+                {/*PHARMACY NAME AND PHONE*/}
+                <SolidInput  width={"100%"} 
+                                 inputLabel={"PIN"}
+                                 onChangeText={this.onChangeData}
+                                 childKey={"pin"}
+                                 rootKey = {"personalInformation"}
+                                 inputContent={this.getDataCurrent}
+                                 secureTextEntry={true}/>
+             </Fold>
           </ScrollView>
         </MyInfoCall>
       );

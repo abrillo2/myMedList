@@ -1,6 +1,5 @@
 //imports
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
 import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 

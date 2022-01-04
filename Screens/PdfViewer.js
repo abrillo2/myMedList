@@ -10,6 +10,7 @@ export default PdfViewer = (props) =>{
         <PdfViewerHook
             navigation={props.navigation}
             pdfURI={props.route.params.pdfURI}
+            client={props.route.params.client}
         />
         
     )

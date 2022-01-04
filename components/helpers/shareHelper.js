@@ -1,5 +1,6 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { getData } from '../../components/helpers/AsyncHelper';
+import Share from 'react-native-share';
 
 export function makeTabelRowData(data){
     let tabelItemList = []
@@ -117,3 +118,39 @@ export async function createPDF(htmlString) {
     console.log(file.filePath);
     return file.filePath
   }
+
+  export function shareWithWhatsUp(data,Description,recipient){
+    const shareOptions = {
+        title: Description,
+        message:Description,
+        social: Share.Social.WHATSAPP,
+        filename:"test",
+        whatsAppNumber: recipient,  // country code + phone number
+        url: data , // only for base64 file in Android
+      };
+    return shareOptions;
+}
+
+export function shareWithSMS(data,Description,recipient){
+    const shareOptions = {
+        title: Description,
+        message:Description,
+        social: Share.Social.SMS,
+        //filename:"test",
+        recipient: recipient,  // country code + phone number
+        //url: data , // only for base64 file in Android
+      };
+    return shareOptions;
+}
+
+export function shareWithEmail (data,Description,recipient){
+    const shareOptions = {
+        title: Description,
+        subject:Description,
+        social: Share.Social.EMAIL,
+        filename:"test",
+        email: recipient,  // country code + phone number
+        url: data , // only for base64 file in Android
+      };
+    return shareOptions;
+}

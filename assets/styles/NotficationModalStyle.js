@@ -50,9 +50,13 @@ export default StyleSheet.create({
       textAlign: "center"
     },
     modalText: {
-      marginBottom: 15,
-      textAlign: "center",
-      color:"red"
+      opacity: 1,
+      position: "relative",
+      backgroundColor: "rgba(255, 255, 255, 0)",
+      color: "rgba(34, 171, 226, 1)",
+      fontSize: wp(wrp(17)),
+      fontWeight: "500",
+      fontFamily: "Roboto-Bold",
     },
     twinButtonContainer:{
       position:"relative",
