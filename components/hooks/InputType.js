@@ -31,6 +31,7 @@ export default function InputType(props){
             <TextInput  style={props.iconName ? styles.halfinputInput2 : styles.halfinputInput}
                 editable= {props.editAble}
                 placeholder={props.inputLabel}
+                secureTextEntry={props.secureTextEntry}
                 value={props.getval}
                 placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
                 keyboardType={props.keyboard}

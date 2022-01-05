@@ -3,7 +3,6 @@ import {Text, View,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 import { getData } from '../components/helpers/AsyncHelper';
 import { Bullets} from 'react-native-easy-content-loader';
-import { makeHtmlBody, createPDF } from '../components/helpers/shareHelper';
 import InputModal from '../components/hooks/InputModal';
 //components import
 import HeaderSection from '../components/HeaderSection';
@@ -29,6 +28,7 @@ export default function Share(props){
     const [dataFetched, setdataFetched] = useState(false)
     const [activeToggel, setActiveToggel] = useState(true)
     const [openModal, setopenModal] = useState(false)
+    const [client,setCllient] = useState("email")
     //import item list
     async function getSavedData(){
         const jsonValue = await getData('@myMedListSlipInfo')
@@ -38,29 +38,15 @@ export default function Share(props){
         setdataFetched(true)
     }
 
-    async function modalData(data){
+    async function modalData(){
         setopenModal(false)
-        if(data!=null){
-
-            let shareInfo = data["sharedWith"]
-            let saredWithLabel = []
-
-            Object.keys(shareInfo).forEach( key => {
-                saredWithLabel.push(shareInfo[key])
-            })
-
-            const statusShare = activeToggel ? "ACTIVE" : "DISCONTINUED"
-            let htmlString = await makeHtmlBody(statusShare,saredWithLabel,listOfdata)
-            let pdfURIString = await createPDF(htmlString)
-
-            props.navigation.navigate("PdfViewer",{
-                pdfURI:pdfURIString
-            })            
-
-            
-            
-        }
     }
+
+    function iconPressed(client){
+        setopenModal(true)
+        setCllient(client)
+    }
+
     useEffect(() => {
         getSavedData()
         return () => {
@@ -94,12 +80,21 @@ export default function Share(props){
                 </View>
                 <View  style={styles.shareNavSocialMediaContainer}>
                     <TouchableOpacity
-                            onPress={()=> setopenModal(true)}
+                            onPress={()=> iconPressed("whatsUp")}
                         >
                         <ReactImage  source={require('../assets/img/whatsupIcon.png')} style={styles.iconContainer} />
                     </TouchableOpacity>
+                   
+                    <TouchableOpacity
+                            onPress={()=> iconPressed("email")}
+                        >
                     <ReactImage  source={require('../assets/img/gmailIcon.png')} style={styles.iconContainer} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                            onPress={()=> iconPressed("sms")}
+                        >
                     <ReactImage  source={require('../assets/img/smsIcon.png')} style={styles.iconContainer} />
+                    </TouchableOpacity>
                 </View>
             
             </View>
@@ -113,6 +108,10 @@ export default function Share(props){
             <InputModal
                 modalVisible={openModal}
                 onPress={modalData}
+                client={client}
+                status={activeToggel ? "ACTIVE" : "DISCONTINUED"}
+                listOfdata={listOfdata}
+                navigation={props.navigation}
             />
         </View>
     );

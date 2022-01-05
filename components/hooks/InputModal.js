@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Modal, Text, Pressable, View } from "react-native";
 import styles from "../../assets/styles/NotficationModalStyle";
+import { makeHtmlBody, createPDF } from '../../components/helpers/shareHelper';
 
 import SolidInput from '../../components/SolidInput';
 import TwinButtonContainer from '../../components/TwinButtonContainer';
@@ -8,16 +9,36 @@ import TwinButtonContainer from '../../components/TwinButtonContainer';
 const InputModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [buttonState, setButtonState] = useState(true);
 
-  const pressed=(params)=>{
+  const pressed=async(params)=>{
        if(params){
-           props.onPress(modalData)
+            props.onPress()
+
+            let shareInfo = modalData["sharedWith"]
+            let saredWithLabel = []
+
+            Object.keys(shareInfo).forEach( key => {
+                saredWithLabel.push(shareInfo[key])
+            })
+
+            const statusShare = props.status
+            let htmlString = await makeHtmlBody(statusShare,saredWithLabel,props.listOfdata)
+            let pdfURIString = await createPDF(htmlString)
+
+            props.navigation.navigate("PdfViewer",{
+                pdfURI:pdfURIString,
+                client:[props.client,shareInfo[props.client],statusShare]
+            })            
+      
        }else{
-           props.onPress(null)
+           props.onPress()
        }
   }
 
   const onChangeInput=(rootKey,childKey,value)=>{
+    console.log("value is",childKey)
+    childKey != "name"  && value ? setButtonState(false) :  setButtonState(true) 
     let tempData = {...modalData}
     tempData[rootKey] = {...tempData[rootKey],[childKey]:value}
     setModalData(tempData)
@@ -27,6 +48,27 @@ const InputModal = (props) => {
       return null
   }
 
+  const makeClientInputlabel=()=>{
+      let inputLabel = []
+      switch(props.client){
+        case "whatsUp":
+          inputLabel.push("WhatsUp Phone")
+          inputLabel.push("phone-pad")
+          break;
+        case "email":
+          inputLabel.push("Email Address")
+          inputLabel.push("email-address")
+          break;
+        case "sms":
+          inputLabel.push("SMS phone")
+          inputLabel.push("phone-pad")
+          break;
+        default:
+          break;
+      } 
+      return inputLabel;
+  }
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -34,13 +76,14 @@ const InputModal = (props) => {
         transparent={true}
         visible={props.modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-                      <SolidInput  width={"90%"} 
+
+            <Text style={styles.modalText}>Sharing Trough {props.client}</Text>
+            <SolidInput  width={"90%"} 
                                  inputLabel={"Name"}
                                  childKey={"name"}
                                  rootKey = {"sharedWith"}
@@ -48,8 +91,9 @@ const InputModal = (props) => {
                                  inputContent={inputContent}
                                  />
             <SolidInput  width={"90%"} 
-                                 inputLabel={"Email"}
-                                 childKey={"email"}
+                                 inputLabel={makeClientInputlabel()[0]}
+                                 keyboard={makeClientInputlabel()[1]}
+                                 childKey={props.client}
                                  rootKey = {"sharedWith"}
                                  onChangeText={onChangeInput}
                                  inputContent={inputContent}
@@ -57,10 +101,11 @@ const InputModal = (props) => {
             <View style={styles.twinButtonContainer}>
                 <TwinButtonContainer label="Preview" 
                                      disabled={false}
-                                     onPress={()=> pressed(true)} />
+                                     onPress={()=> pressed(true)}
+                                     disabled={buttonState}/>
                 <TwinButtonContainer label="Cancel"
                                      onPress={()=> pressed(false)} 
-                                     disabled={false}/>
+                                    />
             </View>
           </View>
         </View>
