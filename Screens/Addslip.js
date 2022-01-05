@@ -33,7 +33,6 @@ export default class Addslip extends Component {
   render() {
     return (
     <View  style={styles.addslip}>
-        <HeaderSection Title={"ADD SLIP PHOTO"}/>
         <View style={styles.bodyContainer}>
           <Text  style={styles.addSlipDescription}>Add photo of prescription slip or medicine bottle
           {"\n\n"} Press The camera Icon to take a photo

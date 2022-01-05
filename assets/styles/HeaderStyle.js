@@ -199,7 +199,7 @@ export default StyleSheet.create({
          fontWeight: "500",
          fontFamily: "Roboto-Medium",
          textAlign: "center",
-         marginLeft: hp(hrp(20)),
+         marginLeft: hp(hrp(10)),
          marginRight: wp(wrp(0)),
          marginBottom: hp(hrp(0)),
          paddingTop: hp(hrp(0)),

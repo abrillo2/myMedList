@@ -121,7 +121,7 @@ export default class AddSlipInfo extends Component {
                   saveKey={"@myMedListSlipInfo"}>
             {/** Header Section */}
             
-          <HeaderSection Title={"Add Slip Details"}/>
+          {/*<HeaderSection Title={"Add Slip Details"}/>*/}
           
           
           <ScrollView style={styles.bodycontainer}

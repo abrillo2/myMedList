@@ -23,7 +23,8 @@ export default StyleSheet.create({
      backgroundColor: "rgba(255, 255, 255, 1)",
       width: wp("100%"),
       flex:1,
-      alignItems:"center"
+      alignItems:"center",
+      justifyContent:"center"
   },
 
    cameraIconStyle: {
@@ -40,6 +41,5 @@ export default StyleSheet.create({
      fontSize: wp(wrp(17)),
      fontFamily: "Roboto-MediumItalic",
      textAlign: "center",
-     marginTop: hp(hrp(50))
   },
 });

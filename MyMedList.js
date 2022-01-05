@@ -1,6 +1,7 @@
+import 'react-native-gesture-handler';
 import React, {Component} from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './Screens/Home';
 import Share from './Screens/Share';
@@ -13,21 +14,22 @@ import PdfViewer from './Screens/PdfViewer'
 
 
 //react navigation 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function MyMedList() {
-  return (
+
+return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
-        <Stack.Screen options={{headerShown: false}} name="Share" component={Share} />
-        <Stack.Screen options={{headerShown: false}} name="Reconcile" component={Reconcilelist} />
-        <Stack.Screen options={{headerShown: false}} name="Add slip" component={Addslip} />
-        <Stack.Screen options={{headerShown: false}} name="Takenphoto" component={Takenphoto} />
-        <Stack.Screen options={{headerShown: false}} name="AddSlipInfo" component={AddSlipInfo} />
-        <Stack.Screen options={{headerShown: false}} name="MyInfo" component={MyInfo} />
-        <Stack.Screen options={{headerShown: false}} name="PdfViewer" component={PdfViewer} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen options={{headerShown: false}} name="Home" component={Home} />
+        <Drawer.Screen options={{headerShown: false}} name="Share" component={Share} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="Reconcile" component={Reconcilelist} />
+        <Drawer.Screen options={{headerShown: false}} name="Add slip" component={Addslip} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="Takenphoto" component={Takenphoto} />
+        <Drawer.Screen options={{headerShown: true,drawerItemStyle: { height: 0 }}} name="AddSlipInfo" component={AddSlipInfo} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="MyInfo" component={MyInfo} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="PdfViewer" component={PdfViewer} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
