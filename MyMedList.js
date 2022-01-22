@@ -3,14 +3,15 @@ import React, {Component} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Home from './Screens/Home';
-import Share from './Screens/Share';
-import Reconcilelist from './Screens/Reconcilelist';
-import Addslip from './Screens/Addslip';
-import Takenphoto from './Screens/Takenphoto'
-import AddSlipInfo from './Screens/AddSlipInfo';
-import MyInfo from './Screens/MyInfo';
-import PdfViewer from './Screens/PdfViewer'
+import Home from './src/Screens/Home';
+import Share from './src/Screens/Share';
+import Reconcilelist from './src/Screens/Reconcilelist';
+import Addslip from './src/Screens/Addslip';
+import Takenphoto from './src/Screens/Takenphoto'
+import AddSlipInfo from './src/Screens/AddSlipInfo';
+import MyInfo from './src/Screens/MyInfo';
+import PdfViewer from './src/Screens/PdfViewer'
+import { appScreenName } from './assets/static_resources/strings';
 
 
 //react navigation 
@@ -20,15 +21,15 @@ function MyMedList() {
 
 return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen options={{headerShown: false}} name="Home" component={Home} />
-        <Drawer.Screen options={{headerShown: false}} name="Share" component={Share} />
-        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="Reconcile" component={Reconcilelist} />
-        <Drawer.Screen options={{headerShown: false}} name="Add slip" component={Addslip} />
-        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="Takenphoto" component={Takenphoto} />
-        <Drawer.Screen options={{headerShown: true,drawerItemStyle: { height: 0 }}} name="AddSlipInfo" component={AddSlipInfo} />
-        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="MyInfo" component={MyInfo} />
-        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name="PdfViewer" component={PdfViewer} />
+      <Drawer.Navigator initialRouteName={appScreenName.home} unmountOnBlur={true}>
+        <Drawer.Screen options={{headerShown: false}} name={appScreenName.home} component={Home} />
+        <Drawer.Screen options={{headerShown: false}} name={appScreenName.share} component={Share} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name={appScreenName.Reconcile} component={Reconcilelist} />
+        <Drawer.Screen options={{headerShown: false}} name={appScreenName.addSlip} component={Addslip} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name={appScreenName.takenPhoto} component={Takenphoto} />
+        <Drawer.Screen unmountOnBlur={true}  options={{unmountOnBlur: true,headerShown: false}} name={appScreenName.addSlipInfo} component={AddSlipInfo} />
+        <Drawer.Screen options={{headerShown: false}} name={appScreenName.myInfo} component={MyInfo} />
+        <Drawer.Screen options={{headerShown: false,drawerItemStyle: { height: 0 }}} name={appScreenName.pdfViewer} component={PdfViewer} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

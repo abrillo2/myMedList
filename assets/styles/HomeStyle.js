@@ -72,10 +72,11 @@ export default StyleSheet.create ({
         alignItems:"center"
     },
     twinButtonContainer:{
-        marginTop:hp(hrp(10)),
         flexDirection:"row",
         width : wp("90%"),
         justifyContent:"space-between",
+        position:"absolute",
+        bottom:hp(hrp(35))
  
    }
   

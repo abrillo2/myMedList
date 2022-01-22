@@ -40,7 +40,7 @@ export default StyleSheet.create({
     twinButtonContainer:{
       position:"relative",
       marginTop:hp(hrp(10)),
-      marginBottom:hp(hrp(10)),
+      marginBottom:hp(hrp(35)),
       paddingLeft:"5%",
       paddingRight:"5%",
       flexDirection:"row",

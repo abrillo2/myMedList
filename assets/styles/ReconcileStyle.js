@@ -73,6 +73,8 @@ labelContainerR: {
   borderTopRightRadius: wp(wrp(4)),
   width: wp(wrp( 150)),
   height: hp(hrp( 28)),
+  flexDirection:"row",
+  justifyContent:"center"
 },
 labelTextStyleR: {
   opacity: 1,

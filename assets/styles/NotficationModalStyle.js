@@ -25,6 +25,7 @@ export default StyleSheet.create({
       padding: 35,
       alignItems: "center",
       shadowColor: "#000",
+      width:"80%",
       shadowOffset: {
         width: 0,
         height: 2
@@ -57,6 +58,8 @@ export default StyleSheet.create({
       fontSize: wp(wrp(17)),
       fontWeight: "500",
       fontFamily: "Roboto-Bold",
+      marginBottom:"10%",
+      textAlign:"center"
     },
     twinButtonContainer:{
       position:"relative",
