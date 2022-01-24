@@ -1,5 +1,5 @@
 //imports
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 //helper functions
 function hrp(value){
@@ -19,7 +19,7 @@ export default StyleSheet.create({
          backgroundColor: "transparent",
          marginTop: hp(hrp(0)),
          marginRight: wp(wrp(0)),
-         marginBottom: hp(hrp(0)),
+         marginBottom: hp(hrp(0)), 
          marginLeft: wp(wrp(0)),
          paddingTop: hp(hrp(0)),
          paddingRight: wp(wrp(0)),
@@ -126,7 +126,7 @@ export default StyleSheet.create({
      opitionContainer: {
          opacity: 1,
          position: "relative",
-      flexDirection: "row",
+        flexDirection: "row",
          backgroundColor: "transparent",
          marginTop: hp(hrp(0)),
          marginRight: wp(wrp(0)),
@@ -139,7 +139,7 @@ export default StyleSheet.create({
          width: wp(wrp(414)),
          height: hp(hrp(56)),
          left: wp(wrp(0)),
-      alignItems:'center'
+         alignItems:'center'
     },
      rightOpitionContainer: {
          opacity: 1,

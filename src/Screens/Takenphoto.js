@@ -1,6 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {ToastAndroid, View,ScrollView,Image as ReactImage} from 'react-native';
-import {launchCamera} from 'react-native-image-picker';
+import {View,ScrollView,Image as ReactImage} from 'react-native';
 
 //local components import
 import HeaderSection from '../components/HeaderSection';
@@ -43,7 +42,7 @@ export default function Takenphoto(props){
 
     return (
     <ScrollView  style={styles.takenphoto}>
-            <HeaderSection back={true} Title={appLabels.takenPhotoTitle}/>
+            <HeaderSection navigation={props.navigation} back={true} Title={appLabels.takenPhotoTitle}/>
             <View style ={styles.takenPhotoBody}>
 
             {imageData?<ReactImage  source={{uri:imageData.uri+""}} style={styles.slipimagecontainer}/>

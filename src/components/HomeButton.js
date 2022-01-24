@@ -1,13 +1,12 @@
 //imports
-import React, {Component} from 'react';
-import {Text, View,TouchableOpacity,LayoutAnimation, Platform, UIManager, TouchableWithoutFeedbackBase, TouchableHighlight} from 'react-native';
-import {Image as ReactImage} from 'react-native';
-import { color } from 'react-native-reanimated';
+import React from 'react';
+import {Text, View,LayoutAnimation, Platform, UIManager, TouchableHighlight} from 'react-native';
+
 //colors/
 import colors from '../../assets/static_resources/colors.js';
 //import heaader style
 import styles from '../../assets/styles/HomeButtonStyle.js'
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 //Header section
 export default class HomeButton extends React.Component{
     //  this.setState(...)
@@ -52,18 +51,6 @@ export default class HomeButton extends React.Component{
      }
 
     render() { 
-
-
-        var icon = "";
-    
-        if(this.props.iconName == "share"){
-           icon = require("../../assets/icons/share_white.png");
-        }else if(this.props.iconName == "add"){
-            icon = require("../../assets/icons/add_white.png");
-        }else{
-            icon = require("../../assets/icons/autorenew_white.png");
-        }
-
     return(
         <View  style={styles.homeButton}>
             <View  style={styles.homeButtonContainer,this.state.pressed ? {"top":4}:{"top":0}}>
@@ -82,7 +69,11 @@ export default class HomeButton extends React.Component{
                     
                     <View style={styles.buttonTextIconContainer}>
                     
-                        <ReactImage  source={icon} style={styles.iconStyle} />     
+                        <Icon
+                            name={this.props.iconName}
+                            style={styles.iconStyle}
+                            size={24}
+                        />  
                         <Text  style={styles.homeButtonLabel}>{this.props.buttonLabel}</Text>
 
                     </View>

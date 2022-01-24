@@ -1,5 +1,5 @@
-import React, {Suspense,useEffect,useState} from 'react';
-import { Alert, Modal, Text, Pressable, View } from "react-native";
+import React, {useEffect,useState} from 'react';
+import { Modal, Text, View } from "react-native";
 import styles from "../../assets/styles/NotficationModalStyle";
 import { makeHtmlBody, createPDF } from '../helpers/shareHelper';
 import { useIsFocused } from '@react-navigation/native';
@@ -7,7 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import SolidInput from '../components/SolidInput';
 import Button from '../components/Button';
 //static resources
-import appLabels, { appScreenName,formInputLabel } from "../../assets/static_resources/strings";
+import appLabels, { formInputLabel } from "../../assets/static_resources/strings";
 
 export default function InputModal(props){
   const [modalVisible, setModalVisible] = useState(false);

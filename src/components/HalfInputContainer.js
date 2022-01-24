@@ -1,7 +1,6 @@
 //imports
-import React, {Component} from 'react';
-import {Text, View, TextInput,TouchableOpacity} from 'react-native';
-import {Image as ReactImage} from 'react-native';
+import React from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
 import InputType from '../hooks/InputType';
 import Icon from '../hooks/Icon'
 import DatePickerHelper from './DatePicker';
@@ -92,11 +91,11 @@ export default class HalfInputContainer extends React.Component{
                         </Text>
                          <View  style={styles.halfinputLabelIcon}>
                          {this.props.iconName2? <TouchableOpacity onPress={this.onPressLeft}>
-                                <ReactImage style={styles.halfinputLabelIconColor}  source={Icon(this.props.iconName2)}/>     
+                              {Icon(this.props.iconName2,styles.halfinputLabelIconColor)}
                             </TouchableOpacity> : null}
                             <InputType {...this.props} setVal={this.setValue} getval={this.state.value}/>
                          {this.props.iconName?<TouchableOpacity onPress={this.onPress}>
-                               <ReactImage style={styles.halfinputLabelIconColor}  source={Icon(this.props.iconName)}/>     
+                                 {Icon(this.props.iconName,styles.halfinputLabelIconColor)}    
                             </TouchableOpacity>: null}     
                         </View>                   
                         <View  style={[styles.halfinputLayer2Indicator,{width:"100%"}]}></View>

@@ -1,19 +1,28 @@
  //select input icon
- export default function icon(iconName){
+ import React from 'react';
+ import Icon from 'react-native-vector-icons/MaterialIcons';
+ export default function icon(iconName,iconStyle){
     var icon = "";
+    var color = "black";
     if(iconName== "dateRange"){
-       icon = require("../../assets/icons/date_range_black.png");
+       icon = "date-range"
     }else if(iconName== "dropDown"){
-        icon = require("../../assets/icons/drop_down_circle_black.png");
+        icon = "arrow-drop-down"
     }else if(iconName== "autorenew"){
-        icon = require("../../assets/icons/autorenew_white.png");
+        icon = "update"
     }else if(iconName == "arrowRightBlack"){
-        icon = require("../../assets/icons/arrow_right_black.png");
+        icon = "keyboard-arrow-right"
     }else if(iconName == "arrowLefttBlack"){
-        icon = require("../../assets/icons/arrow_left_black.png");
+        icon = "keyboard-arrow-left"
     }else{
-        icon=null
+        icon=iconName
+        color="white"
     }
 
-    return icon
+    console.log("icon name:",icon)
+    return (<Icon
+    name={icon}
+    color={color}
+    style={iconStyle}
+    size={24}/>)
 }

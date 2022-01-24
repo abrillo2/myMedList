@@ -1,8 +1,7 @@
 //imports
 import React from 'react';
-import {Text, TouchableHighlight, TouchableOpacity, View} from 'react-native';
-import {Image as ReactImage} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {Text, TouchableOpacity, View} from 'react-native';
+import Icon from '../hooks/Icon.js';
 //colors
 import colors from '../../assets/static_resources/colors.js';
 //import heaader style
@@ -15,12 +14,12 @@ export default class LabelContainer extends React.Component{
     render() { 
     console.log(this.props.icon)
     return(
-        <TouchableOpacity underlayColor={Colors.underlayColor} style={styles.labelContainer}
+        <TouchableOpacity underlayColor={colors.underlayColor} style={styles.labelContainer}
                           onPress={this.props.onPress}
                           onLayout={this.props.onLayout}
             >
             <View  style={styles.labelItemContainer}>
-                    <ReactImage  source={this.props.icon} style={styles.iconStyle} />
+                   {Icon(this.props.icon,styles.iconStyle)}
                  <Text  style={styles.labelText}>{this.props.Title}</Text>
             </View>
         </TouchableOpacity>   

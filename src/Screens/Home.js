@@ -30,7 +30,7 @@ export default class Home extends Component {
           <ImageBackground resizeMode="cover"  imageStyle={{opacity:0.6}}  source={require('../../assets/img/bgIcon.android.png')} style={styles.homeBgStyle}>
                 <Text style={styles.homeTitleTextStyle}  >{appDescription.homeDesccription}</Text>
                 <HomeButton iconName="add" buttonLabel={appLabels.addSlipButton} navigation={this.props.navigation}/>
-                <HomeButton iconName="autorenew" buttonLabel={appLabels.reconcileButton} navigation={this.props.navigation}/>
+                <HomeButton iconName="update" buttonLabel={appLabels.reconcileButton} navigation={this.props.navigation}/>
                 <HomeButton iconName="share" buttonLabel={appLabels.share} navigation={this.props.navigation}/>
 
                 

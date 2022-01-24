@@ -110,7 +110,7 @@ export default class MyInfo extends Component {
                   savedData={this.state.savedData}
                   saveKey={"@myMedListMyInfo"}>
             {/** Header Section */}
-          <HeaderSection back={true} Title={appLabels.myInfoTitle}/>
+          <HeaderSection back={true} Title={appLabels.myInfoTitle} navigation={this.props.navigation}/>
           <ScrollView style={styles.bodycontainer}
                       contentContainerStyle={    {
                         justifyContent:"flex-start",

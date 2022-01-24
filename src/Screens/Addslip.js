@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Text, View,TouchableOpacity} from 'react-native';
 import {Image as ReactImage} from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 //local components
 import HeaderSection from '../components/HeaderSection';
@@ -14,7 +13,6 @@ import styles from '../../assets/styles/AddSlipPhotoStyle'
 
 
 
-import {saveDataUri} from '../helpers/fsHelper'
 //strings
 import strings,{appDescription} from '../../assets/static_resources/strings'
 //static resources
@@ -32,7 +30,7 @@ export default function Addslip(props) {
   }
   return (
     <View  style={styles.addslip}>
-        <HeaderSection back={true} Title={strings.addslipTitle}/>
+        <HeaderSection back={true} Title={strings.addslipTitle} navigation={props.navigation}/>
         <View style={styles.bodyContainer}>
           <Text  style={styles.addSlipDescription}>{appDescription.addSlipDescription}</Text>
           <TouchableOpacity onPress={() => openCam("photo")}>

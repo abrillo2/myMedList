@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Text, View, TextInput,TouchableOpacity} from 'react-native';
+import React from 'react';
+import {TextInput} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 //import heaader style
 import styles from '../../assets/styles/HalfInputStyle.js'

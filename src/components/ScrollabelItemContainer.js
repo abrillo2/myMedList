@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
-import {Image as ReactImage} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
-import { Bullets, InstagramLoader } from 'react-native-easy-content-loader';
+import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import Icon from '../hooks/Icon';
 //import body style
 import ReconcileStyle from '../../assets/styles/ReconcileStyle';
 //import reconcile items
@@ -34,7 +30,7 @@ export default class ScrollabelItemContainer extends Component {
                         key={index}  style={ReconcileStyle.labelTopContainerR}>
                                   <View  style={ReconcileStyle.labelContainerR}>
                                     <Text  style={ReconcileStyle.labelTextStyleR}>{item}</Text>
-                                    <ReactImage  source={require('../../assets/icons/filter_list_white.png')} style={ReconcileStyle.iconStyle} />
+                                    {Icon("filter-list",ReconcileStyle.iconStyle)}
                                   </View>
                                 </TouchableOpacity>
                     })}

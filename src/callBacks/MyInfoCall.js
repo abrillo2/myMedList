@@ -1,8 +1,7 @@
-import React, {Suspense,useEffect,useState} from 'react';
+import React, {useEffect,useState} from 'react';
 import { View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '../components/Button';
-
 //styles
 import styles from '../../assets/styles/AddSlipInfoStyle';
 //strings

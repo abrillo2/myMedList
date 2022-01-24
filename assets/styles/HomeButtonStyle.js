@@ -1,5 +1,5 @@
 //imports
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 //helper functions
 function hrp(value){
@@ -125,7 +125,7 @@ export default StyleSheet.create({
          borderBottomRightRadius: wp(wrp(4)),
          shadowColor: "rgb(0,  0,  0)",
          shadowOpacity: 0.2,
-         elevation: wp(wrp(7)),
+         elevation: wp(wrp(5)),
          shadowOffset: {
            width: 0,
            height: wp(wrp(1))
@@ -175,7 +175,7 @@ export default StyleSheet.create({
          top: 0
       },
       homeButtonLabel: {
-         opacity: 1,
+         opacity: 0.8,
          position: "relative",
          backgroundColor: "rgba(255, 255, 255, 0)",
          color: "rgba(255, 255, 255, 1)",
@@ -184,14 +184,7 @@ export default StyleSheet.create({
          fontStyle: "normal",
          letterSpacing: 1,
          fontFamily: "Roboto-Regular",
-         marginTop: 0,
-         marginRight: 0,
-         marginBottom: 0,
          marginLeft: wp(wrp(20)),
-         paddingTop: 0,
-         paddingRight: 0,
-         paddingBottom: 0,
-         paddingLeft: 0,
       }, 
       iconStyle: {
          opacity: 1,
@@ -200,12 +193,6 @@ export default StyleSheet.create({
          marginRight: wp(wrp(0)),
          marginBottom: hp(hrp(0)),
          marginLeft: "30%",
-         borderTopLeftRadius: wp(wrp(0)),
-         borderTopRightRadius: wp(wrp(0)),
-         borderBottomLeftRadius: wp(wrp(0)),
-         borderBottomRightRadius: wp(wrp(0)),
-         width: wp(wrp(24)),
-         height: hp(hrp(24)),
          backgroundColor: "transparent",
       },
 });

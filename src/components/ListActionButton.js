@@ -1,9 +1,9 @@
 //imports
 import React from 'react';
-import {Image as ReactImage,View,TouchableOpacity} from 'react-native';
+import {View,TouchableOpacity} from 'react-native';
 //import reconcile items
 import ReconcileStyle from '../../assets/styles/ReconcileStyle.js';
-
+import Icon from '../hooks/Icon';
 
 export default function ListActionButton(props) {
 
@@ -16,7 +16,7 @@ export default function ListActionButton(props) {
        style={ReconcileStyle.actionButonContainer}
                           onPressIn={pressed}>
             <View  style={ReconcileStyle.butonIconContainer}>
-                    <ReactImage  source={props.icon} style={ReconcileStyle.iconStyle} />
+                  {Icon(props.icon,ReconcileStyle.iconStyle)}
             </View>
         </TouchableOpacity>
 

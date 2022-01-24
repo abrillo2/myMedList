@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Alert, Modal, Text, Pressable, View,StyleSheet,Dimensions } from "react-native";
-import { Linking } from 'react-native'
+import React from "react";
+import { View,StyleSheet,Dimensions } from "react-native";
 import RNFetchBlob from 'react-native-fetch-blob'
 import Share from 'react-native-share';
 //pdf to img
@@ -8,7 +7,7 @@ import RNPdfToImage from 'react-native-pdf-to-image';
 
 import Pdf from 'react-native-pdf';
 import Button from '../components/Button';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {shareWithEmail, shareWithSMS, shareWithWhatsUp} from '../helpers/shareHelper.js'
 //strings
 import appLabels,{appScreenName} from '../../assets/static_resources/strings'

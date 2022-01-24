@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, ScrollView} from 'react-native';
-import {removeItem,getItem} from '../helpers/editItemHelper';
-import { getData,saveData} from '../helpers/AsyncHelper';
+import {removeItem} from '../helpers/editItemHelper';
+import { saveData} from '../helpers/AsyncHelper';
 
 //components import
 import HeaderSection from '../components/HeaderSection';
@@ -193,7 +193,7 @@ export default class AddSlipInfo extends Component {
                   saveKey={"@myMedListSlipInfo"}>
             {/** Header Section */}
             
-          {<HeaderSection back={true} Title={appLabels.slipDetails}/>}
+          {<HeaderSection back={true} Title={appLabels.slipDetails}navigation={this.props.navigation}/>}
           
           
           <ScrollView style={[styles.bodycontainer,{opacity:this.state.opacity}]}

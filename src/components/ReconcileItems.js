@@ -40,11 +40,11 @@ export default class ReconcileItems extends React.Component{
           if(this.props.listButton){
             content.push(
                 <View style={ReconcileStyle.butonIconContainer2}>
-                    <ListActionButton icon = {require('../../assets/icons/edit_white.png')}
+                    <ListActionButton icon = {"edit"}
                                       onPress={this.props.listButtonPressed}
                                       action={"edit"}
                                       itemId={rootKey}/>
-                    <ListActionButton icon = {require('../../assets/icons/delete_white.png')}
+                    <ListActionButton icon = {"delete"}
                                       onPress={this.props.listButtonPressed}
                                       action={"delete"}
                                       itemId={rootKey}/>

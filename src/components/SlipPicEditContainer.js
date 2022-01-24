@@ -1,10 +1,9 @@
 //imports
-import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 import ListActionButton from './ListActionButton.js';
-import {openCamera, openGalery} from '../helpers/slipPhotohelper.js';
+import {openGalery} from '../helpers/slipPhotohelper.js';
 
 //import heaader style
 import slipPicEditContainerStyle from '../../assets/styles/SlipPicEditContainerStyle.js'
@@ -53,7 +52,7 @@ export default class SlipPicEditContainer extends React.Component{
              {this.state.imageData? <ReactImage  source={{uri:this.state.imageData.uri}} style={slipPicEditContainerStyle.slipImage}/>         
               :null}
               <View  style={slipPicEditContainerStyle.editButton}>         
-              <ListActionButton icon = {require('../../assets/icons/edit_white.png')}
+              <ListActionButton icon = {"edit"}
                                       onPress={this.editSlipImg}
                                       />              
               </View>

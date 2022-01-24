@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {Text, View, TextInput, TouchableOpacity} from 'react-native';
-import {Image as ReactImage} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import DatePickerHelper from './DatePicker';
 //import styles
 import styles from '../../assets/styles/SolidInputStyle';
@@ -9,8 +7,6 @@ import HalfInputStyle from '../../assets/styles/HalfInputStyle';
 import Icon from '../hooks/Icon'
 import InputType from '../hooks/InputType';
 //colors
-import colors from '../../assets/static_resources/colors';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default class SolidInput extends Component {
 
@@ -70,7 +66,7 @@ export default class SolidInput extends Component {
             <View  style={styles.solidInputBorderContainer}>
                     <InputType {...this.props} setVal={this.setValue} getval={this.state.value}/>
                     {this.props.iconName?<TouchableOpacity onPress={this.onPress}>
-                               <ReactImage style={HalfInputStyle.halfinputLabelIconColor}  source={Icon(this.props.iconName)}/>     
+                                {Icon(this.props.iconName,HalfInputStyle.halfinputLabelIconColor)}
                     </TouchableOpacity>: null}
             </View>
              <View  style={styles.labelContainer}>

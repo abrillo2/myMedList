@@ -145,7 +145,7 @@ export default function Reconcilelist(props) {
     <View style={[ReconcileStyle.reconcilelist]}>
        
         {/** APP BAR View begins */}
-        <HeaderSection Title={appLabels.reconcileButton}/>
+        <HeaderSection Title={appLabels.reconcileButton} navigation={props.navigation}/>
         {/** APP BAR View ends */}
         <View style={{opacity:opacity}}>
                   {/** RECONCILE list view begins */}

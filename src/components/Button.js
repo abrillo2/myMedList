@@ -1,7 +1,7 @@
 //imports
 import React from 'react';
 import {Text, View,LayoutAnimation, Platform, UIManager, TouchableHighlight} from 'react-native';
-import {Image as ReactImage} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 //import heaader style
 import styles from '../../assets/styles/ButtonStyle'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -88,25 +88,7 @@ export default class Button extends React.Component{
 
 
 
-    render() { 
-
-
-        var icon = "";
-        if(this.props.iconName == "share"){
-            
-           icon = require("../../assets/icons/share_white.png");
-           console.log(icon)
-        }else if(this.props.iconName == "add"){
-            icon = require("../../assets/icons/add_white.png");
-        }else if(this.props.iconName == "autorenew"){
-            icon = require("../../assets/icons/autorenew_white.png");
-        }else{
-            icon = null;
-        }
-
-
-
-
+render() { 
     return(
             <View  style={this.state.pressed ? {"top":4}:{"top":0}}>
                 <TouchableHighlight disabled={this.props.disabled}
@@ -120,7 +102,12 @@ export default class Button extends React.Component{
                         this.props.disabled?{ opacity:0.5}:{ opacity:1}
                         ]}>
                     <View style={styles.buttonTextIconContainer}>                            
-                            {icon ?<ReactImage  source={icon} style={styles.iconStyle}/>:null }    
+                            {this.props.iconName ?                        
+                            <Icon
+                            name={this.props.iconName}
+                            style={styles.iconStyle}
+                            size={24}/>
+                            :null }    
                             <Text  style={styles.homeButtonLabel}>{this.props.buttonLabel}</Text>
                     </View>
                 </TouchableHighlight>

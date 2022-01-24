@@ -1,7 +1,7 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { getData } from '../helpers/AsyncHelper';
 import Share from 'react-native-share';
-import appLabels,{appDescription,appScreenName} from '../../assets/static_resources/strings';
+import appLabels,{} from '../../assets/static_resources/strings';
 
 export function makeTabelRowData(data,statusShare){
     let tabelItemList = []

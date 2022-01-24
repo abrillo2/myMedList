@@ -118,7 +118,7 @@ export default function Share(props){
       }, [activeToggel,useIsFocused()]);
     return (
         <View  style={styles.share}>
-            <HeaderSection Title={appLabels.shareTitle}/> 
+            <HeaderSection Title={appLabels.shareTitle} navigation={props.navigation}/> 
             <View style={{opacity:opacity}}>
                 <View  style={styles.shareNavContainer}>
                     <View  style={styles.shareNavToggelContainer}>

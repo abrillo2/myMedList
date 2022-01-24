@@ -1,5 +1,5 @@
 //imports
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 //helper functions
 function hrp(value){
@@ -32,22 +32,22 @@ export default StyleSheet.create({
         borderBottomLeftRadius: wp(wrp(4)),
         borderBottomRightRadius: wp(wrp(4)),
         shadowColor: "rgb(0,  0,  0)",
-        shadowOpacity: 0.2,
-        elevation: wp(wrp(7)),
+        shadowOpacity: 0.1,
+        elevation: wp(wrp(5)),
         shadowOffset: {
           width: 0,
           height: wp(wrp(1))
         },
-        shadowRadius: wp(wrp(5)),
+        shadowRadius: wp(wrp(2)),
         margin:wp(wrp(1))
       },
-    homeButtonLabel: {
-        opacity: 1,
+    homeButtonLabel: { 
+        opacity: 0.8,
         position: "relative",
         marginLeft:hp(hrp(5)),
         backgroundColor: "transparent",
         color: "rgba(255, 255, 255, 1)",
-        fontSize: wp(wrp(17)),
+        fontSize: wp(wrp(16)),
         fontWeight: "400",
         letterSpacing: 1,
         fontFamily: "Roboto-Regular"

@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableHighlight} from 'react-native';
-import {Image as ReactImage} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 //components import
@@ -27,7 +25,7 @@ export default class SingelReconcile extends Component {
     <View data-layer="cd69ac0c-29fb-45f9-bed1-67181bfa3f2b" style={styles.singlereconcile}>
           {/** Header Section */}
           
-        <HeaderSection />
+        <HeaderSection navigation={this.props.navigation}/>
         <ScrollView data-layer="607ce331-9bc4-44b5-8bfa-8404da1b4a64" style={styles.bodycontainer}
             contentContainerStyle={    {justifyContent:"flex-start",
             alignItems:"center"}}>

@@ -70,13 +70,13 @@ export default class Fold extends Component {
 
     render(){
 
-        let icon = require("../../assets/icons/expand_less_white.png");
+        let icon = "expand-less"
         
         if(!(this.state.toggle)){
            this._initAnimated();
         }
         if(!(this.state.expanded)){
-            icon = require("../../assets/icons/expand_more_white.png");
+            icon = "expand-more"
         }
         return(    
             <View style={
