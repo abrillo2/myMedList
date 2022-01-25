@@ -5,7 +5,6 @@ import { getData } from '../helpers/AsyncHelper';
 import { Bullets} from 'react-native-easy-content-loader';
 import InputModal from '../hooks/InputModal';
 //components import
-import HeaderSection from '../components/HeaderSection';
 //import styles
 import styles from '../../assets/styles/ShareStyles'
 import { useIsFocused } from '@react-navigation/native';
@@ -13,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native';
 import  Notification from '../hooks/Notification'
 //static
 import colors from '../../assets/static_resources/colors';
-import appLabels,{appDescription,appScreenName} from '../../assets/static_resources/strings';
+import appLabels,{appDescription} from '../../assets/static_resources/strings';
 
 
 export default function Share(props){
@@ -118,7 +117,6 @@ export default function Share(props){
       }, [activeToggel,useIsFocused()]);
     return (
         <View  style={styles.share}>
-            <HeaderSection Title={appLabels.shareTitle} navigation={props.navigation}/> 
             <View style={{opacity:opacity}}>
                 <View  style={styles.shareNavContainer}>
                     <View  style={styles.shareNavToggelContainer}>

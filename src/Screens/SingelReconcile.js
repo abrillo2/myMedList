@@ -3,7 +3,6 @@ import {StyleSheet, View, ScrollView} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 //components import
-import HeaderSection from '../components/HeaderSection';
 import SlipPicEditContainer from '../components/SlipPicEditContainer';
 import FullInputContainer from '../components/FullInputContainer';
 import HalfInputContainer from '../components/HalfInputContainer';
@@ -23,9 +22,7 @@ export default class SingelReconcile extends Component {
     return (
 
     <View data-layer="cd69ac0c-29fb-45f9-bed1-67181bfa3f2b" style={styles.singlereconcile}>
-          {/** Header Section */}
-          
-        <HeaderSection navigation={this.props.navigation}/>
+
         <ScrollView data-layer="607ce331-9bc4-44b5-8bfa-8404da1b4a64" style={styles.bodycontainer}
             contentContainerStyle={    {justifyContent:"flex-start",
             alignItems:"center"}}>

@@ -5,7 +5,6 @@ import {getData, saveData} from '../helpers/AsyncHelper';
 import { removeItem,getItem} from '../helpers/editItemHelper';
 
 //import header section
-import  HeaderSection  from '../components/HeaderSection';
 //import body style
 import ReconcileStyle from '../../assets/styles/ReconcileStyle';
 import { useIsFocused } from '@react-navigation/native';
@@ -13,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native';
 import  Notification from '../hooks/Notification'
 import SolidInput from '../components/SolidInput';
 //static items
-import appLabels,{appDescription,formInputLabel,appScreenName} from '../../assets/static_resources/strings';
+import appLabels,{appDescription,formInputLabel} from '../../assets/static_resources/strings';
 export default function Reconcilelist(props) {
 
     const isFocused = useIsFocused();
@@ -49,7 +48,7 @@ export default function Reconcilelist(props) {
               case "edit":
                 let items = [...listOfdata["slipInfo"]]
                 let item = getItem(items,itemId)
-                props.navigation.navigate(appScreenName.addSlipInfo,{
+                props.navigation.navigate(appLabels.addSlipTitle,{
                   item:item,key:itemId
                 })
                 break  
@@ -107,7 +106,7 @@ export default function Reconcilelist(props) {
             setNotificationContent(null)
             setStopDate(null)
         }else if(listOfdata === null){
-            props.navigation.navigate(appScreenName.addSlip)
+            props.navigation.navigate(appLabels.addPhotoTitle)
         }
         else{
           setOpenModal(true)
@@ -144,9 +143,6 @@ export default function Reconcilelist(props) {
     return (
     <View style={[ReconcileStyle.reconcilelist]}>
        
-        {/** APP BAR View begins */}
-        <HeaderSection Title={appLabels.reconcileButton} navigation={props.navigation}/>
-        {/** APP BAR View ends */}
         <View style={{opacity:opacity}}>
                   {/** RECONCILE list view begins */}
                   <Suspense fallback={<Bullets active  listSize={dataFetched ? listOfdata["slipInfo"].length:10}/>}>

@@ -1,9 +1,8 @@
 //imports
 import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { appScreenName } from '../../assets/static_resources/strings.js';
+import appLabels from '../../assets/static_resources/strings.js';
 //import heaader style
 import headerStyle from '../../assets/styles/HeaderStyle.js'
 //Header section
@@ -11,13 +10,16 @@ export default function HeaderSection(props){
     //  this.setState(...)
     
     
-    const navigation = useNavigation();
+    const navigation = props.navigation;
+    const title = props.Title
+    const  goback = title == appLabels.shareTitle | title ==appLabels.reconcileTitle | title ==appLabels.homeTitle
+
     function onPressOpenDrawer(){
       
-      props.back ?props.navigation.goBack(): navigation.openDrawer();
+      !goback ?navigation.goBack(): navigation.openDrawer();
     }
 
-    let iconName  = props.back ? "arrow-back":"options"
+    let iconName  = !goback ? "arrow-back":"options"
     return(
                
         <View  style={headerStyle.appBarTopContainer}>
@@ -44,7 +46,7 @@ export default function HeaderSection(props){
                             {props.back? null:  <Icon.Button
                                   name="home"
                                   backgroundColor="rgba(34, 171, 226, 0.2)"
-                                  onPress={()=>{navigation.navigate(appScreenName.home)}}
+                                  onPress={()=>{navigation.navigate(appLabels.homeTitle)}}
                                 />}
                         </View>
                  </View>

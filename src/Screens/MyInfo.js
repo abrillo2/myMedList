@@ -4,7 +4,6 @@ import {getData,saveData} from '../helpers/AsyncHelper'
 
 
 //components import
-import HeaderSection from '../components/HeaderSection';
 import Fold from '../callBacks/Fold';
 import SolidInput from '../components/SolidInput';
 import MyInfoCall from '../callBacks/MyInfoCall';
@@ -110,7 +109,6 @@ export default class MyInfo extends Component {
                   savedData={this.state.savedData}
                   saveKey={"@myMedListMyInfo"}>
             {/** Header Section */}
-          <HeaderSection back={true} Title={appLabels.myInfoTitle} navigation={this.props.navigation}/>
           <ScrollView style={styles.bodycontainer}
                       contentContainerStyle={    {
                         justifyContent:"flex-start",

@@ -2,14 +2,12 @@ import React, {useEffect,useState} from 'react';
 import {View,ScrollView,Image as ReactImage} from 'react-native';
 
 //local components import
-import HeaderSection from '../components/HeaderSection';
 import Button from '../components/Button'
 //import styles
 import styles from '../../assets/styles/TakenPhotoStyle';
 import { useIsFocused } from '@react-navigation/native';
 import appLabels from '../../assets/static_resources/strings';
 //import { Button } from 'react-native-share';
-import { appScreenName } from '../../assets/static_resources/strings';
 
 export default function Takenphoto(props){
   const isFocused = useIsFocused();
@@ -25,25 +23,24 @@ export default function Takenphoto(props){
   }, [useIsFocused()]);
   //retake photo
   function retake(){
-    props.navigation.navigate(appScreenName.addSlip)
+    props.navigation.navigate(appLabels.addPhotoTitle)
   }
 
   //cancel
   function cancel(){
-    props.navigation.navigate("Home")
+    props.navigation.navigate(appLabels.homeTitle)
   }
 
   //save slip image
   function save(){
-    props.navigation.navigate("AddSlipInfo",{
+    props.navigation.navigate(appLabels.addslipTitle,{
       imageData:imageData
     })
   }
 
     return (
     <ScrollView  style={styles.takenphoto}>
-            <HeaderSection navigation={props.navigation} back={true} Title={appLabels.takenPhotoTitle}/>
-            <View style ={styles.takenPhotoBody}>
+ <View style ={styles.takenPhotoBody}>
 
             {imageData?<ReactImage  source={{uri:imageData.uri+""}} style={styles.slipimagecontainer}/>
                :null}   

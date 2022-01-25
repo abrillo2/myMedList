@@ -12,7 +12,7 @@ function wrp(value){
 
 
 export default StyleSheet.create({
-    
+     
      appBarTopContainer: {
          opacity: 1,
          position: "relative",

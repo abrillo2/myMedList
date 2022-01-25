@@ -18,17 +18,8 @@ export default StyleSheet.create({
          position: "relative",
          backgroundColor: "transparent",
          marginTop: hp(hrp(25)),
-         marginRight: 0,
-         marginBottom: 0,
-         marginLeft: 0,
-         paddingTop: 0,
-         paddingRight: 0,
-         paddingBottom: 0,
-         paddingLeft: 0,
          width: wp(wrp(344)),
          height: hp(hrp(50)),
-        //"left: wp(wrp(35)),
-        //"top: hp(hrp(418))
       },
       homeButtonContainer: {
          opacity: 1,
@@ -175,7 +166,7 @@ export default StyleSheet.create({
          top: 0
       },
       homeButtonLabel: {
-         opacity: 0.8,
+         opacity: 1,
          position: "relative",
          backgroundColor: "rgba(255, 255, 255, 0)",
          color: "rgba(255, 255, 255, 1)",

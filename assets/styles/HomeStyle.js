@@ -37,13 +37,13 @@ export default StyleSheet.create ({
         fontFamily: "Roboto-LightItalic",
         textAlign: "center",
         marginTop: hp(hrp(100)),
-        marginBottom: hp(hrp(100))
+        marginBottom: hp(hrp(100)) 
     },
     homeBgStyle: {
-        width: '100%',
-        height: '100%',
         flex:1,
-        alignItems:"center"
+        alignItems:"center",
+        justifyContent:"flex-start",
+        paddingTop:hp(hrp(150))
     },
     twinButtonContainer:{
         flexDirection:"row",

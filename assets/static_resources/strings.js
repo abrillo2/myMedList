@@ -1,25 +1,35 @@
 
 const appLabels = {
     preview:"Preview",
-    active:"ACTIVE",
-    discontinued:"DISCONTINUED",
     addPhoto:"Add photo",
     cancel : 'Cancel',
     save : 'Save',
     share:'Share',
+    yes:"Yes",
+    no:"No",
+    exit:"Exit",
+    ok:"Ok",
+    addSlipButton:"Add slip",
+    reconcileButton:"Reconcile",
+    myInfoButton:"My info",
+    
+
+
+    active:"ACTIVE",
+    discontinued:"DISCONTINUED",
+
+    addSlipTitle:"ADD SLIP",
+    addPhotoTitle:"ADD PHOTO",
+    reconcileTitle:"RECONCILE",
+    addslipTitle:"ADD PHOTO",
+    slipDetails:"SLIP DETAILS",
+    aboutTitle:"ABOUT",
     shareTitle:'SHARE',
     myInfoTitle:'MY INFO',
     takenPhotoTitle:"SLIP PHOTO",
-    yes:"YES",
-    no:"NO",
-    exit:"EXIT",
-    ok:"OK",
-    addSlipButton:"ADD SLIP",
-    reconcileButton:"RECONCILE",
-    shareButton:"SHARE",
-    myInfoButton:"MY INFO",
-    addslipTitle:"ADD PHOTO",
-    slipDetails:"SLIP DETAILS",
+    homeTitle:"HOME",
+
+    PdfViewerTitle : "PREVIEW SHARE",
     medicationDetailsLabel:"MEDICATION DETAILS",
     pharmacyDetailsLabel:"PHARMACY DETAILS",
     physiciansDetailsLabel:"PHYSICIAN DETAILS",
@@ -29,6 +39,7 @@ const appLabels = {
     myInfoPPrimaryCarePhysician:"PRIMARY CARE PHYSICIAN",
     myInfoPreferredPharmacy:"PREFERRED PHARMACY",
     pinLabel:"PERSONAL IDENTIFICATION NUMBER",
+   
     sharingVia:"Sharing via",
     prescriptionList:" Prescription list",
     whatsApp:"WhatsApp",
@@ -68,8 +79,10 @@ export const appDescription={
     reconcileListDeleteDescription:"Are you sure?",
     reconcileListAddItemDescription:"No slip found, add slip? ",
     shareToggelDescription:"No slips to share,\n for ",
-    shareSetPersonalDataDescription:"Please set your personal data,\nbefore starting to share"
-
+    shareSetPersonalDataDescription:"Please set your personal data,\nbefore starting to share",
+    drawerTitleDescription: " MY MED LIST",
+    appCopyRight: "Copyright "+ new Date().getFullYear()+"\nMango Consulting Corp. USA. All rights reserved.",
+    appVersion:"v0.0.1"
 }
 
 export const appScreenName={
@@ -80,7 +93,8 @@ export const appScreenName={
     addSlipInfo:"AddSlipInfo",
     myInfo:"MyInfo",
     pdfViewer:"PdfViewer",
-    Reconcile:"Reconcile"
+    Reconcile:"Reconcile",
+    about: "About"
 }
 
 export default appLabels

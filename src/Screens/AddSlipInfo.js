@@ -4,7 +4,6 @@ import {removeItem} from '../helpers/editItemHelper';
 import { saveData} from '../helpers/AsyncHelper';
 
 //components import
-import HeaderSection from '../components/HeaderSection';
 import HalfInputContainer from '../components/HalfInputContainer';
 import Fold from '../callBacks/Fold';
 import MyInfoCall from '../callBacks/MyInfoCall';
@@ -125,7 +124,7 @@ export default class AddSlipInfo extends Component {
     })
     if(confirmed){
       saveData(this.state.formData,"@myMedListSlipInfo")
-      this.props.navigation.navigate("Home")
+      this.props.navigation.navigate(appLabels.homeTitle)
     }
 
   }
@@ -192,10 +191,6 @@ export default class AddSlipInfo extends Component {
                   savedData={this.state.savedData}
                   saveKey={"@myMedListSlipInfo"}>
             {/** Header Section */}
-            
-          {<HeaderSection back={true} Title={appLabels.slipDetails}navigation={this.props.navigation}/>}
-          
-          
           <ScrollView style={[styles.bodycontainer,{opacity:this.state.opacity}]}
                       contentContainerStyle={    {
                         justifyContent:"flex-start",

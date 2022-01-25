@@ -25,12 +25,8 @@ export default class HomeButton extends React.Component{
     buttonAnimationFinished(){           
             //handel route navigation
             setTimeout(()=>{
-                let navigation = this.props.navigation;
-                const screenName = this.props.buttonLabel+"";
-       
-                const properName = screenName.charAt(0).toUpperCase() + screenName.slice(1).toLowerCase();
-                navigation.navigate((properName))}
-                ,
+                this.props.navigation();
+            }    ,
                 200
             )
 

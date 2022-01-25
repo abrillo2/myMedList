@@ -1,7 +1,7 @@
  //select input icon
  import React from 'react';
  import Icon from 'react-native-vector-icons/MaterialIcons';
- export default function icon(iconName,iconStyle){
+ export default function icon(iconName,iconStyle,size,colorIn){
     var icon = "";
     var color = "black";
     if(iconName== "dateRange"){
@@ -16,7 +16,7 @@
         icon = "keyboard-arrow-left"
     }else{
         icon=iconName
-        color="white"
+        color=colorIn?colorIn:"white"
     }
 
     console.log("icon name:",icon)
@@ -24,5 +24,5 @@
     name={icon}
     color={color}
     style={iconStyle}
-    size={24}/>)
+    size={size ?size:24}/>)
 }
