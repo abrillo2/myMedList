@@ -42,6 +42,7 @@ export default function Reconcilelist(props) {
           switch (action){
               case "delete":
                 setFormData(itemId)
+                setNotificationTitle(appDescription.reconcileListDeleteDescription)
                 setOpenModal(true)
                 setOpacity(0.2)
                 break

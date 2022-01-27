@@ -27,7 +27,6 @@ export default class SlipPicEditContainer extends React.Component{
 
     editSlipImg=async()=>{
        let val = await openGalery()
-       console.log("val",val)
        if(val.assets){
           this.setValue(val.assets[0])
        }

@@ -32,7 +32,7 @@ export default class ReconcileItems extends React.Component{
         for (let index = 0; index < this.state.itemHeaderCount; index++) {
             let elementVal = this.byString(itemVal,this.state.dataKeys[index])
 
-            content.push(< View key={index}  style={ReconcileStyle.itemTextContainer}>
+            content.push(< View key={rootKey+"#c"+index}  style={ReconcileStyle.itemTextContainer}>
                                         <Text numberOfLines={1}  style={ReconcileStyle.itemValStyle}>{elementVal}</Text>
                          </View>
                         )
@@ -75,13 +75,12 @@ export default class ReconcileItems extends React.Component{
             const element = sorted[index];
             let content = this.renderReconcileList(element,element["rootKey"])
             content2.push(
-                    <View key={element["rootKey"]} style={ReconcileStyle.listItemsContainer}>
+                    <View key={element["rootKey"]+"#p"+index} style={ReconcileStyle.listItemsContainer}>
                      {content}
                     </View>
             )
 
         }
-        console.log("sort index",this.props.sortIndex)
         this.setState({content:content2});
         return content2
 

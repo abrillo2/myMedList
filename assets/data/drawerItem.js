@@ -21,12 +21,22 @@ let drawerItems = [
        icon:"home",
        component:Home,
        screenTitle:appLabels.homeTitle
-   },
+   },{
+    title:appScreenName.addSlip,
+    icon:"add",
+    component:Addslip,
+    screenTitle:appLabels.addPhotoTitle
+    },
    {
         title:appScreenName.share,
         icon:"share",
         component:Share,
         screenTitle:appLabels.shareTitle
+    },{
+        title:appScreenName.Reconcile,
+        icon:"refresh",
+        component:Reconcilelist,
+        screenTitle:appLabels.reconcileTitle
     },{
         title:"My info",
         icon:"perm-device-information",
@@ -40,16 +50,6 @@ let drawerItems = [
     },{
         title:appLabels.exit,
         icon:"exit-to-app"
-    },{
-        title:appScreenName.Reconcile,
-        icon:null,
-        component:Reconcilelist,
-        screenTitle:appLabels.reconcileTitle
-    },{
-        title:appScreenName.addSlip,
-        icon:null,
-        component:Addslip,
-        screenTitle:appLabels.addPhotoTitle
     },{
         title:appScreenName.takenPhoto,
         icon:null,

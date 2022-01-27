@@ -39,7 +39,7 @@ export default function InputModal(props){
             const statusShare = props.status
             let htmlString = await makeHtmlBody(statusShare,saredWithLabel,props.listOfdata,props.client)
             let pdfURIString = await createPDF(htmlString,statusShare)
-            props.navigation.navigate("PdfViewer",{
+            props.navigation.navigate(appLabels.PdfViewerTitle,{
                 pdfURI:pdfURIString,
                 client:[props.client,shareInfo[props.client],statusShare]
             })            

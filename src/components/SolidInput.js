@@ -53,7 +53,6 @@ export default class SolidInput extends Component {
   required=()=>{
     if(this.props.required){
         let val =  this.props.required(this.props.childKey,this.props.rootKey)
-        console.log("val is ",val," ",this.props.childKey," ",this.props.rootKey)
         return val
     }else{
         return false

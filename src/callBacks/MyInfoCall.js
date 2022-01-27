@@ -42,7 +42,6 @@ export default function MyInfoCall(props){
     let sateData = {...staticData}
     sateData[props.rootKey] = {...sateData[props.rootKey],[props.childKey]:props.value}
     setStaticData(sateData)
-    console.log(sateData)
     
   }
 
@@ -90,7 +89,7 @@ export default function MyInfoCall(props){
       setDisabled(false)
     }
   }
-  return <View style={styles.singlereconcile}>
+  return <View style={[styles.singlereconcile,{marginTop:10}]}>
                 {props.children}
           <View style={styles.twinButtonContainer}>
                 <Button buttonLabel={appLabels.cancel} 

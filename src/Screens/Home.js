@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View,BackHandler,ImageBackground} from 'react-native';
+import {View,BackHandler,ImageBackground} from 'react-native';
 //component import
 import Logo from '../components/utilis/Logo';
 import HomeButton from '../components/HomeButton';
@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import StatusBarContainer from '../components/StatusBarContainer';
 //Style import
 import styles from '../../assets/styles/HomeStyle'
-import appLabels,{appDescription} from '../../assets/static_resources/strings';
+import appLabels from '../../assets/static_resources/strings';
 import SplashScreen from 'react-native-splash-screen'
 export default class Home extends Component {
 

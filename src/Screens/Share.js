@@ -78,6 +78,12 @@ export default function Share(props){
     function dialogConfirmed(data,confirmed){
         setOpenModal2(false)
         setOpacity(1)
+
+        if(listOfdata == null){
+            props.navigation.navigate(appLabels.addPhotoTitle)
+        }else if(personalData == null){
+            props.navigation.navigate(appLabels.myInfoTitle)
+        }
     }
 
     function iconPressed(client){

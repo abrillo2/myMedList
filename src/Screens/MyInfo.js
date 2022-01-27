@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView} from 'react-native';
+import {FlatList,View, SafeAreaView} from 'react-native';
 import {getData,saveData} from '../helpers/AsyncHelper'
 
 
@@ -7,11 +7,12 @@ import {getData,saveData} from '../helpers/AsyncHelper'
 import Fold from '../callBacks/Fold';
 import SolidInput from '../components/SolidInput';
 import MyInfoCall from '../callBacks/MyInfoCall';
+import Spinner from '../helpers/Spinner';
 //styles
 import styles from '../../assets/styles/AddSlipInfoStyle';
 //static resources
-import appLabels,{formInputLabel} from '../../assets/static_resources/strings'
-import appObjects from '../../assets/static_resources/objects';
+import appLabels,{formInputLabel,appMessages} from '../../assets/static_resources/strings'
+import appObjects,{myInfoFormLabels} from '../../assets/static_resources/objects';
 
 
 export default class MyInfo extends Component {
@@ -25,7 +26,8 @@ export default class MyInfo extends Component {
       savedData:null,
       sexChoice: appObjects.myInfoSexChoices,
       stateData: require("../../assets/data/states.json"),
-      requiredItems: appObjects.myInfoRequiredItems
+      requiredItems: appObjects.myInfoRequiredItems,
+      spinnerOn:false,
     }
   }
   onChangeData=(rootKey,childKey, value)=>{
@@ -44,7 +46,7 @@ export default class MyInfo extends Component {
       let parentData = {...currentData[parent]}
       let result =  parentData[child] ? parentData[child] :null
       
-      if(child==="pin" && result === ""){
+      if(child==="pin" && result === "" | (result.length < 2 | result===null)){
         return "0000" 
       }else{
         return result
@@ -59,6 +61,9 @@ export default class MyInfo extends Component {
   }
 
   saveDataCurrent=(data,currentData)=>{
+    this.setState({
+      spinnerOn:true
+    })
     let slipInfo = null;
    
     slipInfo = {"myInfo":{}}
@@ -66,14 +71,15 @@ export default class MyInfo extends Component {
     
     const jsonValue = JSON.stringify(slipInfo)
     saveData(jsonValue,"@myMedListMyInfo")
-    this.props.navigation.navigate("Home")
+
+    setTimeout(()=>{
+      this.props.navigation.navigate(appLabels.homeTitle)},1000)
   }
 
   componentDidMount=async()=>{
 
     let data = await getData("@myMedListMyInfo");
     data = JSON.parse(data)
-    console.log("my info data ",data)
     if(data){
       this.setState({
         savedData:{...data["myInfo"]}
@@ -98,7 +104,7 @@ export default class MyInfo extends Component {
 
   render() {
     return (
-      
+      this.state.spinnerOn?<Spinner message={appMessages.savingMyInfo}/> :
       <MyInfoCall 
                   rootKey={this.state.rootKey}
                   childKey={this.state.childKey}
@@ -108,16 +114,72 @@ export default class MyInfo extends Component {
                   saveData={this.saveDataCurrent}
                   savedData={this.state.savedData}
                   saveKey={"@myMedListMyInfo"}>
-            {/** Header Section */}
-          <ScrollView style={styles.bodycontainer}
-                      contentContainerStyle={    {
-                        justifyContent:"flex-start",
-                      alignItems:"center"}} >
+
+            <FlatList
+                  data={myInfoFormLabels.folds}
+                  renderItem={({ item, index }) => (
+                    <Fold labelTitle = {item.title}>
+                      {
+                        <FlatList
+                         data={item.content}
+                         renderItem={({ item, index }) => 
+
+                           
+                          item.group ?
+                          <View style={styles.hallfInputContainer}>
+                                
+                                <SolidInput  width={"49%"} 
+                                      inputLabel={item.group[0].inputLabel}
+                                      onChangeText={this.onChangeData}
+                                      childKey={item.group[0].childKey}
+                                      rootKey = {item.group[0].rootKey}
+                                      inputContent={this.getDataCurrent}
+                                      required = {this.required}
+                                      
+                                      iconName={item.group[0].iconName? item.group[0].iconName:null}
+                                      func={item.group[0].func? item.group[0].func:null}
+                                      editAble={item.group[0].editAble? item.group[0].iconName:true}
+                                      data={item.group[0].data? item.group[0].data:null}
+                                      inputType={item.group[0].inputType? item.group[0].inputType:null}
+                                      
+                                      />
+                                 <SolidInput  width={"49%"} 
+                                      inputLabel={item.group[1].inputLabel}
+                                      onChangeText={this.onChangeData}
+                                      childKey={item.group[1].childKey}
+                                      rootKey = {item.group[1].rootKey}
+                                      inputContent={this.getDataCurrent}
+                                      required = {this.required}
+                                      
+                                      iconName={item.group[1].iconName? item.group[1].iconName:null}
+                                      func={item.group[1].func? item.group[0].func:null}
+                                      editAble={item.group[1].editAble? item.group[1].iconName:true}
+                                      data={item.group[1].data? item.group[1].data:null}
+                                      inputType={item.group[1].inputType? item.group[1].inputType:null}
+                                      
+                                      />
+                          </View>
+                          :(<SolidInput  width={item.width} 
+                              inputLabel={item.inputLabel}
+                              onChangeText={this.onChangeData}
+                              childKey={item.childKey}
+                              rootKey = {item.rootKey}
+                              inputContent={this.getDataCurrent}
+                              required = {this.required}
+                              
+                              iconName={item.iconName? item.iconName:null}
+                              func={item.func? item.func:null}
+                              editAble={item.editAble? item.iconName:true}
+                              data={item.data? item.data:null}
+                              inputType={item.inputType? item.inputType:null}/>
+                          )}/>}
+                    </Fold>
+                  )}/>
               {/*******************************
                   * PERSONAL Information
               */}
-            <Fold labelTitle = {appLabels.myInfoPersonalInformationLabel}>
-                {/* First name and last name input*/}
+          {/*  <Fold labelTitle = {appLabels.myInfoPersonalInformationLabel}>
+                {// First name and last name input}
                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
                                  inputLabel={formInputLabel.firstName}
@@ -135,7 +197,7 @@ export default class MyInfo extends Component {
                                  inputContent={this.getDataCurrent}
                                  required = {this.required}/>
                 </View>
-                {/* Birth Date and Sex input */}
+                {//Birth Date and Sex input}
                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
                                  inputLabel={formInputLabel.birthDate}
@@ -159,7 +221,7 @@ export default class MyInfo extends Component {
                 </View>
              </Fold>
              <Fold labelTitle = {appLabels.myInfoStreetAddressLabel}>
-                {/* Street# and City inputs*/}
+                {//Street# and City inputs}
                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
                                  inputLabel={formInputLabel.streetAddress}
@@ -177,7 +239,7 @@ export default class MyInfo extends Component {
                                  required = {this.required}/>
                 </View>
 
-                                {/* state and zipcode inputs*/}
+                                {//state and zipcode inputs*}
                                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
                                  inputLabel={formInputLabel.state}
@@ -218,7 +280,7 @@ export default class MyInfo extends Component {
               </Fold>
               
               <Fold labelTitle = {appLabels.myInfoPPrimaryCarePhysician}>
-                {/* First name and last name input*/}
+                {//First name and last name input}
                 <View style={styles.hallfInputContainer}>
                     <SolidInput  width={"49%"} 
                                  inputLabel={formInputLabel.firstName}
@@ -255,7 +317,7 @@ export default class MyInfo extends Component {
              </Fold>
 
              <Fold labelTitle = {appLabels.pharmacyDetailsLabel}>
-                {/*PHARMACY NAME AND PHONE*/}
+                {//PHARMACY NAME AND PHONE}
                 <SolidInput  width={"100%"} 
                                  inputLabel={formInputLabel.name}
                                  onChangeText={this.onChangeData}
@@ -273,7 +335,7 @@ export default class MyInfo extends Component {
                                  required = {this.required}/>
              </Fold>
              <Fold labelTitle = {appLabels.pinLabel}>
-                {/*PHARMACY NAME AND PHONE*/}
+                {//PHARMACY NAME AND PHONE}
                 <SolidInput  width={"100%"} 
                                  inputLabel={formInputLabel.pin}
                                  onChangeText={this.onChangeData}
@@ -282,8 +344,7 @@ export default class MyInfo extends Component {
                                  inputContent={this.getDataCurrent}
                                  secureTextEntry={false}
                                  required = {this.required}/>
-             </Fold>
-          </ScrollView>
+             </Fold>*/}
         </MyInfoCall>
       );
   }

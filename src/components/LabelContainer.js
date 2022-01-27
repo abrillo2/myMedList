@@ -12,7 +12,6 @@ export default class LabelContainer extends React.Component{
     //  this.setState(...)
     
     render() { 
-    console.log(this.props.icon)
     return(
         <TouchableOpacity underlayColor={colors.underlayColor} style={styles.labelContainer}
                           onPress={this.props.onPress}

@@ -66,7 +66,6 @@ export default class HalfInputContainer extends React.Component{
 
     required=()=>{
        let val =  this.props.required(this.props.childKey,this.props.rootKey)
-       console.log("val is ",val," ",this.props.childKey," ",this.props.rootKey)
        return val
     }
 

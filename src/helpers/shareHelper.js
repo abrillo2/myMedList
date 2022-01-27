@@ -154,7 +154,6 @@ export async function createPDF(htmlString,statusInfo) {
       directory: 'Documents',
     };
     let file = await RNHTMLtoPDF.convert(options)
-    console.log(file.filePath);
     return file.filePath
   }
 

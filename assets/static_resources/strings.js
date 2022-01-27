@@ -21,7 +21,6 @@ const appLabels = {
     addSlipTitle:"ADD SLIP",
     addPhotoTitle:"ADD PHOTO",
     reconcileTitle:"RECONCILE",
-    addslipTitle:"ADD PHOTO",
     slipDetails:"SLIP DETAILS",
     aboutTitle:"ABOUT",
     shareTitle:'SHARE',
@@ -29,7 +28,7 @@ const appLabels = {
     takenPhotoTitle:"SLIP PHOTO",
     homeTitle:"HOME",
 
-    PdfViewerTitle : "PREVIEW SHARE",
+    PdfViewerTitle : "PREVIEW",
     medicationDetailsLabel:"MEDICATION DETAILS",
     pharmacyDetailsLabel:"PHARMACY DETAILS",
     physiciansDetailsLabel:"PHYSICIAN DETAILS",
@@ -95,6 +94,12 @@ export const appScreenName={
     pdfViewer:"PdfViewer",
     Reconcile:"Reconcile",
     about: "About"
+}
+
+export const appMessages={
+    wait:'please wait a second...',
+    savingSlip:'please wait saving slip details...',
+    savingMyInfo:'please wait updating personal information...' 
 }
 
 export default appLabels

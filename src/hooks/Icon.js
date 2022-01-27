@@ -3,7 +3,7 @@
  import Icon from 'react-native-vector-icons/MaterialIcons';
  export default function icon(iconName,iconStyle,size,colorIn){
     var icon = "";
-    var color = "black";
+    var color = "#189AB4";
     if(iconName== "dateRange"){
        icon = "date-range"
     }else if(iconName== "dropDown"){
@@ -18,8 +18,6 @@
         icon=iconName
         color=colorIn?colorIn:"white"
     }
-
-    console.log("icon name:",icon)
     return (<Icon
     name={icon}
     color={color}

@@ -1,8 +1,10 @@
 //imports
 import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import appLabels from '../../assets/static_resources/strings.js';
+
+import icon from '../hooks/Icon.js';
 //import heaader style
 import headerStyle from '../../assets/styles/HeaderStyle.js'
 //Header section
@@ -19,9 +21,8 @@ export default function HeaderSection(props){
       !goback ?navigation.goBack(): navigation.openDrawer();
     }
 
-    let iconName  = !goback ? "arrow-back":"options"
+    let iconName  = !goback ? "arrow-back":"menu"
     return(
-               
         <View  style={headerStyle.appBarTopContainer}>
                <View  style={headerStyle.appBarElevationContainer}>
                    <View  style={headerStyle.appBarShadowContainer}>
@@ -35,18 +36,16 @@ export default function HeaderSection(props){
                <View  style={headerStyle.opitionContainer}>
                        <TouchableOpacity onPress={onPressOpenDrawer}>
                          <View  style={headerStyle.leftOpitionContainer}>
-                         <Icon
-                            name={iconName}
-                            style={headerStyle.iconStyle}
-                            size={24}/>
+                         {icon(iconName,headerStyle.iconStyle,24)}
                              <Text  style={headerStyle.pageTitleStyle}>{props.Title}</Text>
                          </View>  
                        </TouchableOpacity>
                        <View  style={headerStyle.rightOpitionContainer}>
-                            {props.back? null:  <Icon.Button
-                                  name="home"
-                                  backgroundColor="rgba(34, 171, 226, 0.2)"
-                                  onPress={()=>{navigation.navigate(appLabels.homeTitle)}}
+                            {goback? null:  <Icon.Button
+                                  underlayColor={'white'}
+                                  name="options-vertical"
+                                  backgroundColor="rgba(34, 171, 226, 1)"
+                                  onPress={()=>{ navigation.openDrawer()}}
                                 />}
                         </View>
                  </View>

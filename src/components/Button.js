@@ -50,7 +50,6 @@ export default class Button extends React.Component{
     //set button size
     setButtonSize=(size,xy)=>{
         if(xy=="x"){
-            console.log(xy)
             switch (size) {
                 case 1:
                     return Number(400)

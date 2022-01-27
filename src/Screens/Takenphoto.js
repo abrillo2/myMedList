@@ -3,6 +3,7 @@ import {View,ScrollView,Image as ReactImage} from 'react-native';
 
 //local components import
 import Button from '../components/Button'
+import Spinner from '../helpers/Spinner';
 //import styles
 import styles from '../../assets/styles/TakenPhotoStyle';
 import { useIsFocused } from '@react-navigation/native';
@@ -12,11 +13,12 @@ import appLabels from '../../assets/static_resources/strings';
 export default function Takenphoto(props){
   const isFocused = useIsFocused();
   const [imageData,setImageData] = useState(null)
+  const [spinnerOn, setSpinnerOn] = useState(false)
 
   useEffect(() => {
+    setSpinnerOn(false)
     if(isFocused){
       setImageData(props.route.params.response)
-      
     }
     return () => {
     }
@@ -33,14 +35,17 @@ export default function Takenphoto(props){
 
   //save slip image
   function save(){
-    props.navigation.navigate(appLabels.addslipTitle,{
-      imageData:imageData
-    })
+    setSpinnerOn(true)
+    setTimeout(()=>{
+      props.navigation.navigate(appLabels.addSlipTitle,{
+        imageData:imageData
+      }
+    )},50)
   }
-
     return (
-    <ScrollView  style={styles.takenphoto}>
- <View style ={styles.takenPhotoBody}>
+    <ScrollView  style={styles.takenphoto}
+                      contentContainerStyle= {spinnerOn?{flex:1}:{flex:0}}>
+          {spinnerOn ? <Spinner/>:<View style ={styles.takenPhotoBody}>
 
             {imageData?<ReactImage  source={{uri:imageData.uri+""}} style={styles.slipimagecontainer}/>
                :null}   
@@ -55,7 +60,7 @@ export default function Takenphoto(props){
                                h={2}
                                w={120}/>
                     </View>
-            </View>
+            </View>}
     </ScrollView>
     );
 

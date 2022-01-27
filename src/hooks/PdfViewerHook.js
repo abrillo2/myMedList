@@ -37,11 +37,10 @@ export default class PdfViewerHook extends React.Component {
         let Description = this.props.client[2]+ appLabels.prescriptionList
         if(params){
             this.sharePDFWithAndroid(this.props.pdfURI,Description,this.props.client[1])
-            this.props.navigation.navigate(appScreenName.share)
-            console.log("share")
+            this.props.navigation.navigate(appLabels.shareTitle)
+            
         }else{
-            console.log("cancel")
-            this.props.navigation.navigate(appScreenName.share)
+            this.props.navigation.navigate(appLabels.shareTitle)
         }
 
 
@@ -55,7 +54,6 @@ export default class PdfViewerHook extends React.Component {
       pdfImgUri["outputFiles"].forEach(element => {
         imgLst.push("file://"+element)
       });
-      console.log(imgLst)
       return imgLst
 
    }
@@ -79,7 +77,6 @@ export default class PdfViewerHook extends React.Component {
 
     shareData=(data,Description,recipient)=>{
         let inputLabel = null
-        console.log(this.props.client)
         switch(this.props.client[0]){
           case appLabels.whatsApp:
             inputLabel =shareWithWhatsUp(data,Description,recipient)

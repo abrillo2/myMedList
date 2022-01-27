@@ -1,9 +1,6 @@
 import React from 'react';
-import {View} from 'react-native';
-import { NavigationState } from 'react-navigation';
+import {View,BackHandler} from 'react-native';
 //component import
-
-
 //static res
 import appLabels, { } from '../../assets/static_resources/strings';
 //component
@@ -27,13 +24,12 @@ export default function LeftDrawer(props){
                     
                     if(item.icon){
                     return (
-                        <View key={index+"drawerItem"} style={styles.drawerItems}>
+                        <View key={"drawerItemContainer#"+index} style={styles.drawerItems}>
                           <DrawerItem
                             focused={false}
                             activeItemKey = {index}
-                            key={index}
-                            icon={(focused)=>{
-                               console.log("focused",focused)
+                            key={"drawerItem#"+index}
+                            icon={(focused,color,size)=>{
                               //props.items.find(it => it.key === props.activeItemKey)
                               //let color= props.route.name ==item.screenTitle?"#3685b5": "red"
                               return Icon(item.icon,null,null, "#3685b5")}}
@@ -41,7 +37,7 @@ export default function LeftDrawer(props){
                             labelStyle={styles.labelStyle}
                             onPress={() => {
                               if(item.title == appLabels.exit){
-                                 props.navigation.navigate(appLabels.homeTitle)
+                                BackHandler.exitApp()
                               }else if(item.title=="My info"){
                                  props.navigation.navigate(appLabels.myInfoTitle)
                               }else{

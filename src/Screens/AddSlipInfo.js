@@ -1,20 +1,21 @@
 import React, {Component} from 'react';
-import {View, ScrollView} from 'react-native';
-import {removeItem} from '../helpers/editItemHelper';
-import { saveData} from '../helpers/AsyncHelper';
+import {FlatList,View, ScrollView} from 'react-native';
+import {updateItem} from '../helpers/editItemHelper';
+import { saveData as saveDataAsync} from '../helpers/AsyncHelper';
 
 //components import
 import HalfInputContainer from '../components/HalfInputContainer';
 import Fold from '../callBacks/Fold';
 import MyInfoCall from '../callBacks/MyInfoCall';
 import SlipPicEditContainer from '../components/SlipPicEditContainer';
+import Spinner from '../helpers/Spinner'
 //styles
 import styles from '../../assets/styles/AddSlipInfoStyle'
 //import notification modal
 import  Notification from '../hooks/Notification'
 //static resources
-import appObjects from '../../assets/static_resources/objects'
-import appLabels,{appDescription, formInputLabel} from '../../assets/static_resources/strings'
+import appObjects,{slipInfoFormLabels} from '../../assets/static_resources/objects'
+import appLabels,{appDescription, formInputLabel,appMessages} from '../../assets/static_resources/strings'
 
 export default class AddSlipInfo extends Component {
 
@@ -42,7 +43,8 @@ export default class AddSlipInfo extends Component {
         opacity:1,
         formData:null,
         imageData:null,
-        dateAdded:new Date().toLocaleDateString("en-US")
+        dateAdded:new Date().toLocaleDateString("en-US"),
+        spinnerOn:false
       };
   }
   /****
@@ -118,13 +120,21 @@ export default class AddSlipInfo extends Component {
    * track pop up 
    */
   saveDataConfirmed=(data,confirmed)=>{
+    console.log("confirmed ",confirmed)
     this.setState({
       openModal:false,
       opacity:1
     })
     if(confirmed){
-      saveData(this.state.formData,"@myMedListSlipInfo")
-      this.props.navigation.navigate(appLabels.homeTitle)
+
+      this.setState({
+        spinnerOn:true
+      })
+      saveDataAsync(this.state.formData,"@myMedListSlipInfo")
+
+      setTimeout(()=>{
+        this.props.navigation.navigate(appLabels.homeTitle)},1000)
+      
     }
 
   }
@@ -145,8 +155,8 @@ export default class AddSlipInfo extends Component {
         )
       }else{
         if(this.state.itemKey != null){
-           slipInfo = removeItem(data,this.state.itemKey)
-           slipInfo["slipInfo"].push({[this.state.itemKey]:currentData})
+           slipInfo = updateItem(data,this.state.itemKey,currentData)
+           //slipInfo["slipInfo"].push({[this.state.itemKey]:currentData})
         }else{
           data["slipInfo"].push({[itemId]:currentData})
           slipInfo = data
@@ -181,6 +191,7 @@ export default class AddSlipInfo extends Component {
   render() {
     return (
 
+      this.state.spinnerOn? <Spinner message={appMessages.savingSlip}/>:
       <MyInfoCall 
                   rootKey={this.state.rootKey}
                   childKey={this.state.childKey}
@@ -191,181 +202,85 @@ export default class AddSlipInfo extends Component {
                   savedData={this.state.savedData}
                   saveKey={"@myMedListSlipInfo"}>
             {/** Header Section */}
-          <ScrollView style={[styles.bodycontainer,{opacity:this.state.opacity}]}
-                      contentContainerStyle={    {
-                        justifyContent:"flex-start",
-                      alignItems:"center"}} >
-          <SlipPicEditContainer
+
+               <View style={{alignItems:'center',paddingLeft:15}}>
+               <SlipPicEditContainer
                                     childKey={"imageData"}
                                     rootKey = {"medicationDetails"}
                                     onChangeText={this.onChangeData}
                                     inputContent={this.getDataCurrent}
-                                    updateAble={this.isUpdateAble("imageData")}/>
-                                    
-                                    
-              {/*******************************
-                  * MEDICATION DETAILS
-              */}
-             <Fold
-                labelTitle = {appLabels.medicationDetailsLabel}
-             
-             >
-             <View style={styles.hallfInputContainer}>
-                      <HalfInputContainer 
-                                          width={"49%"} 
-                                          inputLabel={formInputLabel.medcineName}
-                                          onChangeText={this.onChangeData}
-                                          childKey={"name"}
-                                          rootKey = {"medicationDetails"}
-                                          inputContent={this.getDataCurrent}
-                                          loadSingleItem={this.state.loadSingleItem}
-                                          updateAble={this.isUpdateAble("name")}
-                                          required = {this.required}
-                                          />
-                      <HalfInputContainer 
-                                          width={"49%"} 
-                                          inputLabel={formInputLabel.strength}
-                                          onChangeText={this.onChangeData}
-                                          childKey={"strength"}
-                                          rootKey = {"medicationDetails"}
-                                          inputContent={this.getDataCurrent}
-                                          loadSingleItem={this.state.loadSingleItem}
-                                          updateAble={this.isUpdateAble("strength")}
-                                          required = {this.required}
-                                          />
-             </View>
-             <View style={styles.hallfInputContainer}>
-                <HalfInputContainer 
-                                    width={"49%"} 
-                                    inputLabel={formInputLabel.dateRefilled}
-                                    childKey={"dateRefilled"}
-                                    rootKey = {"medicationDetails"}
-                                    iconName={"dateRange"}
-                                    func="datePicker"
-                                    editAble={false}
-                                    onChangeText={this.onChangeData}
-                                    inputContent={this.getDataCurrent}
-                                    loadSingleItem={this.state.loadSingleItem}
-                                    updateAble={this.isUpdateAble("dateRefilled")}
-                                    required = {this.required}/>
-                                                
-                <HalfInputContainer
-                                     width={"49%"}
-                                    iconName = "arrowRightBlack"
-                                    iconName2 = "arrowLefttBlack"
-                                    func="numberPicker"
-                                    inputLabel={formInputLabel.refillsLeft}
-                                    childKey={"refillsLeft"}
-                                    rootKey = {"medicationDetails"}
-                                    editAble={false}
-                                    inputContent={this.getDataCurrent}
-                                    onChangeText={this.onChangeData}
-                                    loadSingleItem={this.state.loadSingleItem}
-                                    keyboard="numeric"
-                                    updateAble={this.isUpdateAble("refillsLeft")}
-                                    required = {this.required}/>
-             </View>
-             <HalfInputContainer 
-                                 width={"100%"} 
-                                 inputLabel={formInputLabel.medcineDirection}
-                                 onChangeText={this.onChangeData}
-                                 childKey={"direction"}
-                                 rootKey = {"medicationDetails"}
-                                 inputContent={this.getDataCurrent}
-                                 loadSingleItem={this.state.loadSingleItem}
-                                 updateAble={this.isUpdateAble("name")}
-                                 required = {this.required}/>
-             </Fold>
-             {/*******************************
-              * PHARMACY DETAILS
-              */}
-             <Fold
-                labelTitle = {appLabels.pharmacyDetailsLabel}
-             >
-             <HalfInputContainer 
-                                 width={"100%"} 
-                                 inputLabel={formInputLabel.pharmacyName}
-                                 onChangeText={this.onChangeData}
-                                 childKey={"name"}
-                                 rootKey = {"pharmacyDetails"}
-                                 inputContent={this.getDataCurrent}
-                                 loadSingleItem={this.state.loadSingleItem}
-                                 updateAble={this.isUpdateAble("name")}
-                                 required = {this.required}/>
+                                    updateAble={this.isUpdateAble("imageData")}/>      
+              </View>          
+              <FlatList
+                  data={slipInfoFormLabels.folds}
+                  renderItem={({ item, index }) => (
 
-             <HalfInputContainer 
-                                 width={"100%"} 
-                                 inputLabel={formInputLabel.pharmacyPhone}
-                                 onChangeText={this.onChangeData}
-                                 childKey={"phone"}
-                                 rootKey = {"pharmacyDetails"}
-                                 inputContent={this.getDataCurrent}
-                                 keyboard="phone-pad"
-                                 loadSingleItem={this.state.loadSingleItem}
-                                 updateAble={this.isUpdateAble("phone")}
-                                 required = {this.required}/>
-             </Fold>
-             
-             {/*******************************
-              * PHYICIAN DETAILS
-              */}
-             <Fold
-                 labelTitle = {appLabels.physiciansDetailsLabel}
-             >
-             <HalfInputContainer  
-                                  width={"100%"} 
-                                  inputLabel={formInputLabel.physicianName}
-                                  onChangeText={this.onChangeData}
-                                  childKey={"name"}
-                                  rootKey = {"physicianDetails"}
-                                  inputContent={this.getDataCurrent}
-                                  loadSingleItem={this.state.loadSingleItem}
-                                  updateAble={this.isUpdateAble("name")}
-                                  required = {this.required}/>
+                    <Fold labelTitle = {item.title}>
+                      {
+                        <FlatList
+                         data={item.content}
+                         renderItem={({ item, index }) => 
 
-             <HalfInputContainer  
-                                  width={"100%"} 
-                                  inputLabel={formInputLabel.phone}
-                                  childKey={"phone"}
-                                  rootKey = {"physicianDetails"}
-                                  inputContent={this.getDataCurrent}
-                                  onChangeText={this.onChangeData}
-                                  keyboard="phone-pad"
-                                  loadSingleItem={this.state.loadSingleItem}
-                                  updateAble={this.isUpdateAble("phone")}
-                                  required = {this.required}/>         
-             <HalfInputContainer  
-                                  inputLabel={formInputLabel.nextAppointment}
-                                  childKey={"dateAppointed"}
-                                  rootKey = {"medicationDetails"}
-                                  iconName={"dateRange"}
-                                  func="datePicker"
-                                  editAble={false}
-                                  onChangeText={this.onChangeData}
-                                  inputContent={this.getDataCurrent}
-                                  loadSingleItem={this.state.loadSingleItem}
-                                  updateAble={this.isUpdateAble("dateAppointed")}
-                                  required = {this.required}/>
-             </Fold>
-             
-              {/*******************************
-              * ADDITIONAL DETAILS
-              */}        
-             <Fold
-                labelTitle = {appLabels.addistionDetailsLabel}>
-                <HalfInputContainer 
-                
-                                 width={"100%"} 
-                                 inputLabel={formInputLabel.diagnosis}
-                                 onChangeText={this.onChangeData}
-                                 childKey={"diagnosis"}
-                                 rootKey = {"medicationDetails"}
-                                 inputContent={this.getDataCurrent}
-                                 loadSingleItem={this.state.loadSingleItem}
-                                 updateAble={this.isUpdateAble("diagnosis")}
-                                 required = {this.required}/>
-             </Fold>
-          </ScrollView>
+                           
+                          item.group ?
+                          <View style={styles.hallfInputContainer}>
+                                
+                                <HalfInputContainer   
+                                         width={"49%"}
+                                         iconName = {item.group[0].iconName?item.group[0].iconName:null}
+                                         iconName2 = {item.group[0].iconName2?item.group[0].iconName2:null}
+                                         func={item.group[0].func?item.group[0].func:null}
+                                         inputLabel={item.group[0].inputLabel}
+                                         childKey={item.group[0].childKey}
+                                         rootKey ={item.group[0].rootKey}
+                                         editAble={item.group[0].editAble?item.group[0].editAble:null}
+                                         
+                                         
+                                         inputContent={this.getDataCurrent}
+                                         onChangeText={this.onChangeData}
+                                         loadSingleItem={this.state.loadSingleItem}
+                                         updateAble={this.isUpdateAble(item.group[0].childKey)}
+                                         required = {this.required}
+                                      
+                                      />
+                                 <HalfInputContainer  width={"49%"} 
+                                         width={"49%"}
+                                         iconName = {item.group[1].iconName?item.group[1].iconName:null}
+                                         iconName2 = {item.group[1].iconName2?item.group[1].iconName2:null}
+                                         func={item.group[1].func?item.group[1].func:null}
+                                         inputLabel={item.group[1].inputLabel}
+                                         childKey={item.group[1].childKey}
+                                         rootKey ={item.group[1].rootKey}
+                                         editAble={item.group[1].editAble?item.group[1].editAble:null}
+                                         
+                                         
+                                         inputContent={this.getDataCurrent}
+                                         onChangeText={this.onChangeData}
+                                         loadSingleItem={this.state.loadSingleItem}
+                                         updateAble={this.isUpdateAble(item.group[1].childKey)}
+                                         required = {this.required}
+                                      
+                                      />
+                          </View>
+                          :(<HalfInputContainer  
+                                width={"100%"}
+                                iconName = {item.iconName?item.iconName:null}
+                                iconName2 = {item.iconName2?item.iconName2:null}
+                                func={item.func?item.func:null}
+                                inputLabel={item.inputLabel}
+                                childKey={item.childKey}
+                                rootKey ={item.rootKey}
+                                editAble={item.editAble?item.editAble:null}
+                                
+                                
+                                inputContent={this.getDataCurrent}
+                                onChangeText={this.onChangeData}
+                                loadSingleItem={this.state.loadSingleItem}
+                                updateAble={this.isUpdateAble(item.childKey)}
+                                required = {this.required}/>
+                          )}/>}
+                    </Fold>
+                  )}/>
           <Notification
                 modalVisible={this.state.openModal}
                 onPress={this.saveDataConfirmed}
