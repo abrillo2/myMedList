@@ -1,6 +1,5 @@
-import React, {Suspense,useEffect,useState} from 'react';
+import React, {useEffect,useState} from 'react';
 import {View} from 'react-native';
-import { Bullets} from 'react-native-easy-content-loader';
 import {getData, saveData} from '../helpers/AsyncHelper';
 import { removeItem,getItem} from '../helpers/editItemHelper';
 
@@ -11,8 +10,10 @@ import { useIsFocused } from '@react-navigation/native';
 //import notification modal
 import  Notification from '../hooks/Notification'
 import SolidInput from '../components/SolidInput';
+import Spinner from '../helpers/Spinner';
 //static items
 import appLabels,{appDescription,formInputLabel} from '../../assets/static_resources/strings';
+import ScrollabelItemContainer from '../components/ScrollabelItemContainer';
 export default function Reconcilelist(props) {
 
     const isFocused = useIsFocused();
@@ -24,7 +25,7 @@ export default function Reconcilelist(props) {
       };
 
       const [listOfdata,setlistOfdata] = useState(null)
-      const [dataFetched, setdataFetched] = useState(false)
+      const [dataFetched,setdataFetched] = useState(false)
       const [dataChanged, setdataChanged] = useState(false)
       const [openModal, setOpenModal] = useState(false)
       const [opacity,setOpacity] = useState(1)
@@ -33,9 +34,9 @@ export default function Reconcilelist(props) {
       const [notificationContent, setNotificationContent] = useState(null)
       const [notificationTitle,setNotificationTitle] = useState(appDescription.reconcileListDeleteDescription)
       const [sortIndex,setSortIndex] = useState(0)
+      const [scrollItems,setScrollItems] = useState(null)
 
-    //import lazy component
-    const [ScrollabelItemContainer,setScrollabelItemContainer]= useState(null)
+  
 
     function listButtonPressed(action,itemId){
 
@@ -47,6 +48,8 @@ export default function Reconcilelist(props) {
                 setOpacity(0.2)
                 break
               case "edit":
+
+               console.log("acction data,",itemId)
                 let items = [...listOfdata["slipInfo"]]
                 let item = getItem(items,itemId)
                 props.navigation.navigate(appLabels.addSlipTitle,{
@@ -54,15 +57,6 @@ export default function Reconcilelist(props) {
                 })
                 break  
           }    
-    }
-
-    function getComponent(){
-      setScrollabelItemContainer(React.lazy(() => {
-        return new Promise(resolve => setTimeout(resolve, 1 * 100)).then(
-          () => import("../components/ScrollabelItemContainer")
-        );
-      }));
-
     } 
     //import item list
     async function getSlipInfoData(){
@@ -72,6 +66,18 @@ export default function Reconcilelist(props) {
             if(slipInfoData !== null){
               setlistOfdata(slipInfoData);
               setdataFetched(true)
+              setScrollItems(<View style={{opacity:opacity}}>
+                      <ScrollabelItemContainer  
+                                              listButtonPressed={listButtonPressed}
+                                              listButton={true}
+                                              data={slipInfoData["slipInfo"]}
+                                              itemlen={4}
+                                              itemLabels={state.itemLabels}
+                                              dataKeys={state.dataKeys}
+                                              onPress={sort}
+                                              sortIndex={sortIndex}/>
+
+                          </View>)
             }else{
               setOpacity(0.2)
               setNotificationTitle(appDescription.reconcileListAddItemDescription)
@@ -134,7 +140,6 @@ export default function Reconcilelist(props) {
 
     useEffect(() => {
         if(isFocused){
-          getComponent();
           getSlipInfoData();
         }
         return () => {
@@ -142,24 +147,9 @@ export default function Reconcilelist(props) {
       }, [sortIndex,dataChanged,useIsFocused()]);
 
     return (
-    <View style={[ReconcileStyle.reconcilelist]}>
+      dataFetched?<View style={[ReconcileStyle.reconcilelist]}>
        
-        <View style={{opacity:opacity}}>
-                  {/** RECONCILE list view begins */}
-                  <Suspense fallback={<Bullets active  listSize={dataFetched ? listOfdata["slipInfo"].length:10}/>}>
-                    {dataFetched ? <ScrollabelItemContainer  
-                                        listButtonPressed={listButtonPressed}
-                                        listButton={true}
-                                        data={listOfdata["slipInfo"]}
-                                        itemlen={4}
-                                        itemLabels={state.itemLabels}
-                                        dataKeys={state.dataKeys}
-                                        onPress={sort}
-                                        sortIndex={sortIndex}/>:
-                    null}
-                  </Suspense>
-
-            </View>
+            {scrollItems}
             <Notification
                           modalVisible={openModal}
                           onPress={dialogConfirmed}
@@ -170,7 +160,7 @@ export default function Reconcilelist(props) {
                           sTitle={appLabels.ok}
                           data={notificationContent}
                       />
-    </View>
+    </View>:<Spinner/>
     );
   
 }

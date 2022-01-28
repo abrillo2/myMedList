@@ -29,8 +29,8 @@ const medDetails = {
             inputLabel:formInputLabel.strength,
             childKey:"strength",
             rootKey:"medicationDetails",
-        }],
-        group:[{
+        }]},
+        {group:[{
             inputLabel:formInputLabel.dateRefilled,
             childKey:"dateRefilled",
             rootKey:"medicationDetails",
@@ -44,8 +44,8 @@ const medDetails = {
             iconName:"arrowRightBlack",
             iconName2:"arrowLefttBlack",
             func:"numberPicker",
-        }]
-    },{
+        }]}
+    ,{
         inputLabel:formInputLabel.medcineDirection,
             childKey:"direction",
             rootKey:"medicationDetails",

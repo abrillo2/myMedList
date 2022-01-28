@@ -5,6 +5,7 @@ import { getData } from '../helpers/AsyncHelper';
 import { Bullets} from 'react-native-easy-content-loader';
 import InputModal from '../hooks/InputModal';
 //components import
+import ScrollabelItemContainer from '../components/ScrollabelItemContainer';
 //import styles
 import styles from '../../assets/styles/ShareStyles'
 import { useIsFocused } from '@react-navigation/native';
@@ -13,6 +14,7 @@ import  Notification from '../hooks/Notification'
 //static
 import colors from '../../assets/static_resources/colors';
 import appLabels,{appDescription} from '../../assets/static_resources/strings';
+import Spinner from '../helpers/Spinner';
 
 
 export default function Share(props){
@@ -26,12 +28,8 @@ export default function Share(props){
       interactionsComplete: false
     })
 
-    let ScrollabelItemContainer= React.lazy(() => {
-        return new Promise(resolve => setTimeout(resolve, 5 * 100)).then(
-          () => import("../components/ScrollabelItemContainer")
-        );
-      });
 
+    const [listofAllData,setListofAlldata] = useState(null)
     const [listOfdata,setlistOfdata] = useState(null)
     const [dataFetched, setdataFetched] = useState(false)
     const [activeToggel, setActiveToggel] = useState(true)
@@ -46,8 +44,8 @@ export default function Share(props){
     const [notificationTitle,setNotificationTitle] = useState(null)
    //import item list
     async function getSavedData(){
-        const jsonValue = await getData('@myMedListSlipInfo')
-        let personalData = await getData("@myMedListMyInfo")
+        const jsonValue = listofAllData? listofAllData: await getData('@myMedListSlipInfo')
+        let personalData =personalData?personalData: await getData("@myMedListMyInfo")
 
         if (jsonValue != null){
             let currentData = activeToggel ? jsonValue["slipInfo"] : (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:[] )
@@ -62,6 +60,7 @@ export default function Share(props){
             setdataFetched(true)
             setState(itemState)
             setPersonalData(personalData)
+            setListofAlldata(jsonValue)
 
         }else{
             setOpacity(0.2)
@@ -122,7 +121,7 @@ export default function Share(props){
         }
       }, [activeToggel,useIsFocused()]);
     return (
-        <View  style={styles.share}>
+        dataFetched ? <View  style={styles.share}>
             <View style={{opacity:opacity}}>
                 <View  style={styles.shareNavContainer}>
                     <View  style={styles.shareNavToggelContainer}>
@@ -165,15 +164,13 @@ export default function Share(props){
                     </View>
                 
                 </View>
-                <Suspense fallback={<Bullets active listSize={dataFetched ? listOfdata.length:10}  />}>
-                    {dataFetched ? <ScrollabelItemContainer  listButton={false}
+                 <ScrollabelItemContainer  listButton={false}
                     data={listOfdata}
                     itemlen={state.itemLabels.length}
                     itemLabels={state.itemLabels}
                     dataKeys={state.dataKeys}
                     onPress={sort}
-                    sortIndex={sortIndex}/>:null}
-                </Suspense>
+                    sortIndex={sortIndex}/>
 
             </View>
             <InputModal
@@ -193,6 +190,6 @@ export default function Share(props){
                     showTwin={showTwin==null ? true:false}
                     sTitle={appLabels.ok}
                 />
-        </View>
+        </View>:<Spinner/>
     );
   }

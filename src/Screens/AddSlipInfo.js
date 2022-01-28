@@ -52,6 +52,7 @@ export default class AddSlipInfo extends Component {
    */
   componentDidMount=()=>{
     let currentData = this.getNavData()
+
     if(currentData){
       this.setState({
         savedData:currentData,
@@ -92,6 +93,7 @@ export default class AddSlipInfo extends Component {
   getNavData = ()=>{
     let item=this.props.route.params.item
     let key = this.props.route.params.key
+
     if(item){
       return item[key]
     }else{
@@ -189,6 +191,8 @@ export default class AddSlipInfo extends Component {
   }
   
   render() {
+
+    let halfList = []
     return (
 
       this.state.spinnerOn? <Spinner message={appMessages.savingSlip}/>:
@@ -223,47 +227,14 @@ export default class AddSlipInfo extends Component {
 
                            
                           item.group ?
-                          <View style={styles.hallfInputContainer}>
-                                
-                                <HalfInputContainer   
-                                         width={"49%"}
-                                         iconName = {item.group[0].iconName?item.group[0].iconName:null}
-                                         iconName2 = {item.group[0].iconName2?item.group[0].iconName2:null}
-                                         func={item.group[0].func?item.group[0].func:null}
-                                         inputLabel={item.group[0].inputLabel}
-                                         childKey={item.group[0].childKey}
-                                         rootKey ={item.group[0].rootKey}
-                                         editAble={item.group[0].editAble?item.group[0].editAble:null}
-                                         
-                                         
-                                         inputContent={this.getDataCurrent}
-                                         onChangeText={this.onChangeData}
-                                         loadSingleItem={this.state.loadSingleItem}
-                                         updateAble={this.isUpdateAble(item.group[0].childKey)}
-                                         required = {this.required}
-                                      
-                                      />
-                                 <HalfInputContainer  width={"49%"} 
-                                         width={"49%"}
-                                         iconName = {item.group[1].iconName?item.group[1].iconName:null}
-                                         iconName2 = {item.group[1].iconName2?item.group[1].iconName2:null}
-                                         func={item.group[1].func?item.group[1].func:null}
-                                         inputLabel={item.group[1].inputLabel}
-                                         childKey={item.group[1].childKey}
-                                         rootKey ={item.group[1].rootKey}
-                                         editAble={item.group[1].editAble?item.group[1].editAble:null}
-                                         
-                                         
-                                         inputContent={this.getDataCurrent}
-                                         onChangeText={this.onChangeData}
-                                         loadSingleItem={this.state.loadSingleItem}
-                                         updateAble={this.isUpdateAble(item.group[1].childKey)}
-                                         required = {this.required}
-                                      
-                                      />
-                          </View>
-                          :(<HalfInputContainer  
-                                width={"100%"}
+                          
+                         
+                          item.group.map((item,index)=>{
+
+                              
+
+                              let content =   <HalfInputContainer  
+                                width={"49%"}
                                 iconName = {item.iconName?item.iconName:null}
                                 iconName2 = {item.iconName2?item.iconName2:null}
                                 func={item.func?item.func:null}
@@ -278,6 +249,36 @@ export default class AddSlipInfo extends Component {
                                 loadSingleItem={this.state.loadSingleItem}
                                 updateAble={this.isUpdateAble(item.childKey)}
                                 required = {this.required}/>
+                                
+                                halfList.push(content)
+                                console.log(halfList.length)
+                                if(halfList.length >= 2){
+                                  let listCp = [...halfList]
+                                  halfList = []
+                                 return (<View style={styles.hallfInputContainer}>
+                                                {listCp}
+                                       </View>)
+
+                                  
+                                }
+
+                              })
+                          :( <View style={styles.hallfInputContainer}><HalfInputContainer  
+                                width={"100%"}
+                                iconName = {item.iconName?item.iconName:null}
+                                iconName2 = {item.iconName2?item.iconName2:null}
+                                func={item.func?item.func:null}
+                                inputLabel={item.inputLabel}
+                                childKey={item.childKey}
+                                rootKey ={item.rootKey}
+                                editAble={item.editAble?item.editAble:null}
+                                
+                                
+                                inputContent={this.getDataCurrent}
+                                onChangeText={this.onChangeData}
+                                loadSingleItem={this.state.loadSingleItem}
+                                updateAble={this.isUpdateAble(item.childKey)}
+                                required = {this.required}/></View>
                           )}/>}
                     </Fold>
                   )}/>

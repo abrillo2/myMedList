@@ -19,40 +19,17 @@ export default class ScrollabelItemContainer extends Component {
 
   render() {
     return (
-        <ScrollView horizontal={true}  style={ReconcileStyle.scrollr}>
-            <View  style={ReconcileStyle.reconcilelist1_bodycontainerr} >
-                <View  style={ReconcileStyle.listlabelcontainerr}>
-                    
-                    {this.state.itemLabels.map((item,index)=>{
-                        return  <TouchableOpacity 
-                        onPress={()=>{
-                          this.props.onPress(index)} } 
-                        key={index}  style={ReconcileStyle.labelTopContainerR}>
-                                  <View  style={ReconcileStyle.labelContainerR}>
-                                    <Text  style={ReconcileStyle.labelTextStyleR}>{item}</Text>
-                                    {Icon("filter-list",ReconcileStyle.iconStyle)}
-                                  </View>
-                                </TouchableOpacity>
-                    })}
-
-                </View>
-
-                {/** reconcile list item value container begins here */}
-                
-                <ScrollView horizontal ={false} style={ReconcileStyle.scroll2r}>
+        <View horizontal={true}  style={ReconcileStyle.scrollr}>
+            
                      <ReconcileItems listButton={this.props.listButton}
                                      sortIndex={this.props.sortIndex}
                                      data={this.props.data}
                                      dataKeys={this.props.dataKeys}
                                      itemlen={this.props.itemlen}
-                                     listButtonPressed={this.props.listButtonPressed}/>
-                </ScrollView>
-                {/** reconcile list item value container ends here */}
-                
-            </View>
-            {/** RECONCILE list view ends */}
-          
-        </ScrollView>
+                                     listButtonPressed={this.props.listButtonPressed}
+                                     itemLabels={this.props.itemLabels}
+                                     onPress={this.props.onPress}/>
+                      </View>
     );
   }
 }
