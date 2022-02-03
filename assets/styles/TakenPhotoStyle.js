@@ -1,14 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//helper functions
-function hrp(value){
-    return value*100 / 736;
-  }
-  
-function wrp(value){
-    return value*100 / 414;
-}
+import { wrp ,hrp} from './Dim';
 
 
 export default StyleSheet.create({
@@ -21,22 +13,22 @@ export default StyleSheet.create({
   },
     slipimagecontainer: {
         position: "relative",
-        width: wp("90%"),
-        height:hp("80%"),
+        width: '90%',
+        height:hrp(600),
   },
     takenPhotoBody:{
         position:"relative",
-        marginTop:hp(hrp(10)),
-        marginBottom:hp(hrp(10)),
+        marginTop:(hrp(10)),
+        marginBottom:(hrp(10)),
         flex:1,
         justifyContent:"center",
-        alignItems:"center"
+        alignItems:"center",
   },
     twinButtonContainer:{
-         marginTop:hp(hrp(10)),
-         marginTop:hp(hrp(10)),
+         marginTop:(hrp(10)),
+         marginTop:(hrp(10)),
          flexDirection:"row",
-         width : wp("90%"),
+         width : ("90%"),
          justifyContent:"space-between",
 
   }

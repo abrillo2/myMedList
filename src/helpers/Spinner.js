@@ -9,7 +9,7 @@ class Spinner extends Component {
         <Text
             style={styles.messageStyle}
           >
-          {this.props.message?this.props.message:appMessages.wait}
+          {this.props.message?this.props.message:null}
         </Text>
         <ActivityIndicator size="large" />
       </View>

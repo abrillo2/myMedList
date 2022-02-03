@@ -1,14 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//helper functions
-function hrp(value){
-    return value*100 / 736;
-  }
-  
-function wrp(value){
-    return value*100 / 414;
-}
+import { wrp ,hrp} from './Dim';
 
 
 export default StyleSheet.create({
@@ -17,13 +9,13 @@ export default StyleSheet.create({
         backgroundColor:"#3685b5",
         position:"relative",
         marginTop:-4,
-        paddingTop:hp(hrp(15)),
+        paddingTop:(hrp(15)),
         shadowColor: "rgb(0,  0,  0)",
         shadowOpacity: 0.2,
-        elevation: wp(wrp(8)),
+        elevation: (wrp(8)),
         shadowOffset: {
-          width: wp(wrp(0)),
-          height: hp(hrp(2))}
+          width: (wrp(0)),
+          height: (hrp(2))}
     },
     drawerHeader:{
         position:"relative",
@@ -32,21 +24,21 @@ export default StyleSheet.create({
     },
     drawerHeaderIcon:{
         position:"relative",
-        width:wp(wrp(72)),
-        height:hp(hrp(64)),
+        width:(wrp(72)),
+        height:(hrp(64)),
     },
     drawerHeaderText:{
         position: "relative",
         backgroundColor: "rgba(255, 255, 255, 0)",
         color: "#00bfe9",
-        fontSize: wp(wrp(20)),
+        fontSize: (wrp(20)),
         fontWeight: "400",
         fontFamily: "Roboto-Medium",
         textAlign: "center",
     },
     cpContianer:{
-        marginTop:hp(hrp(10)),
-        marginBottom:hp(hrp(10))
+        marginTop:(hrp(10)),
+        marginBottom:(hrp(10))
     },
     labelStyle:{
         color: '#3685b5', 
@@ -56,12 +48,12 @@ export default StyleSheet.create({
         opacity: 1,
         position: "relative",
         backgroundColor: "rgba(34, 171, 226, 0.5)",
-        width: wp(("70%")),
-        height: hp(hrp(1)),
+        width: (("70%")),
+        height: (hrp(1)),
         bottom:0
     },
     drawerItems:{
-        paddingTop:hp(hrp(10))
+        paddingTop:(hrp(10))
     }
     
 });

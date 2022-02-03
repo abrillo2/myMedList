@@ -43,12 +43,20 @@ export default function Share(props){
     const [showTwin, setShowTwin] = useState(true)
     const [notificationTitle,setNotificationTitle] = useState(null)
    //import item list
-    async function getSavedData(){
-        const jsonValue = listofAllData? listofAllData: await getData('@myMedListSlipInfo')
+   const [refresh, setRefresh] = useState(true)
+
+   function selectToggelItem(jsonValue){
+         return activeToggel ? jsonValue["slipInfo"] : 
+                            (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:
+                                                              [] )
+   }
+
+   async function getSavedData(){
+        const jsonValue = listofAllData && !refresh ? listofAllData: await getData('@myMedListSlipInfo')
         let personalData =personalData?personalData: await getData("@myMedListMyInfo")
 
         if (jsonValue != null){
-            let currentData = activeToggel ? jsonValue["slipInfo"] : (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:[] )
+            let currentData = selectToggelItem(jsonValue)
             
             let itemState = {...state}
             let labelItem = activeToggel ? "Date added" : "Stop date"
@@ -56,6 +64,7 @@ export default function Share(props){
             
             itemState.itemLabels[7] = labelItem
             itemState.dataKeys[7] = keyItem
+            
             setlistOfdata(currentData);
             setdataFetched(true)
             setState(itemState)
@@ -110,23 +119,26 @@ export default function Share(props){
     }
 
     function sort(index){
+        setRefresh(false)
         setSortIndex(index)
-      }
+    }
 
     useEffect(() => {
-        if(isFocused){
+        if(isFocused ){
           getSavedData()
+        }else{
+          setRefresh(true)
         }
         return () => {
         }
       }, [activeToggel,useIsFocused()]);
     return (
-        dataFetched ? <View  style={styles.share}>
+         <View  style={styles.share}>
             <View style={{opacity:opacity}}>
                 <View  style={styles.shareNavContainer}>
                     <View  style={styles.shareNavToggelContainer}>
                         <TouchableOpacity
-                            onPressIn={()=>{setActiveToggel(true)}}
+                            onPressIn={()=>{setActiveToggel(true); setdataFetched(false);}}
                             style={styles.toggelContainer}>
                             <View  style={activeToggel ? [styles.leftTogelInner,{
                                 backgroundColor: colors.activeColor,borderRightWidth: ((1))}]:[styles.leftTogelInner]}>
@@ -135,7 +147,7 @@ export default function Share(props){
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPressIn={()=>{setActiveToggel(false)}}  
+                            onPressIn={()=>{setActiveToggel(false);setdataFetched(false);}}  
                             style={styles.toggelContainer}>
                             <View  style={!activeToggel ? [styles.righttogelinner,{
                                 backgroundColor: colors.activeColor,borderLeftWidth: ((1))}]:
@@ -164,13 +176,17 @@ export default function Share(props){
                     </View>
                 
                 </View>
+                 
+                {dataFetched ?
+                 
                  <ScrollabelItemContainer  listButton={false}
                     data={listOfdata}
                     itemlen={state.itemLabels.length}
                     itemLabels={state.itemLabels}
                     dataKeys={state.dataKeys}
+                    refresh={refresh}
                     onPress={sort}
-                    sortIndex={sortIndex}/>
+                    sortIndex={sortIndex}/>:<View style={{marginTop:'50%'}}><Spinner/></View>}
 
             </View>
             <InputModal
@@ -190,6 +206,6 @@ export default function Share(props){
                     showTwin={showTwin==null ? true:false}
                     sTitle={appLabels.ok}
                 />
-        </View>:<Spinner/>
+        </View>
     );
   }

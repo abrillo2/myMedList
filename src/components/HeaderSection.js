@@ -1,27 +1,28 @@
 //imports
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import {Text, View, TouchableOpacity,StyleSheet} from 'react-native';
 import appLabels from '../../assets/static_resources/strings.js';
 
 import icon from '../hooks/Icon.js';
 //import heaader style
 import headerStyle from '../../assets/styles/HeaderStyle.js'
+//options menu
+import Options from './Options.js';
 //Header section
 export default function HeaderSection(props){
     //  this.setState(...)
-    
-    
     const navigation = props.navigation;
     const title = props.Title
-    const  goback = title == appLabels.shareTitle | title ==appLabels.reconcileTitle | title ==appLabels.homeTitle
+    const  goback = title == appLabels.addSlipTitle//appLabels.shareTitle | title ==appLabels.reconcileTitle | title ==appLabels.homeTitle
 
     function onPressOpenDrawer(){
       
-      !goback ?navigation.goBack(): navigation.openDrawer();
+      //!goback ?navigation.goBack(): navigation.openDrawer();
+      navigation.openDrawer();
     }
 
-    let iconName  = !goback ? "arrow-back":"menu"
+    let iconName  ="menu";//! goback ? "arrow-back":"menu"
+
     return(
         <View  style={headerStyle.appBarTopContainer}>
                <View  style={headerStyle.appBarElevationContainer}>
@@ -36,17 +37,13 @@ export default function HeaderSection(props){
                <View  style={headerStyle.opitionContainer}>
                        <TouchableOpacity onPress={onPressOpenDrawer}>
                          <View  style={headerStyle.leftOpitionContainer}>
-                         {icon(iconName,headerStyle.iconStyle,24)}
+                         {icon(iconName,headerStyle.iconStyle,30)}
                              <Text  style={headerStyle.pageTitleStyle}>{props.Title}</Text>
                          </View>  
                        </TouchableOpacity>
                        <View  style={headerStyle.rightOpitionContainer}>
-                            {goback? null:  <Icon.Button
-                                  underlayColor={'white'}
-                                  name="options-vertical"
-                                  backgroundColor="rgba(34, 171, 226, 1)"
-                                  onPress={()=>{ navigation.openDrawer()}}
-                                />}
+                            {props.onPressOption ? <Options onPressOption={props.onPressOption}/>:  null
+                                }
                         </View>
                  </View>
               

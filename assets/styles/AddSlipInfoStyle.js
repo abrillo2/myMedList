@@ -1,57 +1,48 @@
 //imports
-import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//helper functions
-function hrp(value){
-    return value*100 / 736;
-  }
-  
-function wrp(value){
-    return value*100 / 414;
-}
-
+import {StyleSheet} from 'react-native';
+import { wrp ,hrp} from './Dim';
 
 export default StyleSheet.create({
     singlereconcile: {
       opacity: 1,
       position: "relative",
       backgroundColor: "rgba(255, 255, 255, 1)",
-      flex:1
+      flex:1,
     },
     bodycontainer: {
       opacity: 1,
       position: "relative",
       backgroundColor: "transparent",
-      marginTop: hp(hrp(10)),
-      paddingTop: hp(hrp(0)),
-      paddingRight: wp(wrp(0)),
-      paddingBottom: hp(hrp(0)),
-      paddingLeft: wp(wrp(0)),
+      marginTop: (hrp(10)),
+      paddingTop: (hrp(0)),
+      paddingRight: (wrp(0)),
+      paddingBottom: (hrp(0)),
+      paddingLeft: (wrp(0)),
   
       shadowColor: "rgb(0,  0,  0)",
       shadowOpacity: 0.2,
-      elevation: wp(wrp(7)),
+      elevation: (wrp(7)),
       shadowOffset: {
         width: 0,
-        height: wp(wrp(1))
+        height: (wrp(1))
       },
-      shadowRadius: wp(wrp(5)),
+      shadowRadius: (wrp(5)),
     },
     twinButtonContainer:{
       position:"relative",
-      marginTop:hp(hrp(10)),
-      marginBottom:hp(hrp(35)),
+      marginTop:(hrp(10)),
+      marginBottom:(hrp(30)),
       paddingLeft:"5%",
       paddingRight:"5%",
       flexDirection:"row",
-      width: wp("100%"),
+      width: ("100%"),
       justifyContent:"space-between"
    },  
    hallfInputContainer: {
     opacity: 1,
     position: "relative",
     backgroundColor: "transparent",
-    width: wp("88.5%"),
+    width: ("100%"),
     flexDirection: "row",
     justifyContent: "space-between",
   },

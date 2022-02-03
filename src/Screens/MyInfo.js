@@ -46,10 +46,16 @@ export default class MyInfo extends Component {
       let parentData = {...currentData[parent]}
       let result =  parentData[child] ? parentData[child] :null
       
-      if(child==="pin" && result === "" | (result.length < 2 | result===null)){
-        return "0000" 
+      if(child == 'pin'){
+        if((result === "" | result===null)){
+          return "0000" 
+        }else if(result.length < 2){
+          return '0000'
+        }else{
+          return result
+        }
       }else{
-        return result
+          return result
       }
       
     }else if(child==="pin"){
@@ -116,12 +122,14 @@ export default class MyInfo extends Component {
                   saveKey={"@myMedListMyInfo"}>
 
             <FlatList
+                  removeClippedSubviews={false}
                   data={myInfoFormLabels.folds}
                   renderItem={({ item, index }) => (
                     <Fold labelTitle = {item.title}>
                       {
                         <FlatList
                          data={item.content}
+                         removeClippedSubviews={false}
                          renderItem={({ item, index }) => 
 
                            
@@ -175,6 +183,7 @@ export default class MyInfo extends Component {
                           )}/>}
                     </Fold>
                   )}/>
+                  
         </MyInfoCall>
       );
   }

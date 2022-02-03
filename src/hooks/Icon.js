@@ -1,6 +1,7 @@
  //select input icon
  import React from 'react';
  import Icon from 'react-native-vector-icons/MaterialIcons';
+ import { wrp } from '../../assets/styles/Dim';
  export default function icon(iconName,iconStyle,size,colorIn){
     var icon = "";
     var color = "#189AB4";
@@ -22,5 +23,5 @@
     name={icon}
     color={color}
     style={iconStyle}
-    size={size ?size:24}/>)
+    size={size ?wrp(size):wrp(24)}/>)
 }

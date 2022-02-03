@@ -11,21 +11,28 @@ export default function MyInfoCall(props){
 
   const [staticData, setStaticData] = useState({})
   const [disabled, setDisabled] = useState(true)
-
   useEffect(() => {
+    console.log('savedData ',props.savedData,' refresh:',props.refresh, " disabled: ", disabled)
     if(props.rootKey && props.childKey && props.value){
       onChangeData()
-    }else if(props.savedData && disabled){
+      
+    }else if(props.savedData && (disabled | props.refresh)){
+      
       loadSavedData()
     }
+    props.stopRefresh ? props.stopRefresh(): null
     requiredFieldsFullfilled()
+
+   
     return () => {
-    }
-  }, [props]);
+  
+    } 
+  }, [props.childKey,props.rootKey,props.value,
+      props.saveData,props.savedData,props.saveKey]);
 
   //populate saved data 
   function loadSavedData() {
-    let sateData = {...staticData}
+    let sateData = {}
     Object.keys(props.savedData).forEach( rootKey => {
       Object.keys(props.savedData[rootKey]).forEach(childKey=>{
           
@@ -33,14 +40,19 @@ export default function MyInfoCall(props){
           
       })
   })
-  setStaticData(sateData)
-  setDisabled(false)
+    console.log("params at loadSaved: ",{...sateData})
+    props.navigation.setParams({slipData:{...sateData}})
+    setDisabled(false)
+    setStaticData(sateData)
   }
   
   //handel other text input changes for personalDetail
   function onChangeData(){
     let sateData = {...staticData}
     sateData[props.rootKey] = {...sateData[props.rootKey],[props.childKey]:props.value}
+
+    console.log("params at onChangeData: ",{...sateData})
+    props.navigation.setParams({slipData:{...sateData}})
     setStaticData(sateData)
     
   }

@@ -27,7 +27,7 @@ const Notification = (props) => {
 
             <Text style={styles.modalText}>{props.pTitle}</Text>
             {props.data}
-            {props.showTwin ? <View style={styles.twinButtonContainer}>
+            <View style={styles.twinButtonContainer}>
                 <Button buttonLabel={props.lTitle} 
                         onPress={()=> pressed(true)}
                         h={2}
@@ -38,13 +38,7 @@ const Notification = (props) => {
                         h={2}
                         w={100}
                         />
-            </View>:
-                <View style={styles.twinButtonContainer}>
-                    <Button buttonLabel={props.sTitle} 
-                                         onPress={()=> pressed(true)}
-                                         h={2}
-                                         w={100}/>
-                </View>}
+            </View>
             
           </View>
         </View>

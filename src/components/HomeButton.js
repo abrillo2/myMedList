@@ -69,7 +69,7 @@ export default class HomeButton extends React.Component{
                             name={this.props.iconName}
                             style={styles.iconStyle}
                             size={24}
-                        />  
+                            color={'white'}/> 
                         <Text  style={styles.homeButtonLabel}>{this.props.buttonLabel}</Text>
 
                     </View>

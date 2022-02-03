@@ -96,8 +96,8 @@ render() {
                 onPressIn={() => this.onButtonPress(true)} 
                 onPressOut={() => this.onButtonPress(false)} 
                  style={[styles.buttonContainer,
-                        {width: wp(wrp(this.setButtonSize(this.props.w,"x")))},
-                        {height:hp(hrp(this.setButtonSize(this.props.h,"y")))},
+                        {width: this.setButtonSize(this.props.w,"x")},
+                        {height:this.setButtonSize(this.props.h,"y")},
                         this.props.disabled?{ opacity:0.5}:{ opacity:1}
                         ]}>
                     <View style={styles.buttonTextIconContainer}>                            

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList,View, ScrollView} from 'react-native';
-import {updateItem} from '../helpers/editItemHelper';
+import {FlatList,View} from 'react-native';
 import { saveData as saveDataAsync} from '../helpers/AsyncHelper';
 
 //components import
@@ -15,7 +14,12 @@ import styles from '../../assets/styles/AddSlipInfoStyle'
 import  Notification from '../hooks/Notification'
 //static resources
 import appObjects,{slipInfoFormLabels} from '../../assets/static_resources/objects'
-import appLabels,{appDescription, formInputLabel,appMessages} from '../../assets/static_resources/strings'
+import appLabels,{appDescription} from '../../assets/static_resources/strings'
+//helpers
+import { handelOption } from '../helpers/UpdateSlipHelper';
+import HeaderSection from '../components/HeaderSection';
+import {getNavData,getCurrentData,prepSaveData,required} from '../helpers/AddSlipDetailsHelper'
+
 
 export default class AddSlipInfo extends Component {
 
@@ -28,48 +32,89 @@ export default class AddSlipInfo extends Component {
         value:null,
         savedData:null,
         itemKey:null,
-        sexChoice: [
-          { label: 'Male', value: 'Male' },
-          { label: 'Female', value: 'Female'}],
-        stateData: require("../../assets/data/states.json"),
-        requiredItems:appObjects.addSlipInfoRequiredItems,
         
-        updateAbleItems:null,
-        opendateAppointed : false,
-        opendateRefilled : false,
-        openDatePicker : false,
-        disabled:true,
         openModal:false,
         opacity:1,
         formData:null,
         imageData:null,
         dateAdded:new Date().toLocaleDateString("en-US"),
-        spinnerOn:false
+
+        spinnerOn:false,
+        refresh:false,
+
+        requiredItems:appObjects.addSlipInfoRequiredItems
       };
   }
   /****
    * init screen
    */
   componentDidMount=()=>{
-    let currentData = this.getNavData()
+    let currentData = getNavData(this.props.route)
 
+   
     if(currentData){
       this.setState({
         savedData:currentData,
         itemKey: this.props.route.params.key,
         updateAbleItems:appObjects.addSlipInfoUpdateableItems,
       })
+      this.props.navigation.setOptions({
+        header:() => {
+          return <HeaderSection navigation={this.props.navigation} Title={appLabels.addSlipTitle} 
+          onPressOption={this.handelOptionMenu}
+                />;
+        },
+      });
     }else{
       this.onChangeData("medicationDetails","dateAdded", this.state.dateAdded)
 
     }
   }
 
+  /**************
+   * check if refresh was recently called
+   */
+
+  stopRefresh=()=>{
+
+       if(this.state.refresh){
+         this.setState({
+           refresh:false
+         })
+       }
+
+  }
+
+  /**********************
+   * 
+   * handel option
+   */
+  handelOptionMenu=async(item)=>{
+    this.setState({
+    spinnerOn:true
+    })
+    let response = await handelOption(item, this.props.navigation,this.state.itemKey,"@myMedListSlipInfo")
+    
+    if(response != null){
+      console.log("response is ", response.data[response.key])
+      this.setState({
+        savedData:response.data[response.key],
+        itemKey:response.key,
+        spinnerOn:false,
+        refresh:true,
+        rootKey:null,
+        childKey:null,
+        value:null,
+      })
+    }
+  
+  }
+
   /***************************
    * check updateAble items
    */
 
-  isUpdateAble = (childKey)=>{
+  isUpdateAble = (childKey)=>{ 
     if(this.state.updateAbleItems){
       return this.state.updateAbleItems.indexOf(childKey) !== -1;
     }else{
@@ -87,42 +132,17 @@ export default class AddSlipInfo extends Component {
       value
     })
   }
-  /*********************************
-   * track drawer navigation params
-   */
-  getNavData = ()=>{
-    let item=this.props.route.params.item
-    let key = this.props.route.params.key
-
-    if(item){
-      return item[key]
-    }else{
-      return false
-    }
-  }
   /*******************************
    * parse data from navigation params
    * or return image or null
    */
   getDataCurrent =(parent,child)=>{
-    let currentData = this.getNavData()
-    if(currentData){
-      let parentData = {...currentData[parent]}
-      let result =  parentData[child] ? parentData[child] :null
-      return result
-    }else if(child==="imageData"){
-      return this.props.route.params.imageData
-    }else{
-      return null
-    }
+    return getCurrentData(parent,child,this.props.route)
   }
-
-
   /**************************
    * track pop up 
    */
   saveDataConfirmed=(data,confirmed)=>{
-    console.log("confirmed ",confirmed)
     this.setState({
       openModal:false,
       opacity:1
@@ -135,67 +155,28 @@ export default class AddSlipInfo extends Component {
       saveDataAsync(this.state.formData,"@myMedListSlipInfo")
 
       setTimeout(()=>{
-        this.props.navigation.navigate(appLabels.homeTitle)},1000)
-      
-    }
+        this.props.navigation.navigate(!confirmed ?appLabels.reconcileTitle: appLabels.homeTitle)},1000)}
 
   }
   /******************************
    * save/update slip info
    */
-  saveData=async(data,currentData)=>{
-    var date = new Date();
-    var itemId =   date.getFullYear()+ ""+ date.getMonth()+ "" 
-                 + date.getDate()+ ""+date.getHours()+ ""
-                 + date.getMinutes()+ "" + date.getSeconds()+ "" + date.getMilliseconds()+"";
+  saveData=(data,currentData)=>{
 
-    var slipInfo = {"slipInfo":[],"slipInfoDiscontinued":[]};
-
-      if(data == null){
-        slipInfo["slipInfo"].push(
-          {[itemId]:currentData}
-        )
-      }else{
-        if(this.state.itemKey != null){
-           slipInfo = updateItem(data,this.state.itemKey,currentData)
-           //slipInfo["slipInfo"].push({[this.state.itemKey]:currentData})
-        }else{
-          data["slipInfo"].push({[itemId]:currentData})
-          slipInfo = data
-        }
-
-      }
-      this.setState({
+    var slipInfo = prepSaveData(data,currentData,this.state.itemKey);
+    this.setState({
         formData:slipInfo,
         openModal:true,
         opacity:0.2
       })
   }
 
-  /**************************
-   * chec if field is required
-   */
-  required=(child,parent)=>{
-    
-    let result = false;
-    this.state.requiredItems.forEach(element => {
-       let childKey = element[1]
-       let parentKey = element[0]
-       if(child == childKey && parent == parentKey){
-          result =  true;
-       }
-    });
-
-    return result
-    
-  }
-  
   render() {
 
     let halfList = []
     return (
 
-      this.state.spinnerOn? <Spinner message={appMessages.savingSlip}/>:
+      this.state.spinnerOn? <Spinner/>:
       <MyInfoCall 
                   rootKey={this.state.rootKey}
                   childKey={this.state.childKey}
@@ -204,25 +185,39 @@ export default class AddSlipInfo extends Component {
                   requiredItems={this.state.requiredItems}
                   saveData={this.saveData}
                   savedData={this.state.savedData}
-                  saveKey={"@myMedListSlipInfo"}>
-            {/** Header Section */}
+                  saveKey={"@myMedListSlipInfo"}
 
-               <View style={{alignItems:'center',paddingLeft:15}}>
-               <SlipPicEditContainer
-                                    childKey={"imageData"}
-                                    rootKey = {"medicationDetails"}
-                                    onChangeText={this.onChangeData}
-                                    inputContent={this.getDataCurrent}
-                                    updateAble={this.isUpdateAble("imageData")}/>      
-              </View>          
+                  refresh={this.state.refresh}
+                  stopRefresh={this.stopRefresh}>
+
+
+      <FlatList
+        data={[1]}
+        removeClippedSubviews={false}
+        extraData={this.state.refresh}
+        renderItem={({ item, index }) => (    
+          
+          
+        <View>
+                 <SlipPicEditContainer
+          childKey={"imageData"}
+          rootKey = {"medicationDetails"}
+          onChangeText={this.onChangeData}
+          inputContent={this.getDataCurrent}
+          loadKey={this.props.route.params.key}
+          updateAble={this.isUpdateAble("imageData")}/> 
+
               <FlatList
                   data={slipInfoFormLabels.folds}
+                  extraData={this.state.itemKey}
+                  removeClippedSubviews={false}
                   renderItem={({ item, index }) => (
 
                     <Fold labelTitle = {item.title}>
                       {
                         <FlatList
                          data={item.content}
+                         extraData={this.state.itemKey}
                          renderItem={({ item, index }) => 
 
                            
@@ -241,14 +236,14 @@ export default class AddSlipInfo extends Component {
                                 inputLabel={item.inputLabel}
                                 childKey={item.childKey}
                                 rootKey ={item.rootKey}
-                                editAble={item.editAble?item.editAble:null}
+                                editAble={item.editAble!=null?item.editAble:null}
                                 
                                 
                                 inputContent={this.getDataCurrent}
                                 onChangeText={this.onChangeData}
                                 loadSingleItem={this.state.loadSingleItem}
                                 updateAble={this.isUpdateAble(item.childKey)}
-                                required = {this.required}/>
+                                required = {required}/>
                                 
                                 halfList.push(content)
                                 console.log(halfList.length)
@@ -271,26 +266,27 @@ export default class AddSlipInfo extends Component {
                                 inputLabel={item.inputLabel}
                                 childKey={item.childKey}
                                 rootKey ={item.rootKey}
-                                editAble={item.editAble?item.editAble:null}
+                                editAble={item.editAble!=null?item.editAble:null}
                                 
                                 
                                 inputContent={this.getDataCurrent}
                                 onChangeText={this.onChangeData}
                                 loadSingleItem={this.state.loadSingleItem}
                                 updateAble={this.isUpdateAble(item.childKey)}
-                                required = {this.required}/></View>
+                                required = {required}/></View>
                           )}/>}
                     </Fold>
-                  )}/>
-          <Notification
+                  )}/></View>
+    )}/>
+              <Notification
                 modalVisible={this.state.openModal}
                 onPress={this.saveDataConfirmed}
                 pTitle={appDescription.addSlipInfoSaveDescription}
                 lTitle={appLabels.yes}
                 rTitle={appLabels.no}
                 showTwin={true}
-            />
-        </MyInfoCall>
+            /> 
+      </MyInfoCall>
       );
   }
 }

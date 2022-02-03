@@ -40,7 +40,9 @@ export default function Addslip(props) {
 
   return (
     <View  style={styles.addslip}>
-        {spinnerOf? <View style={styles.bodyContainer}>
+        {spinnerOf? 
+        
+        <View style={styles.bodyContainer}>
           <Text  style={styles.addSlipDescription}>{appDescription.addSlipDescription}</Text>
           <TouchableOpacity onPress={() => openCam("photo")}>
             <ReactImage  source={require('../../assets/img/photoCamera.png')} style={styles.cameraIconStyle} />

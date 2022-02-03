@@ -1,21 +1,13 @@
 //imports
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//helper functions
-function hrp(value){
-    return value*100 / 736;
-  }
-  
-function wrp(value){
-    return value*100 / 414;
-}
+import { wrp ,hrp} from './Dim';
 
 
 export default StyleSheet.create({
     cpTitle:{
         position: "relative",
         color: "rgba(255, 255, 255, 1)",
-        fontSize: wp(wrp(15)),
+        fontSize: (wrp(15)),
         fontWeight: "400",
         fontFamily: "Roboto-Medium",
         textAlign: "center",
@@ -31,7 +23,7 @@ export default StyleSheet.create({
         position: "relative",
         backgroundColor: "rgba(255, 255, 255, 0)",
         color: "#00bfe9",
-        fontSize: wp(wrp(20)),
+        fontSize: (wrp(20)),
         fontWeight: "400",
         fontFamily: "Roboto-Medium",
         textAlign: "center"

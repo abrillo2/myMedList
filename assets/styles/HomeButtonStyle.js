@@ -1,14 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//helper functions
-function hrp(value){
-    return value*100 / 736;
-  }
-  
-function wrp(value){
-    return value*100 / 414;
-}
+import { wrp ,hrp} from './Dim';
 
 
 export default StyleSheet.create({
@@ -17,9 +9,9 @@ export default StyleSheet.create({
          opacity: 1,
          position: "relative",
          backgroundColor: "transparent",
-         marginTop: hp(hrp(25)),
-         width: wp(wrp(344)),
-         height: hp(hrp(50)),
+         marginTop: (hrp(25)),
+         width: (wrp(344)),
+         height: (hrp(50)),
       },
       homeButtonContainer: {
          opacity: 1,
@@ -33,8 +25,8 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         width: wp(wrp(344)),
-         height: hp(hrp(50)),
+         width: (wrp(344)),
+         height: (hrp(50)),
          left: 0,
          top: 0
       },
@@ -51,8 +43,8 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         width: wp(wrp(344)),
-         height: hp(hrp(50)),
+         width: (wrp(344)),
+         height: (hrp(50)),
          left: 0,
          top: 0,
          alignItems:"center",
@@ -72,8 +64,8 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         width: wp(wrp(344)),
-         height: hp(hrp(50))
+         width: (wrp(344)),
+         height: (hrp(50))
       },
       homeButtonElevationShadow: {
          opacity: 1,
@@ -87,8 +79,8 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         width: wp(wrp(344)),
-         height: hp(hrp(50)),
+         width: (wrp(344)),
+         height: (hrp(50)),
       },
       homeButtonElevationShadowRec1: {
          opacity: 1,
@@ -102,30 +94,30 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         borderTopWidth: wp(wrp(1)),
+         borderTopWidth: (wrp(1)),
          borderTopColor: "rgba(0, 0, 0, 0)",
-         borderRightWidth: wp(wrp(1)),
+         borderRightWidth: (wrp(1)),
          borderRightColor: "rgba(0, 0, 0, 0)",
-         borderBottomWidth: wp(wrp(1)),
+         borderBottomWidth: (wrp(1)),
          borderBottomColor: "rgba(0, 0, 0, 0)",
-         borderLeftWidth: wp(wrp(1)),
+         borderLeftWidth: (wrp(1)),
          borderLeftColor: "rgba(0, 0, 0, 0)",
-         borderTopLeftRadius: wp(wrp(4)),
-         borderTopRightRadius: wp(wrp(4)),
-         borderBottomLeftRadius: wp(wrp(4)),
-         borderBottomRightRadius: wp(wrp(4)),
+         borderTopLeftRadius: (wrp(4)),
+         borderTopRightRadius: (wrp(4)),
+         borderBottomLeftRadius: (wrp(4)),
+         borderBottomRightRadius: (wrp(4)),
          shadowColor: "rgb(0,  0,  0)",
          shadowOpacity: 0.2,
-         elevation: wp(wrp(5)),
+         elevation: (wrp(5)),
          shadowOffset: {
            width: 0,
-           height: wp(wrp(1))
+           height: (wrp(1))
         },
-         shadowRadius: wp(wrp(5)),
-         width: wp(wrp(343)),
-         height: hp(hrp(49)),
-         left: wp(wrp(1)),
-         top: wp(wrp(1))
+         shadowRadius: (wrp(5)),
+         width: (wrp(343)),
+         height: (hrp(49)),
+         left: (wrp(1)),
+         top: (wrp(1))
       },
       homeButtonColor: {
         //"opacity: 1,
@@ -139,12 +131,12 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         borderTopLeftRadius: wp(wrp(4)),
-         borderTopRightRadius: wp(wrp(4)),
-         borderBottomLeftRadius: wp(wrp(4)),
-         borderBottomRightRadius: wp(wrp(4)),
-         width: wp(wrp(344)),
-         height: hp(hrp(50)),
+         borderTopLeftRadius: (wrp(4)),
+         borderTopRightRadius: (wrp(4)),
+         borderBottomLeftRadius: (wrp(4)),
+         borderBottomRightRadius: (wrp(4)),
+         width: (wrp(344)),
+         height: (hrp(50)),
          left: 0,
          top: 0
       },
@@ -160,8 +152,8 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         width: wp(wrp(344)),
-         height: hp(hrp(50)),
+         width: (wrp(344)),
+         height: (hrp(50)),
          left: 0,
          top: 0
       },
@@ -170,19 +162,19 @@ export default StyleSheet.create({
          position: "relative",
          backgroundColor: "rgba(255, 255, 255, 0)",
          color: "rgba(255, 255, 255, 1)",
-         fontSize: wp(wrp(20)),
+         fontSize: (wrp(20)),
          fontWeight: "500",
          fontStyle: "normal",
          letterSpacing: 1,
          fontFamily: "Roboto-Regular",
-         marginLeft: wp(wrp(20)),
+         marginLeft: (wrp(20)),
       }, 
       iconStyle: {
          opacity: 1,
          position: "relative",
-         marginTop: hp(hrp(0)),
-         marginRight: wp(wrp(0)),
-         marginBottom: hp(hrp(0)),
+         marginTop: (hrp(0)),
+         marginRight: (wrp(0)),
+         marginBottom: (hrp(0)),
          marginLeft: "30%",
          backgroundColor: "transparent",
       },

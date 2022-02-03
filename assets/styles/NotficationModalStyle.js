@@ -1,15 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//helper functions
-function hrp(value){
-    return value*100 / 736;
-  }
-  
-function wrp(value){
-    return value*100 / 414;
-}
-
+import { wrp ,hrp} from './Dim';
 
 export default StyleSheet.create({
     centeredView: {
@@ -55,7 +46,7 @@ export default StyleSheet.create({
       position: "relative",
       backgroundColor: "rgba(255, 255, 255, 0)",
       color: "rgba(34, 171, 226, 1)",
-      fontSize: wp(wrp(17)),
+      fontSize: (wrp(17)),
       fontWeight: "500",
       fontFamily: "Roboto-Bold",
       marginBottom:"10%",
@@ -63,8 +54,8 @@ export default StyleSheet.create({
     },
     twinButtonContainer:{
       position:"relative",
-      marginTop:hp(hrp(50)),
-      marginBottom:hp(hrp(20)),
+      marginTop:(hrp(50)),
+      marginBottom:(hrp(20)),
       flexDirection:"row",
       width:"100%",
       justifyContent:"space-evenly",

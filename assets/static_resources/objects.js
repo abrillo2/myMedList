@@ -15,7 +15,15 @@ const appObjects = {
     ["physicianDetails","firstName"],["physicianDetails","lastName"]],
     myInfoSexChoices:[
         { label: 'Male', value: 'Male' },
-        { label: 'Female', value: 'Female'}]
+        { label: 'Female', value: 'Female'}],
+
+    reconCileUpdateMenu:[
+        { label: 'save', value: 'save', icon:'save',action:0},
+        { label: 'save & load new slip', value: 'save & load new slip', icon:'upload-file',action:1},
+        { label: 'save & return to reconcile', value: 'save & return to reconcile', icon:'exit-to-app',action:2},
+        { label: 'cancel', value: 'cancel', icon:'cancel',action:3},
+
+    ]
 }
 
 
@@ -44,6 +52,8 @@ const medDetails = {
             iconName:"arrowRightBlack",
             iconName2:"arrowLefttBlack",
             func:"numberPicker",
+            editAble:false
+            
         }]}
     ,{
         inputLabel:formInputLabel.medcineDirection,
@@ -188,6 +198,29 @@ export const myInfoFormLabels={
                         }]}
                     ],
                 },{
+                    title:appLabels.physiciansDetailsLabel,
+                    subView:true,
+                    content:[
+                        {group:[ {
+                             inputLabel:formInputLabel.firstName,
+                             childKey:"firstName",
+                             rootKey:"physicianDetails",
+                             width:"49%",
+                         },{
+                             inputLabel:formInputLabel.lastName,
+                             childKey:"lastName",
+                             rootKey:"physicianDetails",
+                             width:"49%",
+                         }]},{
+                            inputLabel:formInputLabel.phone,
+                            childKey:"phone",
+                            rootKey:"physicianDetails",
+                            width:"100%",
+                        }
+                     ],
+                },
+                
+                {
                     title:appLabels.pharmacyDetailsLabel,
                     subView:false,
                     content:[{
@@ -202,7 +235,7 @@ export const myInfoFormLabels={
                         width:"100%",
                     }]
                 },{
-                    title:appLabels.pharmacyDetailsLabel,
+                    title:appLabels.pinLabel,
                     subView:false,
                     content:[{
                         inputLabel:formInputLabel.pin,
