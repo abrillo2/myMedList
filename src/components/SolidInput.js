@@ -75,7 +75,7 @@ export default class SolidInput extends Component {
                             {color:"red"}]}> *</Text>:null}
                 </Text>
             </View>
-            {this.state.openDatePicker?<DatePickerHelper open={this.state.openDatePicker} setVal={this.setValue}/>:null}
+            {this.state.openDatePicker && this.props.func == 'datePicker' ?<DatePickerHelper open={this.state.openDatePicker} setVal={this.setValue}/>:null}
         </View>
     );
   }

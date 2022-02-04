@@ -21,13 +21,18 @@ export default function Addslip(props) {
 
   async function openCam(funcArg){
     setSpinner(false)
-    let result = funcArg=="photo"? await openCamera() : await openGalery()
-    if(result.assets){
-      props.navigation.navigate(appLabels.takenPhotoTitle,{
-        response:result.assets[0]
-      })
+    let result = funcArg=="photo"? await openCamera() : await openCamera()//openGalery()
+    if(result){
+        console.log("response ",result.assets[0])
+        if(result.assets){
+        props.navigation.navigate(appLabels.takenPhotoTitle,{
+          response:result.assets[0]
+        })
+      }else{
+        setSpinner(true)
+      }
     }else{
-      setSpinner(true)
+      console.log('failed to take pictures')
     }
   }
 

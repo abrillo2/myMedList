@@ -10,7 +10,9 @@ import Button from '../components/Button';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {shareWithEmail, shareWithSMS, shareWithWhatsUp} from '../helpers/shareHelper.js'
 //strings
-import appLabels,{appScreenName} from '../../assets/static_resources/strings'
+import appLabels from '../../assets/static_resources/strings'
+import { removeFile } from "./FsManager";
+import { getData, saveData } from "../helpers/AsyncHelper";
 //helper functions
 function hrp(value){
     return value*100 / 736;
@@ -37,9 +39,21 @@ export default class PdfViewerHook extends React.Component {
         let Description = this.props.client[2]+ appLabels.prescriptionList
         if(params){
             this.sharePDFWithAndroid(this.props.pdfURI,Description,this.props.client[1])
+            
+            let sharedPDF = await getData("sharedPDF")
+
+            sharedPDF = sharedPDF == null ? []: sharedPDF
+
+            console.log('list of shared pdf ',sharedPDF)
+            sharedPDF.push(this.props.pdfURI)
+            await saveData(sharedPDF,'sharedPDF')
             this.props.navigation.navigate(appLabels.shareTitle)
             
         }else{
+
+            console.log('image ', this.state.imgData)
+
+            removeFile(this.props.pdfURI)
             this.props.navigation.navigate(appLabels.shareTitle)
         }
 

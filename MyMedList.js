@@ -40,8 +40,7 @@ return (
               
               if(item.title != appLabels.exit){
                 let showHeader = item.screenTitle == appLabels.homeTitle ? false: true
-                let lazy = item.screenTitle == appLabels.addSlipTitle |
-                           item.screenTitle == appLabels.myInfoTitle   ? true:false;
+                let lazy = item.screenTitle == appLabels.addSlipTitle  ? true:false;
                 let screen = ( <Drawer.Screen key={"screen"+"#"+index} options={{headerShown: showHeader,unmountOnBlur: lazy}} name={item.screenTitle} component={item.component} />
                   )
                 return screen

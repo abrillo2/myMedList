@@ -79,6 +79,7 @@ export default class MyInfo extends Component {
     saveData(jsonValue,"@myMedListMyInfo")
 
     setTimeout(()=>{
+      this.setState({spinnerOn:false})
       this.props.navigation.navigate(appLabels.homeTitle)},1000)
   }
 

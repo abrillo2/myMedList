@@ -8,8 +8,8 @@ export default function DatePickerHelper(props){
     return (<><DatePicker
         modal
         mode='date'
-        textColor='white'
-        open={props.open}
+        textColor='black'
+        open={true}
         date={new Date()}
         onConfirm={(date) => {
             let dateFormatted =  date.toLocaleDateString("en-US");

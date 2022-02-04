@@ -7,6 +7,7 @@ import ListActionButton from './ListActionButton.js';
 //reconcileitems section
 import React, {useEffect,useState} from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+
 export default function ReconcileItems(props){
 
 
@@ -31,7 +32,8 @@ export default function ReconcileItems(props){
         let headerVals = props.itemLabels
 
         let filteredData = [];
-        if((props.refresh) | dataList == null){
+        if(data !== null && data.length > 0){
+          if((props.refresh) | dataList == null){
           let rootDataList = []
             
             for (let index = 0; index <data.length; index++) {
@@ -51,7 +53,9 @@ export default function ReconcileItems(props){
         }else{
            sortData(dataList)
         }
-
+      }else{
+          setListofData(null)
+      }
     }
 
     function sortData(data){

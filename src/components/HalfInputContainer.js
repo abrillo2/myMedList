@@ -98,7 +98,7 @@ export default class HalfInputContainer extends React.Component{
                             </TouchableOpacity>: null}     
                         </View>                   
                         <View  style={[styles.halfinputLayer2Indicator,{width:"100%"}]}></View>
-                        {this.state.openDatePicker?<DatePickerHelper open={this.state.openDatePicker} setVal={this.setValue}/>:null}
+                        {this.state.openDatePicker && this.props.func =='datePicker'?<DatePickerHelper open={this.state.openDatePicker} setVal={this.setValue}/>:null}
                     </View>
     )
   }

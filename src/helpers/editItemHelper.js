@@ -45,7 +45,8 @@ export function getItem(items,itemId) {
     }
  
   }
-  
+
+import { removeFile } from "../hooks/FsManager"
 export function removeItem(slipData,itemId,stopDate) {
 
     let discontiuedList = slipData["slipInfoDiscontinued"];
@@ -58,8 +59,12 @@ export function removeItem(slipData,itemId,stopDate) {
       if(rootKey != itemId){
             updatedItems["slipInfo"].push(item)
       }else{
+
             item[itemId]["medicationDetails"]={...item[itemId]["medicationDetails"],"stopDate":stopDate}
             updatedItems["slipInfoDiscontinued"].push(item)
+            const uri = item[itemId]["medicationDetails"]["imageData"].uri
+
+            removeFile(uri)
       }
     }
     return updatedItems

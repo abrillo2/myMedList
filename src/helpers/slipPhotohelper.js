@@ -1,4 +1,5 @@
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { moveFile } from '../hooks/FsManager';
  //open camera to take photo
   export async function openCamera(){
     
@@ -14,6 +15,9 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
       }
     
     });
+
+    let responseUri = await moveFile(source.assets[0].uri,source.assets[0].fileName)
+    source.assets[0].uri = responseUri
     return source
   }
   //open Gallery

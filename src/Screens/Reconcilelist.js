@@ -14,10 +14,14 @@ import Spinner from '../helpers/Spinner';
 //static items
 import appLabels,{appDescription,formInputLabel} from '../../assets/static_resources/strings';
 import ScrollabelItemContainer from '../components/ScrollabelItemContainer';
+
+
+//test import
+
 export default function Reconcilelist(props) {
 
     const isFocused = useIsFocused();
-    const state = {
+    const state = { 
       itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
       dataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
                  '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]'],
@@ -67,11 +71,7 @@ export default function Reconcilelist(props) {
     } 
     //import item list
     async function getSlipInfoData(){
-
-            //await saveData(null,"@myMedListSlipInfo")
-
             const slipInfoData = await getData('@myMedListSlipInfo')
-            console.log("slip inf ",slipInfoData)
             if(slipInfoData !== null){
               refresh(true,slipInfoData,0)
             }else{

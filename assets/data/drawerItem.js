@@ -13,6 +13,8 @@ import MyInfo from '../../src/Screens/MyInfo';
 import PdfViewer from '../../src/Screens/PdfViewer'
 import About from '../../src/components/utilis/About'
 
+import ReviewList from '../../src/components/ReviewList'
+
 import appLabels,{appScreenName} from '../static_resources/strings'
 
 let drawerItems = [
@@ -42,6 +44,11 @@ let drawerItems = [
         icon:"perm-device-information",
         component:MyInfo,
         screenTitle:appLabels.myInfoTitle
+    },{
+        title:'Preview',
+        icon : 'preview',
+        component: ReviewList,
+        screenTitle: appLabels.reviewTitle
     },{
         title:appScreenName.about,
         icon:"info",

@@ -27,6 +27,7 @@ const appLabels = {
     myInfoTitle:'MY INFO',
     takenPhotoTitle:"SLIP PHOTO",
     homeTitle:"HOME",
+    reviewTitle: "ACTIVE PRESCRIPTION",
 
     PdfViewerTitle : "PREVIEW",
     medicationDetailsLabel:"MEDICATION DETAILS",

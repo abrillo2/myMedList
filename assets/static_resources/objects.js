@@ -23,7 +23,12 @@ const appObjects = {
         { label: 'save & return to reconcile', value: 'save & return to reconcile', icon:'exit-to-app',action:2},
         { label: 'cancel', value: 'cancel', icon:'cancel',action:3},
 
-    ]
+    ],
+
+    dataKeysReview:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
+                '["medicationDetails"]["refillsLeft"]','["medicationDetails"]["imageData"]'],
+    
+    labelsReview:['name','dateRefilled','refillsLeft','imageData']
 }
 
 
