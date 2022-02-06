@@ -9,6 +9,7 @@ export default PdfViewer = (props) =>{
             navigation={props.navigation}
             pdfURI={props.route.params.pdfURI}
             client={props.route.params.client}
+            shareAgain={props.route.params.shareAgain?true:false}
         />
         
     )

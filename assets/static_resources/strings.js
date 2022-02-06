@@ -12,13 +12,17 @@ const appLabels = {
     addSlipButton:"Add slip",
     reconcileButton:"Reconcile",
     myInfoButton:"My info",
+    activeSlips: 'Active prescriptions',
+    sharedPdfs: 'Shared prescriptions',
+
+
     
 
 
     active:"ACTIVE",
     discontinued:"DISCONTINUED",
 
-    addSlipTitle:"ADD SLIP",
+    addSlipTitle:"SLIP DETAILS",
     addPhotoTitle:"ADD PHOTO",
     reconcileTitle:"RECONCILE",
     slipDetails:"SLIP DETAILS",
@@ -27,7 +31,7 @@ const appLabels = {
     myInfoTitle:'MY INFO',
     takenPhotoTitle:"SLIP PHOTO",
     homeTitle:"HOME",
-    reviewTitle: "ACTIVE PRESCRIPTION",
+    reviewTitle: "REVIEW SLIP",
 
     PdfViewerTitle : "PREVIEW",
     medicationDetailsLabel:"MEDICATION DETAILS",

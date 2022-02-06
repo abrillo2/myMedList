@@ -17,7 +17,7 @@ export default function InputType(props){
                 labelField="value"
                 valueField="label"
                 disable={false}
-                value={props.getval}
+                value={props.getval()}
                 maxHeight={200}
                 placeholder={props.inputLabel}
                 onFocus={() => {}}
@@ -33,7 +33,7 @@ export default function InputType(props){
                 editable= {props.editAble}
                 placeholder={props.inputLabel}
                 secureTextEntry={props.secureTextEntry}
-                value={props.getval}
+                value={props.getval()}
                 placeholderTextColor={"rgba(0, 0, 0, 0.4)"}
                 keyboardType={props.keyboard}
                 onChangeText={ text => {props.onChangeText ? 

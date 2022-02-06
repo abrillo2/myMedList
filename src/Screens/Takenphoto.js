@@ -9,6 +9,7 @@ import styles from '../../assets/styles/TakenPhotoStyle';
 import { useIsFocused } from '@react-navigation/native';
 import appLabels from '../../assets/static_resources/strings';
 //import { Button } from 'react-native-share';
+import { removeFile } from '../hooks/FsManager';
 
 export default function Takenphoto(props){
   const isFocused = useIsFocused();
@@ -25,11 +26,13 @@ export default function Takenphoto(props){
   }, [useIsFocused()]);
   //retake photo
   function retake(){
+    removeFile(props.route.params.response.uri)
     props.navigation.navigate(appLabels.addPhotoTitle)
   }
 
   //cancel
   function cancel(){
+    removeFile(props.route.params.response.uri)
     props.navigation.navigate(appLabels.homeTitle)
   }
 

@@ -41,7 +41,7 @@ export default function InputModal(props){
             let pdfURIString = await createPDF(htmlString,statusShare)
             props.navigation.navigate(appLabels.PdfViewerTitle,{
                 pdfURI:pdfURIString,
-                client:[props.client,shareInfo[props.client],statusShare]
+                client:[props.client,shareInfo[props.client],statusShare,shareInfo['name']]
             })            
             setModalData(null)
        }else{

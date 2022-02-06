@@ -1,47 +1,50 @@
-import {listOfSlips} from '../helpers/ReviewHelper'
-
-
-
-
-
 
 
 import React,{useEffect, useState} from 'react';
-import { View,SectionList,Text,Image,StatusBar } from 'react-native';
-import Spinner from '../helpers/Spinner';
+import {RefreshControl,StyleSheet,Dimensions, View,SectionList,Text,Image,StatusBar } from 'react-native';
 import styles from '../../assets/styles/Utilis'
 import colors from '../../assets/static_resources/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getData } from '../helpers/AsyncHelper';
 import { getItem } from '../helpers/editItemHelper';
 import appLabels from '../../assets/static_resources/strings';
-import { useIsFocused } from '@react-navigation/native';
+//helper
+import {listOfSlips} from '../helpers/ReviewHelper'
+//component
 
-export default function ReviewList(props){
+export default function SlipReviewList(props){
 
-    const [data,setData] = useState(null)
-    const isFocused = useIsFocused();
+    const [data,setData] = useState([])
+
+    const [refreshing,setRefreshing] = useState(false)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        loadReviewItems();
+        setRefreshing(false)
+      }, []);
 
     async function loadReviewItems(){
+        setRefreshing(true);
         let tempData = await listOfSlips()
-        {console.log('list of reviews ', tempData, " index: ",data)}
         setData(tempData)
+        setRefreshing(false)
     }   
 
     useEffect(() => {
-        if(isFocused){
-            loadReviewItems()
-        }
+            
+        loadReviewItems()
+        
         
         return () => {
         }
-      }, [isFocused]);
-
+      }, []);
     
-    const Item = ({item,index }) => (
+    
+    const SlipItem = ({item,index }) => (
         
 
-        <View key={index} style={[styles.aboutBody,
+        <View style={[styles.aboutBody,
                     {width:'90%',alignSelf:
                     'center',marginBottom:'4%',
                     backgroundColor:'white',
@@ -60,8 +63,6 @@ export default function ReviewList(props){
                     backgroundColor={'transparent'}
                     color={colors.primary}
                     onPress={()=>{
-
-                        setData(null)
                         setTimeout(async()=>{
                             let items = await getData('@myMedListSlipInfo')
                             items = [...items['slipInfo']]
@@ -86,19 +87,26 @@ export default function ReviewList(props){
     );
 
     return(
-        null == data ? <Spinner/>:
-        
+       
         <View style={{ paddingTop: StatusBar.currentHeight,flex:1}}>
 
-            <SectionList
+           <SectionList
                   sections={data}
                   horizontal={false}
+                  extraData={data}
                   nestedScrollEnabled
-                 
                   showsVerticalScrollIndicator={false}
                   scrollEnabled={true}
-                  keyExtractor={(item, index) => item + index}
-                  renderItem={({ item,index }) => <Item item={item} index={index}/>} />
+                  keyExtractor={(item, index) => index}
+                  renderItem={({ item,index }) => <SlipItem item={item} index={index}/>}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />}
+                  
+                  />
+            
         </View>
         
         
@@ -107,6 +115,12 @@ export default function ReviewList(props){
 
 
 
-
+const stylesPdf = StyleSheet.create({
+    pdf: {
+        flex:1,
+        width:'100%',
+        height:Dimensions.get('window').height/2,
+    } 
+});
 
 

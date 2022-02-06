@@ -23,7 +23,6 @@ export default function Addslip(props) {
     setSpinner(false)
     let result = funcArg=="photo"? await openCamera() : await openCamera()//openGalery()
     if(result){
-        console.log("response ",result.assets[0])
         if(result.assets){
         props.navigation.navigate(appLabels.takenPhotoTitle,{
           response:result.assets[0]

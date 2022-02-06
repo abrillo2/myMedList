@@ -1,10 +1,14 @@
 import appObjects from '../../assets/static_resources/objects'
+import { updateItem } from './editItemHelper'
+import { saveData ,getData} from './AsyncHelper'
 /*********************************
 * track drawer navigation params
 */
 export function getNavData(route){
     let item=route.params.item
     let key =route.params.key
+
+    
 
     if(item){
       return item[key]
@@ -18,26 +22,24 @@ export function getNavData(route){
    * parse data from navigation params
    * or return image or null
    */
-   export function getCurrentData(parent,child,route){
-    let currentData = getNavData(route)
-
+   export function getCurrentData(currentData,parent,child){
+     
     //console.log('current data being refreshed ', currentData)
-
     if(currentData){
       let parentData = {...currentData[parent]}
       let result =  parentData[child] ? parentData[child] :null
       return result
-    }else if(child==="imageData"){
-      return route.params.imageData
     }else{
-      return null
+      return null 
     }
   }
 
     /******************************
    * save/update slip info
    */
-   export function prepSaveData(data,currentData,itemKey){
+   export async function prepSaveData(currentData,itemKey){
+
+        let data = await  getData('@myMedListSlipInfo')
         var date = new Date();
         var itemId =   date.getFullYear()+ ""+ date.getMonth()+ "" 
                      + date.getDate()+ ""+date.getHours()+ ""
@@ -45,11 +47,11 @@ export function getNavData(route){
     
         var slipInfo = {"slipInfo":[],"slipInfoDiscontinued":[]};
     
-          if(data == null){
+        if(data == null){
             slipInfo["slipInfo"].push(
               {[itemId]:currentData}
             )
-          }else{
+        }else{
             if(itemKey != null){
                slipInfo = updateItem(data,itemKey,currentData)
                //slipInfo["slipInfo"].push({[this.state.itemKey]:currentData})
@@ -58,8 +60,10 @@ export function getNavData(route){
               slipInfo = data
             }
     
-          }
-          return slipInfo
+        }
+
+        saveData(slipInfo,'@myMedListSlipInfo')
+        return slipInfo
       }
 
         /**************************
@@ -77,4 +81,64 @@ export function getNavData(route){
        }
     });
     return result
+  }
+
+
+    //populate saved data 
+    export function loadSavedData(savedData,props) {
+      let tempData = {}
+      Object.keys(savedData).forEach( rootKey => {
+        Object.keys(savedData[rootKey]).forEach(childKey=>{
+            
+          tempData[rootKey] = {...tempData[rootKey],[childKey]:savedData[rootKey][childKey]}
+            
+        })
+    })
+    console.log("params at loadSaved: ",{...tempData})
+    props.navigation.setParams({slipData:{...tempData}})
+      //setDisabled(false)
+      //setStaticData(sateData)
+      return tempData
+    }
+
+      /***************************
+   * check updateAble items
+   */
+
+  export function isUpdateAble(childKey){ 
+      return appObjects.addSlipInfoUpdateableItems.indexOf(childKey) !== -1;  
+  }
+
+    //handel other text input changes for slip details
+ export function onChangeInputData(data,rootKey,childKey, value){
+      let temp = {...data}
+      temp[rootKey] = {...temp[rootKey],[childKey]:value}
+      
+  
+      return temp      
+  }
+
+  export function requiredFieldsFullfilled(data){
+
+    let requiredItemsLen = Number(appObjects.addSlipInfoRequiredItems.length)
+    if(data != null){
+      let item = {...data}
+     
+      appObjects.addSlipInfoRequiredItems.forEach(element => {
+         let rootKey = element[0]
+         let childKey = element[1]
+         let data = {...item[rootKey]}
+         
+         if(data[childKey]){
+            requiredItemsLen =Number(requiredItemsLen)- 1;
+         }
+      });
+    }
+
+  
+    if(requiredItemsLen==0){
+      return true
+    }else{
+      return false
+    }
   }

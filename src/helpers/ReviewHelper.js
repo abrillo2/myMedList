@@ -11,11 +11,25 @@ export async function listOfSlips(){
         data =rawData["slipInfo"]
         return loadListofItems(data)
     }else{
-        return null
+        return []
     }
 
 
 }
+
+
+export async function listOfPdf(){
+    const rawData = await getData('@sharedPDF')
+    if(rawData != null){
+        return [{data:rawData}]
+    }else{
+        return [{data:[]}]
+    }
+
+
+}
+
+
 
 function loadListofItems(data){
         
@@ -38,8 +52,9 @@ function loadListofItems(data){
             }
             rootDataList.push({...tempFilteredData,key:rootKey})    
         })
-        filteredData.push({data:rootDataList,key:"root"+index})
+        
     }
+    filteredData.push({data:rootDataList})
     
     return filteredData
 }

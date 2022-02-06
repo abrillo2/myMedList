@@ -1,191 +1,197 @@
-import React, {Component} from 'react';
-import {FlatList,View, SafeAreaView} from 'react-native';
-import {getData,saveData} from '../helpers/AsyncHelper'
+import React, {useEffect,useState} from 'react';
+import {FlatList,View} from 'react-native';
+import {getData} from '../helpers/AsyncHelper'
 
 
 //components import
+import Button from '../components/Button';
 import Fold from '../callBacks/Fold';
 import SolidInput from '../components/SolidInput';
-import MyInfoCall from '../callBacks/MyInfoCall';
 import Spinner from '../helpers/Spinner';
 //styles
 import styles from '../../assets/styles/AddSlipInfoStyle';
 //static resources
-import appLabels,{formInputLabel,appMessages} from '../../assets/static_resources/strings'
+import appLabels,{appMessages} from '../../assets/static_resources/strings'
 import appObjects,{myInfoFormLabels} from '../../assets/static_resources/objects';
 
+import { getUserInfo,saveUserProfile,required,onchangeInput,requiredFieldsFullfilled} from '../helpers/MyinfoHelper';
+const requiredItems =appObjects.myInfoRequiredItems
 
-export default class MyInfo extends Component {
+export default function MyInfo(props){
+ 
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      rootKey:null,
-      childKey:null,
-      value:null,
-      savedData:null,
-      sexChoice: appObjects.myInfoSexChoices,
-      stateData: require("../../assets/data/states.json"),
-      requiredItems: appObjects.myInfoRequiredItems,
-      spinnerOn:false,
+  let halfList = []
+
+  const [isRequired, setIsRequired] = useState(true)
+  const [savedData, setSavedData] = useState(null)
+  const [spinnerOn, setSpinnerOn] = useState(false)
+
+  const [formInputData, setFormInputData] = useState(null)
+
+
+  useEffect(() => {
+    if(savedData == null){
+      loadData()
+    }else{
+      spinnerOn? null : setSpinnerOn(true)
     }
+  return () => {
   }
-  onChangeData=(rootKey,childKey, value)=>{
-    this.setState({
-      rootKey,
-      childKey,
-      value
-    })
-  }
+}, [savedData]);
+  
+  function onChangeData(rootKey,childKey, value){
 
-  getDataCurrent=async(parent,child)=>{
-    let currentData = await getData("@myMedListMyInfo")
-    currentData = JSON.parse(currentData)
-    if(currentData){
-      currentData = currentData["myInfo"]
-      let parentData = {...currentData[parent]}
-      let result =  parentData[child] ? parentData[child] :null
-      
-      if(child == 'pin'){
-        if((result === "" | result===null)){
-          return "0000" 
-        }else if(result.length < 2){
-          return '0000'
-        }else{
-          return result
-        }
-      }else{
-          return result
-      }
-      
-    }else if(child==="pin"){
-      return "0000"
-    }else{  
-     return null
+    let tempData = onchangeInput(formInputData,rootKey,childKey,value)
+    setFormInputData(tempData)
+
+    if(requiredFieldsFullfilled(tempData)){
+      setIsRequired(false)
     }
-    
+
   }
 
-  saveDataCurrent=(data,currentData)=>{
-    this.setState({
-      spinnerOn:true
-    })
-    let slipInfo = null;
-   
-    slipInfo = {"myInfo":{}}
-    slipInfo["myInfo"]={...currentData}
+
+
+  function getDataCurrent(parent,child){
     
-    const jsonValue = JSON.stringify(slipInfo)
-    saveData(jsonValue,"@myMedListMyInfo")
+    return getUserInfo(parent,child,formInputData)
+  }
+
+  function saveDataCurrent(data,currentData){
+    //setSpinnerOn(true)
+    saveUserProfile(formInputData)
 
     setTimeout(()=>{
-      this.setState({spinnerOn:false})
-      this.props.navigation.navigate(appLabels.homeTitle)},1000)
+      //setSpinnerOn(false)
+      props.navigation.navigate(appLabels.homeTitle)},200)
   }
 
-  componentDidMount=async()=>{
+  async function loadData(){
 
     let data = await getData("@myMedListMyInfo");
+    
     data = JSON.parse(data)
-    if(data){
-      this.setState({
-        savedData:{...data["myInfo"]}
-    })
+    if(data!=null && savedData == null){
+     setSavedData({...data["myInfo"]})
+     setFormInputData({...data["myInfo"]})
     }
+
   }
 
-  required=(child,parent)=>{
-    
-    let result = false;
-    this.state.requiredItems.forEach(element => {
-       let childKey = element[1]
-       let parentKey = element[0]
-       if(child == childKey && parent == parentKey){
-          result =  true;
-       }
-    });
+    /*******************************
+   *  Handel Form Submission
+   *****************************/
+  function cancelPressed(){
+      props.navigation.goBack()
+    }
+    async function savePressed(){
+      await saveUserProfile(formInputData)
+      props.navigation.goBack()
+    }
 
-    return result
-    
-  }
-
-  render() {
     return (
-      this.state.spinnerOn?<Spinner message={appMessages.savingMyInfo}/> :
-      <MyInfoCall 
-                  rootKey={this.state.rootKey}
-                  childKey={this.state.childKey}
-                  value={this.state.value}
-                  navigation={this.props.navigation}
-                  requiredItems={this.state.requiredItems}
-                  saveData={this.saveDataCurrent}
-                  savedData={this.state.savedData}
-                  saveKey={"@myMedListMyInfo"}>
-
+      savedData == null?<Spinner message={appMessages.savingMyInfo}/> :
+      <View style={{flex:1}}>
+            
             <FlatList
                   removeClippedSubviews={false}
                   data={myInfoFormLabels.folds}
-                  renderItem={({ item, index }) => (
+                  extraData={spinnerOn}
+                  keyExtractor={(item,index)=> {
+                       return "fold"+index+item.title
+                  }}
+                  renderItem={({ item ,index}) => (
+
+                    <View>
                     <Fold labelTitle = {item.title}>
                       {
                         <FlatList
                          data={item.content}
                          removeClippedSubviews={false}
+                         extraData={spinnerOn}
+                         keyExtractor={(item,index)=> {
+                              return item.group ? "group:"+index+item.group.length:
+                                     "item:"+index+item.childKey + item.rootKey
+                          }}
                          renderItem={({ item, index }) => 
 
                            
                           item.group ?
-                          <View style={styles.hallfInputContainer}>
+
+                          item.group.map((item,index)=>{
+
+                              
+
+                            let content =   <SolidInput key={"item:"+index+item.rootKey+':'+item.childKey}
+                            width={item.width} 
+                            inputLabel={item.inputLabel}
+                            onChangeText={onChangeData}
+                            childKey={item.childKey}
+                            rootKey = {item.rootKey}
+                            inputContent={getDataCurrent}
+                            required = {required}
+                            
+                            iconName={item.iconName? item.iconName:null}
+                            func={item.func? item.func:null}
+                            editAble={item.editAble? item.editAble:true}
+                            data={item.data? item.data:null}
+                            inputType={item.inputType? item.inputType:null}/>
+                              
+                              halfList.push(content)
+                              
+                              if(halfList.length >= 2){
+                                let listCp = [...halfList]
+                                halfList = []
+                               return (<View style={styles.hallfInputContainer}>
+                                              {listCp}
+                                     </View>)
+
                                 
-                                <SolidInput  width={"49%"} 
-                                      inputLabel={item.group[0].inputLabel}
-                                      onChangeText={this.onChangeData}
-                                      childKey={item.group[0].childKey}
-                                      rootKey = {item.group[0].rootKey}
-                                      inputContent={this.getDataCurrent}
-                                      required = {this.required}
-                                      
-                                      iconName={item.group[0].iconName? item.group[0].iconName:null}
-                                      func={item.group[0].func? item.group[0].func:null}
-                                      editAble={item.group[0].editAble? item.group[0].iconName:true}
-                                      data={item.group[0].data? item.group[0].data:null}
-                                      inputType={item.group[0].inputType? item.group[0].inputType:null}
-                                      
-                                      />
-                                 <SolidInput  width={"49%"} 
-                                      inputLabel={item.group[1].inputLabel}
-                                      onChangeText={this.onChangeData}
-                                      childKey={item.group[1].childKey}
-                                      rootKey = {item.group[1].rootKey}
-                                      inputContent={this.getDataCurrent}
-                                      required = {this.required}
-                                      
-                                      iconName={item.group[1].iconName? item.group[1].iconName:null}
-                                      func={item.group[1].func? item.group[0].func:null}
-                                      editAble={item.group[1].editAble? item.group[1].iconName:true}
-                                      data={item.group[1].data? item.group[1].data:null}
-                                      inputType={item.group[1].inputType? item.group[1].inputType:null}
-                                      
-                                      />
-                          </View>
-                          :(<View style={styles.hallfInputContainer}><SolidInput  width={item.width} 
+                              }
+
+                            })
+                          :(<View style={styles.hallfInputContainer}><SolidInput  key={"item:"+index+item.rootKey+':'+item.childKey}
+                              width={item.width} 
                               inputLabel={item.inputLabel}
-                              onChangeText={this.onChangeData}
+                              onChangeText={onChangeData}
                               childKey={item.childKey}
                               rootKey = {item.rootKey}
-                              inputContent={this.getDataCurrent}
-                              required = {this.required}
+                              inputContent={getDataCurrent}
+                              required = {required}
                               
                               iconName={item.iconName? item.iconName:null}
                               func={item.func? item.func:null}
-                              editAble={item.editAble? item.iconName:true}
+                              editAble={item.editAble? item.editAble:true}
                               data={item.data? item.data:null}
-                              inputType={item.inputType? item.inputType:null}/></View>
+                              inputType={item.inputType? item.inputType:null}/>
+                              
+                        
+                              </View>
                           )}/>}
+
+
+
+                          
                     </Fold>
+                  </View>
                   )}/>
-                  
-        </MyInfoCall>
+
+                  <View  style={styles.twinButtonContainer}>
+                  <Button buttonLabel={appLabels.cancel} 
+                      disabled={false}
+                      onPress={cancelPressed}
+                      h={2}
+                      w={120}
+                      />
+
+              <Button buttonLabel={appLabels.save} 
+                      disabled={isRequired}
+                      onPress={savePressed}
+                      h={2}
+                      w={120}/>
+                  </View>
+            </View>
+        
       );
-  }
+  
 }

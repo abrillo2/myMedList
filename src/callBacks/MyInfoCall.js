@@ -28,7 +28,7 @@ export default function MyInfoCall(props){
   
     } 
   }, [props.childKey,props.rootKey,props.value,
-      props.saveData,props.savedData,props.saveKey]);
+      ,props.savedData,props.saveKey]);
 
   //populate saved data 
   function loadSavedData() {

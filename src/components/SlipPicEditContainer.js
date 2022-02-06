@@ -34,12 +34,7 @@ export default class SlipPicEditContainer extends React.Component{
     }
 
     async componentDidMount(){
-      let imageData = await this.props.inputContent(this.props.rootKey,this.props.childKey)
-      
-      let loadedData = (this.props.loadKey == null)
-      if(imageData && loadedData){
-        this.props.onChangeText(this.props.rootKey,this.props.childKey,imageData)
-      }
+      let imageData = this.props.inputContent(this.props.rootKey,this.props.childKey)
       this.setState({
         imageData
       })

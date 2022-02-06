@@ -92,7 +92,7 @@ export default class HalfInputContainer extends React.Component{
                          {this.props.iconName2? <TouchableOpacity onPress={this.onPressLeft}>
                               {Icon(this.props.iconName2,styles.halfinputLabelIconColor)}
                             </TouchableOpacity> : null}
-                            <InputType {...this.props} setVal={this.setValue} getval={this.state.value}/>
+                            <InputType {...this.props} setVal={this.setValue} getval={()=>this.state.value}/>
                          {this.props.iconName?<TouchableOpacity onPress={this.onPress}>
                                  {Icon(this.props.iconName,styles.halfinputLabelIconColor)}    
                             </TouchableOpacity>: null}     

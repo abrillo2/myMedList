@@ -40,21 +40,27 @@ export default class PdfViewerHook extends React.Component {
         if(params){
             this.sharePDFWithAndroid(this.props.pdfURI,Description,this.props.client[1])
             
-            let sharedPDF = await getData("sharedPDF")
+            
+            if(!this.props.shareAgain){
+              let sharedPDF = await getData("@sharedPDF")
 
-            sharedPDF = sharedPDF == null ? []: sharedPDF
-
-            console.log('list of shared pdf ',sharedPDF)
-            sharedPDF.push(this.props.pdfURI)
-            await saveData(sharedPDF,'sharedPDF')
-            this.props.navigation.navigate(appLabels.shareTitle)
+              sharedPDF = sharedPDF == null ? []: sharedPDF
+              sharedPDF.push({uri:this.props.pdfURI,
+                              via: this.props.client[0]+"-"+this.props.client[1],
+                              status:this.props.client[2],
+                              to:this.props.client[3],
+                              client:this.props.client})
+              await saveData(sharedPDF,'@sharedPDF')
+            }
+            this.props.navigation.goBack()
             
         }else{
 
-            console.log('image ', this.state.imgData)
-
+          if(!this.props.shareAgain){
             removeFile(this.props.pdfURI)
-            this.props.navigation.navigate(appLabels.shareTitle)
+            
+          }
+          this.props.navigation.goBack()
         }
 
 

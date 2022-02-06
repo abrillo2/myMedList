@@ -16,8 +16,12 @@ import { moveFile } from '../hooks/FsManager';
     
     });
 
-    let responseUri = await moveFile(source.assets[0].uri,source.assets[0].fileName)
-    source.assets[0].uri = responseUri
+    
+    if(source.assets){
+          let responseUri = await moveFile(source.assets[0].uri,source.assets[0].fileName)
+          source.assets[0].uri = responseUri
+    }
+
     return source
   }
   //open Gallery
