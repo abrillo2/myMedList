@@ -71,7 +71,6 @@ export default function ReconcileItems(props){
             sorted = [{data:sorted,key:"root"+0}]      
             item = sorted
         }
-        console.log("data isnow  ",data[1])
         setSortIndex(props.sortIndex)
         setListofData(item)    
 

@@ -147,7 +147,7 @@ export async function createPDF(htmlString,statusInfo) {
     let pin = data["personalInformation"]["pin"]
     pin = pin ? pin: "0000"
     var itemId =   date.getMonth()+ ""+ date.getDate()+ "" 
-                 + date.getFullYear()+statusInfo+pin
+                 + date.getFullYear()+date.getUTCDay()+statusInfo+pin
     let options = {
       html: htmlString,
       fileName: itemId,

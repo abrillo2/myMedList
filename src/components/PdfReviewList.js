@@ -7,7 +7,8 @@ import colors from '../../assets/static_resources/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import appLabels from '../../assets/static_resources/strings';
 //helper
-import {listOfPdf, listOfSlips} from '../helpers/ReviewHelper'
+import {listOfPdf, deletePdf} from '../helpers/ReviewHelper'
+import { removeFile } from '../hooks/FsManager';
 //component
 import Pdf from 'react-native-pdf';
 
@@ -55,7 +56,7 @@ export default function PdfReviewList(props){
                 <View style={{width:'100%',
                 flexDirection:'row',
                 alignItems:'center',
-                justifyContent:'flex-start'}}>
+                justifyContent:'space-between'}}>
                    
                 <Icon.Button
                     name={'share'}
@@ -68,6 +69,19 @@ export default function PdfReviewList(props){
                         client:item.client,
                         shareAgain:true
                         }) 
+                    }}
+                />
+
+                <Icon.Button
+                    name={'delete'}
+                    size={24}
+                    backgroundColor={'transparent'}
+                    color={colors.primary}
+                    onPress={()=>{
+                       
+                        removeFile(item.uri)
+                        
+                        deletePdf(index)
                     }}
                 />
             </View>

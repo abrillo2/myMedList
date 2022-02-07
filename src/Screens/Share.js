@@ -1,20 +1,14 @@
-import React, {Suspense,useEffect,useState} from 'react';
-import {Text, View,TouchableOpacity} from 'react-native';
-import {Image as ReactImage} from 'react-native';
-import { getData } from '../helpers/AsyncHelper';
-import { Bullets} from 'react-native-easy-content-loader';
-import InputModal from '../hooks/InputModal';
+import React, {useState,useEffect} from 'react';
+import {View} from 'react-native';
+import { getData } from '../helpers/AsyncHelper'
+import { useIsFocused } from '@react-navigation/native';
 //components import
-import ScrollabelItemContainer from '../components/ScrollabelItemContainer';
+import ShareList from '../components/ShareList';
 //import styles
 import styles from '../../assets/styles/ShareStyles'
-import { useIsFocused } from '@react-navigation/native';
+import appLabels from '../../assets/static_resources/strings';
 //import notification modal
-import  Notification from '../hooks/Notification'
 //static
-import colors from '../../assets/static_resources/colors';
-import appLabels,{appDescription} from '../../assets/static_resources/strings';
-import Spinner from '../helpers/Spinner';
 
 
 export default function Share(props){
@@ -29,183 +23,85 @@ export default function Share(props){
     })
 
 
-    const [listofAllData,setListofAlldata] = useState(null)
-    const [listOfdata,setlistOfdata] = useState(null)
-    const [dataFetched, setdataFetched] = useState(false)
-    const [activeToggel, setActiveToggel] = useState(true)
-    const [openModal, setopenModal] = useState(false)
-    const [client,setCllient] = useState("email")
-    const [sortIndex,setSortIndex] = useState(0)
+   
+    const [currentDataActive,setcurrentDataActive] = useState(null)
+    const [currentDataDiscontinued,setcurrentDataDiscontinued] = useState(null)
     const [personalData,setPersonalData] = useState(null)
-    //for notification
-    const [openModal2, setOpenModal2] = useState(false)
-    const [opacity,setOpacity] = useState(1)
-    const [showTwin, setShowTwin] = useState(true)
-    const [notificationTitle,setNotificationTitle] = useState(null)
-   //import item list
-   const [refresh, setRefresh] = useState(true)
 
-   function selectToggelItem(jsonValue){
-         return activeToggel ? jsonValue["slipInfo"] : 
+
+    const [activeKey, setActiveKey] = useState(null)
+    const [discontinuedKey, setDiscontinuedKey] = useState(null)
+
+    useEffect(() => {
+        if(isFocused){
+          getSavedData()
+        }        
+        return () => {
+        }
+      }, []);
+
+
+
+   function selectToggelItem(jsonValue,active){
+         return active ? jsonValue["slipInfo"] : 
                             (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:
                                                               [] )
    }
 
    async function getSavedData(){
-        const jsonValue = listofAllData && !refresh ? listofAllData: await getData('@myMedListSlipInfo')
+        const jsonValue = await getData('@myMedListSlipInfo')
         let personalData =personalData?personalData: await getData("@myMedListMyInfo")
 
         if (jsonValue != null){
-            let currentData = selectToggelItem(jsonValue)
+            let currentDataActive = selectToggelItem(jsonValue,true)
+            let currentDataDiscontinued = selectToggelItem(jsonValue,false)
             
-            let itemState = {...state}
-            let labelItem = activeToggel ? "Date added" : "Stop date"
-            let keyItem = activeToggel ? '["medicationDetails"]["dateAdded"]' : '["medicationDetails"]["stopDate"]'
+            let itemStateActive = {...state}
+            let itemStateDiscontinued = {...state}
+            let activeLabelItem = "Date added"
+            let discontinuedLabelItem =  "Stop date"
+
+
+            let activekeyItem = '["medicationDetails"]["dateAdded"]'
+            let discontinuedkeyItem = '["medicationDetails"]["stopDate"]'
             
-            itemState.itemLabels[7] = labelItem
-            itemState.dataKeys[7] = keyItem
+            itemStateActive.itemLabels[7] = activeLabelItem
+            itemStateActive.dataKeys[7] = activekeyItem
+
+            itemStateDiscontinued.itemLabels[7] = discontinuedLabelItem
+            itemStateDiscontinued.dataKeys[7] = discontinuedkeyItem
             
-            setlistOfdata(currentData);
-            setdataFetched(true)
-            setState(itemState)
+            setcurrentDataActive(currentDataActive);
+            setcurrentDataDiscontinued(currentDataDiscontinued)
             setPersonalData(personalData)
-            setListofAlldata(jsonValue)
 
-        }else{
-            setOpacity(0.2)
-            setNotificationTitle(appDescription.reconcileListAddItemDescription)
-            setOpenModal2(true)
+            setActiveKey(itemStateActive)
+            setDiscontinuedKey(itemStateDiscontinued)
+
         }
     }
 
-    async function modalData(){
-        setopenModal(false)
-        setOpacity(1)
-    }
-
-    function dialogConfirmed(data,confirmed){
-        setOpenModal2(false)
-        setOpacity(1)
-
-        if(listOfdata == null){
-            props.navigation.navigate(appLabels.addPhotoTitle)
-        }else if(personalData == null){
-            props.navigation.navigate(appLabels.myInfoTitle)
-        }
-    }
-
-    function iconPressed(client){
-        setOpacity(0.2)
-        let status=activeToggel ? appLabels.active : appLabels.discontinued
-        setNotificationTitle(appDescription.shareToggelDescription+status+" list")
-        setShowTwin(false)
-        if(listOfdata !== null){
-            if(listOfdata.length >= 1){
-
-                if(personalData == null){
-                    setNotificationTitle(appDescription.shareSetPersonalDataDescription)
-                    setOpenModal2(true)
-                }else{
-                    setopenModal(true)
-                    setCllient(client)
-                }
-            }else{
-                setOpenModal2(true)
-            }
-        }else{
-            setOpenModal2(true)
-            
-        }
-    }
-
-    function sort(index){
-        setRefresh(false)
-        setSortIndex(index)
-    }
-
-    useEffect(() => {
-        if(isFocused ){
-          getSavedData()
-        }else{
-          setRefresh(true)
-        }
-        return () => {
-        }
-      }, [activeToggel,useIsFocused()]);
+   
     return (
          <View  style={styles.share}>
-            <View style={{opacity:opacity}}>
-                <View  style={styles.shareNavContainer}>
-                    <View  style={styles.shareNavToggelContainer}>
-                        <TouchableOpacity
-                            onPressIn={()=>{setActiveToggel(true); setdataFetched(false);}}
-                            style={styles.toggelContainer}>
-                            <View  style={activeToggel ? [styles.leftTogelInner,{
-                                backgroundColor: colors.activeColor,borderRightWidth: ((1))}]:[styles.leftTogelInner]}>
-                                <Text  style={styles.toggelLabel}>{appLabels.active}</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPressIn={()=>{setActiveToggel(false);setdataFetched(false);}}  
-                            style={styles.toggelContainer}>
-                            <View  style={!activeToggel ? [styles.righttogelinner,{
-                                backgroundColor: colors.activeColor,borderLeftWidth: ((1))}]:
-                                [styles.righttogelinner]}>
-                                <Text  style={styles.toggelLabel}>{appLabels.discontinued}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View  style={styles.shareNavSocialMediaContainer}>
-                        <TouchableOpacity
-                                onPress={()=> iconPressed(appLabels.whatsApp)}
-                            >
-                            <ReactImage  source={require('../../assets/img/whatsupIcon.png')} style={styles.iconContainer} />
-                        </TouchableOpacity>
-                    
-                        <TouchableOpacity
-                                onPress={()=> iconPressed(appLabels.email)}
-                            >
-                        <ReactImage  source={require('../../assets/img/gmailIcon.png')} style={styles.iconContainer} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                                onPress={()=> iconPressed(appLabels.sms)}
-                            >
-                        <ReactImage  source={require('../../assets/img/smsIcon.png')} style={styles.iconContainer} />
-                        </TouchableOpacity>
-                    </View>
+          {discontinuedKey !=null &&
+          activeKey != null
+          ? <ShareList  
                 
-                </View>
-                 
-                {dataFetched ?
-                 
-                 <ScrollabelItemContainer  listButton={false}
-                    data={listOfdata}
-                    itemlen={state.itemLabels.length}
-                    itemLabels={state.itemLabels}
-                    dataKeys={state.dataKeys}
-                    refresh={refresh}
-                    onPress={sort}
-                    sortIndex={sortIndex}/>:<View style={{marginTop:'50%'}}><Spinner/></View>}
+                data={props.route.name==appLabels.discontinuedTitle?
+                  currentDataDiscontinued:currentDataActive}
+                itemLabels={props.route.name==appLabels.discontinuedTitle ?
+                  discontinuedKey.itemLabels:activeKey.itemLabels}
+                dataKeys={props.route.name==appLabels.discontinuedTitle?
+                  discontinuedKey.dataKeys:activeKey.dataKeys}
+                status={props.route.name==appLabels.discontinuedTitle?
+                  appLabels.discontinued:appLabels.active}
+                navigation={props.navigation}
+                personalData={personalData}
+                title={props.route.name}
+           
+           />:null}
 
-            </View>
-            <InputModal
-                    modalVisible={openModal}
-                    onPress={modalData}
-                    client={client}
-                    status={activeToggel ? appLabels.active : appLabels.discontinued}
-                    listOfdata={listOfdata}
-                    navigation={props.navigation}
-                />
-            <Notification
-                    modalVisible={openModal2}
-                    onPress={dialogConfirmed}
-                    pTitle={notificationTitle}
-                    lTitle={appLabels.ok}
-                    rTitle={appLabels.cancel}
-                    showTwin={showTwin==null ? true:false}
-                    sTitle={appLabels.ok}
-                />
         </View>
     );
   }

@@ -29,6 +29,25 @@ export async function listOfPdf(){
 
 }
 
+export async function deletePdf(itemIndex){
+    const rawData = await getData('@sharedPDF')
+    let updatedData = []
+    if(rawData != null){
+        for (let index = 0; index < rawData.length; index++) {
+
+            if(index != itemIndex){
+                const element = rawData[index];
+                updatedData.push(element)
+            }
+        }
+        await saveData(updatedData,'@sharedPDF')
+    }
+
+
+}
+
+
+
 
 
 function loadListofItems(data){

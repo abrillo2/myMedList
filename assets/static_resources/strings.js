@@ -22,6 +22,8 @@ const appLabels = {
     active:"ACTIVE",
     discontinued:"DISCONTINUED",
 
+    activeTitle:"Active prescription list",
+    discontinuedTitle:"Discontinued prescription list",
     addSlipTitle:"SLIP DETAILS",
     addPhotoTitle:"ADD PHOTO",
     reconcileTitle:"RECONCILE",
