@@ -63,6 +63,7 @@ export const formInputLabel={
     pharmacyPhone:"Pharmacy phone",
     physicianName:"Name of physician",
     phone:"Phone",
+    physicianPhone:"Physician phone",
     nextAppointment:"Next appointment",
     diagnosis:"Reason for taking/ Diagnosis",
     firstName:"First name",
@@ -80,7 +81,7 @@ export const formInputLabel={
 }
 export const appDescription={
     homeDesccription:"MY MED LIST",
-    addSlipDescription:`Add photo of prescription slip or medicine bottle\n\nPress The camera Icon to take a photo`,
+    addSlipDescription:`Add photo of prescription slip or medicine bottle\n\nPress the camera Icon to take a photo`,
     addSlipInfoSaveDescription:"Are the entries correct?",
     reconcileListDeleteDescription:"Are you sure?",
     reconcileListAddItemDescription:"No slip found, add slip? ",
@@ -88,7 +89,11 @@ export const appDescription={
     shareSetPersonalDataDescription:"Please set your personal data,\nbefore starting to share",
     drawerTitleDescription: " MY MED LIST",
     appCopyRight: "Copyright "+ new Date().getFullYear()+"\nMango Consulting Corp. USA. All rights reserved.",
-    appVersion:"v0.0.1"
+    appVersion:"v0.0.1",
+    openDrawerDesctiption:'Swipe right to open sidebar menu',
+    AddSlipHelpDesctiption:' Take a photo of medication label or prescription slip received from the pharmacy',
+    ReconcileHelpDesctiption: 'Update prescription information when a new prescription is received from pharmacy or medication is discontinued by the physician',
+    ShareHelpDesctiption: 'Review and share the active or discontinued medication list'
 }
 
 export const appScreenName={

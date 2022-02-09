@@ -1,5 +1,5 @@
 //imports
-import {Text, View,TouchableOpacity,SectionList} from 'react-native';
+import {Text, View,TouchableOpacity,SectionList,RefreshControl} from 'react-native';
 import Icon from '../hooks/Icon.js';
 //import reconcile items
 import ReconcileStyle from '../../assets/styles/ReconcileStyle.js';
@@ -7,13 +7,34 @@ import ListActionButton from './ListActionButton.js';
 //reconcileitems section
 import React, {useEffect,useState} from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import colors from '../../assets/static_resources/colors.js';
 
 export default function ReconcileItems(props){
 
 
     const [dataList, setListofData] = useState(null)
     const [sortIndex,setSortIndex]  = useState(-1)
+
+
+    const [refreshing,setRefreshing] = useState(false)
     
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        props.refreshHandler()
+        setRefreshing(false)
+      }, []);
+    
+
+      useEffect(() => {
+
+        loadListofItems()
+        
+        return () => {
+        }
+      }, [props.data,props.sortIndex]);
+
+
     function byString(o, s){
         let kk = s.split("][");
         let rK = kk[0].replace('[','').replace('"','').replace('"','')
@@ -97,26 +118,15 @@ export default function ReconcileItems(props){
         return 0; 
     }
 
-    const Item = ({ item,index }) => (
+    const Item = ({ item,index }) => {
+      
+      const groupIndex = index
+      return (
      
      
      <View  style={ReconcileStyle.listItemsContainer}>
 
-      <SectionList
-        sections={[item]}
-        horizontal={true}
-        scrollEnabled={false}
-        extraData={dataList}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item,index }) => 
-    
-                
-        < View style={ReconcileStyle.itemTextContainer}>
-              <Text numberOfLines={1}  style={ReconcileStyle.itemValStyle}>{item[props.itemLabels[index]]}</Text>
-        </View>
-      }/>
-      
-      {props.listButton?
+{props.listButton?
           <View style={ReconcileStyle.butonIconContainer2}>
               <ListActionButton icon = {"edit"}
                   onPress={props.listButtonPressed}
@@ -127,21 +137,36 @@ export default function ReconcileItems(props){
                   action={"delete"}
                   itemId={item.key}/>
           </View>
-      :null}
+      : <View style={ReconcileStyle.butonIconContainer2}></View>}
+ 
+      <SectionList
+        sections={[item]}
+        horizontal={true}
+        scrollEnabled={false}
+        extraData={dataList}
+        keyExtractor={(item, index) => item + index}
+
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />}
+
+        renderItem={({ item,index }) => 
+    
+                
+        < View style={[ReconcileStyle.itemTextContainer,groupIndex%2 == 0 ?{backgroundColor:colors.bgColortertiary}:null]}>
+              <Text numberOfLines={1}  style={ReconcileStyle.itemValStyle}>{item[props.itemLabels[index]]}</Text>
+        </View>
+      }/>
+      
+
       
       </View>
 
       );
-
-    useEffect(() => {
-
-        loadListofItems()
-        
-        return () => {
-        }
-      }, [props.data,props.sortIndex]);
- 
-    
+    }
+   
         return(   
                    
             dataList == null ?null:

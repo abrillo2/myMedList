@@ -5,6 +5,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import styles from '../../assets/styles/HalfInputStyle.js'
 //setInputType
 export default function InputType(props){
+    console.log(props)
     if(props.inputType =="dropDown"){
         return (
             <Dropdown

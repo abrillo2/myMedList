@@ -1,24 +1,29 @@
 //imports
 import {StyleSheet, Text, View, TextInput, FlatList, Picker, ScrollView, TouchableNativeFeedback,TouchableOpacity} from 'react-native';
-import { wrp ,hrp} from './Dim';
+import { wrp ,hrp,color} from './Dim';
 
 
 export default StyleSheet.create({
    addslip: {
      position: "relative",
-     backgroundColor: "rgba(255, 255, 255, 1)",
+     backgroundColor: color.bgColorPrimary,
      flex:1,
+
   },
 
    bodyContainer:{
      position: "relative",
-     backgroundColor: "rgba(255, 255, 255, 1)",
+     backgroundColor:  color.bgColorPrimary,
       width: ("100%"),
       flex:1,
       alignItems:"center",
-      justifyContent:"center"
   },
 
+  cameraIconStyleLandscape: {
+    position: "relative",
+    width: (wrp(100)),
+    height: (hrp(100)),
+  },
    cameraIconStyle: {
      position: "relative",
      width: (wrp(223)),
@@ -28,8 +33,7 @@ export default StyleSheet.create({
   },
  addSlipDescription: {
      position: "relative",
-     backgroundColor: "rgba(255, 255, 255, 0)",
-     color: "rgba(56, 156, 196, 1)",
+     color: color.textColorPrimary,
      fontSize: (wrp(17)),
      fontFamily: "Roboto-MediumItalic",
      textAlign: "center",

@@ -1,16 +1,16 @@
 //imports
 import {StyleSheet} from 'react-native';
-import { wrp ,hrp} from './Dim';
+import { wrp ,hrp,color} from './Dim';
 
 
 export default StyleSheet.create({
 
     contentBody:{
-        backgroundColor:"#3685b5",
+        backgroundColor:color.bgColorSecondary,
         position:"relative",
         marginTop:-4,
         paddingTop:(hrp(15)),
-        shadowColor: "rgb(0,  0,  0)",
+        shadowColor: color.shadowColorPrimary,
         shadowOpacity: 0.2,
         elevation: (wrp(8)),
         shadowOffset: {
@@ -24,13 +24,12 @@ export default StyleSheet.create({
     },
     drawerHeaderIcon:{
         position:"relative",
-        width:(wrp(72)),
-        height:(hrp(64)),
+        width:80,
+        height:80,
     },
     drawerHeaderText:{
         position: "relative",
-        backgroundColor: "rgba(255, 255, 255, 0)",
-        color: "#00bfe9",
+        color: color.textColorSeconDary,
         fontSize: (wrp(20)),
         fontWeight: "400",
         fontFamily: "Roboto-Medium",
@@ -41,13 +40,13 @@ export default StyleSheet.create({
         marginBottom:(hrp(10))
     },
     labelStyle:{
-        color: '#3685b5', 
+        color: color.bgColorSecondary, 
         fontSize: 15
     },
     separator:{
         opacity: 1,
         position: "relative",
-        backgroundColor: "rgba(34, 171, 226, 0.5)",
+        backgroundColor: color.bgColortertiary,
         width: (("70%")),
         height: (hrp(1)),
         bottom:0

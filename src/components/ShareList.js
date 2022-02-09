@@ -1,9 +1,9 @@
 import React, {useEffect,useState} from 'react';
-import {Text, View,TouchableOpacity} from 'react-native';
-import {Image as ReactImage} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import InputModal from '../hooks/InputModal';
 //components import
 import ReconcileItems from './ReconcileItems';
+import HeaderSection from './HeaderSection';
 //import styles
 import styles from '../../assets/styles/ShareStyles'
 import { useIsFocused } from '@react-navigation/native';
@@ -26,14 +26,12 @@ export default function ShareList(props){
 
     const [openModal2, setOpenModal2] = useState(false)
     const [opacity,setOpacity] = useState(1)
-    const [showTwin, setShowTwin] = useState(true)
     const [notificationTitle,setNotificationTitle] = useState(null)
 
    const [refresh, setRefresh] = useState(true)
 
-  
 
-   function getSavedData(){
+   function getSavedData(){ 
 
         if (props.data != null){
             setlistOfdata(props.data)
@@ -61,23 +59,18 @@ export default function ShareList(props){
     }
 
     function iconPressed(client){
-        if(listOfdata !== null){
-            if(listOfdata.length >= 1){
+            
+            if(client == appLabels.active){
 
-                if(props.personalData == null){
+                props.refreshHandler()
+
+            }else if(props.personalData == null){
                     setNotificationTitle(appDescription.shareSetprops.personalDataDescription)
                     setOpenModal2(true)
-                }else{
+            }else{
                     setopenModal(true)
                     setCllient(client)
-                }
-            }else{
-                setOpenModal2(true)
             }
-        }else{
-            setOpenModal2(true)
-            
-        }
     }
 
     function sort(index){
@@ -86,46 +79,32 @@ export default function ShareList(props){
     }
 
     useEffect(() => {
-        if(isFocused ){
+          console.log('use effect share detail')
           getSavedData()
-        }else{
-          setRefresh(true)
-        }
         return () => {
         }
       }, [props.data]);
     return (
          <View  style={styles.share}>
+             <HeaderSection navigation={props.navigation} Title={appLabels.shareTitle} 
+                    iconPressed={iconPressed}
+                    disabled = {props.data.length <= 0}
+            />
+        
+        <ScrollView
+                    horizontal={false}
+                >
             <View style={{opacity:opacity}}>
                 <View  style={styles.shareNavContainer}>
               
-                    <View  style={styles.righttogelinner}>
+                  
                          <Text  style={styles.toggelLabel}>{props.title.toUpperCase()}</Text>
-                    </View>
-                    <View  style={styles.shareNavSocialMediaContainer}>
-                        <TouchableOpacity
-                                onPress={()=> iconPressed(appLabels.whatsApp)}
-                                style={styles.iconContainerB}
-                            >
-                            <ReactImage  source={require('../../assets/img/whatsupIcon.png')} style={styles.iconContainer} />
-                        </TouchableOpacity>
-                    
-                        <TouchableOpacity
-                                onPress={()=> iconPressed(appLabels.email)}
-                                style={styles.iconContainerB}
-                            >
-                        <ReactImage  source={require('../../assets/img/gmailIcon.png')} style={styles.iconContainer} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                                onPress={()=> iconPressed(appLabels.sms)}
-                                style={styles.iconContainerB}
-                            >
-                        <ReactImage  source={require('../../assets/img/smsIcon.png')} style={styles.iconContainer} />
-                        </TouchableOpacity>
-                    </View>
                 
                 </View>
-                <ReconcileItems      listButton={false}
+
+                <ReconcileItems      
+                                    refreshHandler={props.refreshHandler}
+                                    listButton={false}
                                      sortIndex={sortIndex}
                                      listButton={false}
                                      data={props.data}
@@ -152,9 +131,10 @@ export default function ShareList(props){
                     pTitle={notificationTitle}
                     lTitle={appLabels.ok}
                     rTitle={appLabels.cancel}
-                    showTwin={showTwin==null ? true:false}
+                    showTwin={true}
                     sTitle={appLabels.ok}
                 />
+        </ScrollView>
         </View>
     );
   }

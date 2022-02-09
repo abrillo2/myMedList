@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {getData, saveData} from '../helpers/AsyncHelper';
 import { removeItem,getItem} from '../helpers/editItemHelper';
 
@@ -13,7 +13,8 @@ import SolidInput from '../components/SolidInput';
 import Spinner from '../helpers/Spinner';
 //static items
 import appLabels,{appDescription,formInputLabel} from '../../assets/static_resources/strings';
-import ScrollabelItemContainer from '../components/ScrollabelItemContainer';
+import ReconcileItems from '../components/ReconcileItems';
+import appObjects from '../../assets/static_resources/objects';
 
 
 //test import
@@ -22,9 +23,8 @@ export default function Reconcilelist(props) {
 
     const isFocused = useIsFocused();
     const state = { 
-      itemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
-      dataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
-                 '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]'],
+      itemLabels : appObjects.reconcileitemLabels,
+      dataKeys:appObjects.reconciledataKeys,
         interactionsComplete: false
       };
 
@@ -133,18 +133,25 @@ export default function Reconcilelist(props) {
     function refresh(reload,data,sortIndex){
      
       setScrollItems(<View style={{opacity:opacity}}>
-        <ScrollabelItemContainer  
-                                listButtonPressed={listButtonPressed}
-                                listButton={true}
-                                data={data["slipInfo"]}
-                                itemlen={4}
-                                itemLabels={state.itemLabels}
-                                dataKeys={state.dataKeys}
-                                onPress={sort}
-                                sortIndex={sortIndex}
-                                refresh={reload}/>
 
-            </View>)
+                  <ReconcileItems      
+
+                                    refreshHandler={()=> getSlipInfoData()}
+                                     listButton={true}
+                                     data={data["slipInfo"]}
+                                     dataKeys={state.dataKeys}
+                                     itemlen={4}
+                                     itemLabels={state.itemLabels}
+                                     listButtonPressed={listButtonPressed}
+                                     sortIndex={sortIndex}
+                                     onPress={sort}
+                                     refresh={reload}/>
+
+
+            </View>
+            
+            
+            )
       setlistOfdata(data);
     }
 
@@ -163,6 +170,9 @@ export default function Reconcilelist(props) {
       }, [reload,useIsFocused()]);
 
     return (
+
+      <ScrollView
+      horizontal={false}>
       <View style={[ReconcileStyle.reconcilelist]}>
        
             {scrollItems}
@@ -174,7 +184,7 @@ export default function Reconcilelist(props) {
                           rTitle={appLabels.cancel}
                           data={notificationContent}
                       />
-    </View>
+    </View></ScrollView>
     );
   
 }

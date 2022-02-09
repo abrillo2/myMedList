@@ -9,8 +9,7 @@ export default StyleSheet.create({
          opacity: 1,
          position: "relative",
          backgroundColor: "transparent",
-         marginTop: (hrp(25)),
-         width: (wrp(344)),
+         width: '85%',
          height: (hrp(50)),
       },
       homeButtonContainer: {
@@ -25,7 +24,7 @@ export default StyleSheet.create({
          paddingRight: 0,
          paddingBottom: 0,
          paddingLeft: 0,
-         width: (wrp(344)),
+         width: '85%',
          height: (hrp(50)),
          left: 0,
          top: 0

@@ -1,4 +1,5 @@
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import colors from '../static_resources/colors'
 //helper functions
 import {Dimensions } from 'react-native';
 
@@ -18,3 +19,5 @@ export function hrp(value){
 export function wrp(value){
     return actualDimensions.wp(value*100 / actualDimensions.width);
 }
+
+export let color = {...colors}

@@ -4,9 +4,10 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import InputType from '../hooks/InputType';
 import Icon from '../hooks/Icon'
 import DatePickerHelper from './DatePicker';
-
+import Options from './Options';
 //import heaader style
 import styles from '../../assets/styles/HalfInputStyle.js'
+import { FlatList } from 'react-native-gesture-handler';
 
 //Header section
 export default class HalfInputContainer extends React.Component{
@@ -82,6 +83,9 @@ export default class HalfInputContainer extends React.Component{
     return(
                     <View pointerEvents={this.props.updateAble ? 'auto' : 'none'} style={[styles.halfinput,{width:this.props.width},
                         {opacity:this.props.updateAble?1:0.3}]}>
+
+                        
+
                         
                          <Text  style={[styles.halfinputLabel]}>
                             {this.props.inputLabel}
@@ -98,6 +102,31 @@ export default class HalfInputContainer extends React.Component{
                             </TouchableOpacity>: null}     
                         </View>                   
                         <View  style={[styles.halfinputLayer2Indicator,{width:"100%"}]}></View>
+                        {/*this.props.childKey !='name'?null:
+                            <View style={{position:'absolute',
+                                         backgroundColor:'white',
+                                         width:'100%',
+                                         height:'200%',
+                                         elevation:7,
+                                         top:'100%',
+                                         left:0,
+                                         alignItems:'center',
+                                         zIndex: 100,
+                                        }}>
+                                    
+                                    <FlatList
+                                        data={[1,2,3,4,5,6]}
+                                        removeClippedSubviews={false}
+                                        listKey={'autoCompelete'+this.props.rootKey+this.props.childKey}
+                                        //extraData={spinnerOn}
+                                        keyExtractor={(item,index)=> {
+                                           return index
+                                        }}
+                                        renderItem={({ item, index }) => (
+                                            <Text key={item+index}>Hello</Text>
+                                        )}/>
+                            </View>*/}
+                       
                         {this.props.func == 'datePicker' ? <DatePickerHelper getVal={()=>this.state.value} open={this.state.openDatePicker} setVal={this.setValue}/>:null}
                     </View>
     )

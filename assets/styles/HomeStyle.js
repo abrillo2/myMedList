@@ -18,15 +18,11 @@ export default StyleSheet.create ({
         letterSpacing: 1,
         fontFamily: "Roboto-LightItalic",
         textAlign: "center",
-        marginTop: '13%',
-        marginBottom: '13%' 
     },
     homeBgStyle: {
         flex:1,
         alignItems:"center",
         justifyContent:'space-between',
-        paddingTop:'5%',
-        paddingBottom:'20%'
     },
     twinButtonContainer:{
         flexDirection:"row",

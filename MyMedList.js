@@ -15,7 +15,8 @@ import HeaderSection from './src/components/HeaderSection';
 import PdfReviewList from './src/components/PdfReviewList'
 import SlipReviewList from './src/components/SlipReviewList';
 
-import Share from './src/Screens/Share'
+import ShareActive from './src/Screens/ShareActive'
+import ShareDiscontinued from './src/Screens/ShareDiscontinued'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from './assets/static_resources/colors';
@@ -25,7 +26,9 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// share active and discontinued tab nav
 function ShareTab(props){
+  
   return(
   
   <Tab.Navigator
@@ -48,24 +51,25 @@ function ShareTab(props){
     tabBarLabel: route.name == appLabels.activeTitle ? appLabels.active.toUpperCase():
                                appLabels.discontinued.toUpperCase(),
     tabBarLabelStyle:{
-        fontSize:20,
+        fontSize:15,
     },
     tabBarStyle:{
-      backgroundColor:'white'
+      backgroundColor:colors.bgColorSecondary,
     },
-    tabBarActiveTintColor: 'rgba(34, 171, 226, 1)',
-    tabBarInactiveTintColor: 'gray',
+      tabBarActiveTintColor: colors.bgColorPrimary,
+      tabBarInactiveTintColor: colors.placeHolderTextColor,
   headerShown:false})
   }
   
   >
-    <Tab.Screen name={appLabels.activeTitle} component={Share} />
-    <Tab.Screen name={appLabels.discontinuedTitle} component={Share} />
+    <Tab.Screen name={appLabels.activeTitle} component={ShareActive} />
+    <Tab.Screen name={appLabels.discontinuedTitle} component={ShareDiscontinued} />
   </Tab.Navigator>)
 }
 
-
+// active slip image and shared pdfs view page
 function reviewTab(props){
+
   return(
   
   <Tab.Navigator
@@ -88,12 +92,10 @@ function reviewTab(props){
       fontSize:15,
   },
   tabBarStyle:{
-    backgroundColor:'white',
+    backgroundColor:colors.bgColorSecondary,
   },
-  tabBarActiveTintColor: 'rgba(34, 171, 226, 1)',
-  tabBarInactiveTintColor: 'gray',
-    tabBarActiveTintColor: 'tomato',
-    tabBarInactiveTintColor: 'gray',
+    tabBarActiveTintColor: colors.bgColorPrimary,
+    tabBarInactiveTintColor: colors.placeHolderTextColor,
   })
   }
   
@@ -103,6 +105,7 @@ function reviewTab(props){
   </Tab.Navigator>)
 }
 
+//stack nav
 function stackNav(props){
 return (  <Stack.Navigator
 
@@ -117,7 +120,9 @@ return (  <Stack.Navigator
             }
             }
         >
-
+ 
+  <Stack.Screen name={appLabels.shareTitle} options={{headerShown: false,unmountOnBlur: false}}component={ShareTab}/>
+  <Stack.Screen name={appLabels.reviewTitle} options={{headerShown: true}} component={reviewTab} />
   {drawerItems.map((item,index)=>{
         
         if(item.title != appLabels.exit && item.title != 'Review' && item.title != appScreenName.share){
@@ -139,6 +144,8 @@ return (  <Stack.Navigator
 
 function MyMedList(props) {
 
+  
+
 return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -157,8 +164,6 @@ return (
         })
       }>
         <Drawer.Screen name="stack" options={{headerShown: false,unmountOnBlur: false}}component={stackNav}/>
-        <Drawer.Screen name={appLabels.reviewTitle} options={{headerShown: true}} component={reviewTab} />
-        <Drawer.Screen name="SHARE" options={{headerShown: true,unmountOnBlur: false}}component={ShareTab}/>
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -1,25 +1,17 @@
 //imports
 import {StyleSheet} from 'react-native';
-import { wrp ,hrp} from './Dim';
+import { wrp ,hrp,color} from './Dim';
 
 export default StyleSheet.create({
     singlereconcile: {
-      opacity: 1,
       position: "relative",
-      backgroundColor: "rgba(255, 255, 255, 1)",
+      backgroundColor: color.bgColorPrimary,
       flex:1,
     },
     bodycontainer: {
-      opacity: 1,
       position: "relative",
-      backgroundColor: "transparent",
       marginTop: (hrp(10)),
-      paddingTop: (hrp(0)),
-      paddingRight: (wrp(0)),
-      paddingBottom: (hrp(0)),
-      paddingLeft: (wrp(0)),
-  
-      shadowColor: "rgb(0,  0,  0)",
+      shadowColor: color.shadowColorPrimary,
       shadowOpacity: 0.2,
       elevation: (wrp(7)),
       shadowOffset: {

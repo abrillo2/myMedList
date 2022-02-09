@@ -7,6 +7,9 @@ import { Dropdown } from 'react-native-element-dropdown';
 import appObjects from '../../assets/static_resources/objects.js';
 import {hrp,wrp} from '../../assets/styles/Dim'
 import drawerStyle from '../../assets/styles/drawerStyle.js';
+import { styles } from 'react-native-element-dropdown/src/TextInput/styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import colors from '../../assets/static_resources/colors.js';
 export default function Options(props){
 
     const renderItem = (item) => {
@@ -21,10 +24,16 @@ export default function Options(props){
         );
       };
       return (
+        
+        <View>
+
+
+
+       
             <Dropdown
                 
                 renderRightIcon={()=> <Icon
-                                  color={'white'}
+                                  color={colors.placeHolderTextColor}
                                   name="options-vertical"
                                   backgroundColor="rgba(34, 171, 226, 1)"
                                   size={24}
@@ -42,7 +51,22 @@ export default function Options(props){
                     //props.setVal(item["label"])
                     props.onPressOption(item)
                 }}
-          />)
+          />
+                      <View style={stylesDr.moreButton}>
+              <TouchableOpacity
+                      onPress={()=>props.onPressOption(appObjects.reconCileUpdateMenu[0])}
+                  >
+                {icon('save',{marginRight:24},24,'white')}</TouchableOpacity>
+              <TouchableOpacity
+              
+              onPress={()=>props.onPressOption(appObjects.reconCileUpdateMenu[3])}
+              >
+                {icon('cancel',null,24,'white')}</TouchableOpacity>
+                 
+                 
+            </View>
+         </View>
+        )
     
 }
 
@@ -56,5 +80,15 @@ const stylesDr= StyleSheet.create({
     position:'absolute',
     top:0,
     right:0
+  },
+  moreButton:{
+    position:'absolute',
+    top:0,
+    right:40,
+    height:'100%',
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
   }
+
 });

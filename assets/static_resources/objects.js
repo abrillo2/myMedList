@@ -7,6 +7,34 @@
 import appLabels,{formInputLabel,appMessages} from './strings'
 
 
+export const socials=
+    [
+        {
+            source:require('../img/whatsupIcon.png'),
+            name:appLabels.whatsApp,
+        },{
+            source:require('../img/gmailIcon.png'),
+            name:appLabels.email,
+        },{
+            source:require('../img/smsIcon.png'),
+            name:appLabels.sms,
+        },{
+            source:require('../img/smsIcon.png'),
+            name:appLabels.active,
+        }
+    ]
+
+
+let slipRefillsRange = []
+
+for (let index = 0; index < 13; index++) {
+    const element =  { label: ''+index, value: ''+index }
+
+    slipRefillsRange.push(element)
+
+    
+}
+
 const appObjects = {
     addSlipInfoRequiredItems: [["medicationDetails","name"],["medicationDetails","strength"],
     ["medicationDetails","dateRefilled"],["physicianDetails","name"]],
@@ -16,6 +44,8 @@ const appObjects = {
     myInfoSexChoices:[
         { label: 'Male', value: 'Male' },
         { label: 'Female', value: 'Female'}],
+
+    slipRefilLeftRange:slipRefillsRange,
 
     reconCileUpdateMenu:[
         { label: 'save', value: 'save', icon:'save',action:0},
@@ -28,7 +58,15 @@ const appObjects = {
     dataKeysReview:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
                 '["medicationDetails"]["refillsLeft"]','["medicationDetails"]["imageData"]'],
     
-    labelsReview:['name','dateRefilled','refillsLeft','imageData']
+    labelsReview:['name','dateRefilled','refillsLeft','imageData'],
+    shareitemLabels : ["Medicine", "Date filled", "Doctor", "Refills left","Strength","Direction","Disease"],
+    sharedataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
+               '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]',
+               '["medicationDetails"]["strength"]','["medicationDetails"]["direction"]',
+               '["medicationDetails"]["diagnosis"]'], 
+    reconcileitemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
+    reconciledataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
+    '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]'],
 }
 
 
@@ -54,9 +92,11 @@ const medDetails = {
             inputLabel:formInputLabel.refillsLeft,
             childKey:"refillsLeft",
             rootKey:"medicationDetails",
-            iconName:"arrowRightBlack",
-            iconName2:"arrowLefttBlack",
-            func:"numberPicker",
+            //iconName:"arrowRightBlack",
+            //iconName2:"arrowLefttBlack",
+            //func:"numberPicker",
+            inputType:"dropDown",
+            data:appObjects.slipRefilLeftRange,
             editAble:false
             
         }]}
@@ -74,6 +114,7 @@ const pharma={
             inputLabel:formInputLabel.pharmacyName,
             childKey:"name",
             rootKey:"pharmacyDetails",
+            inputType:'autoCompelete'
         },{
             inputLabel:formInputLabel.pharmacyPhone,
             childKey:"phone",
@@ -90,7 +131,7 @@ const physician={
         childKey:"name",
         rootKey:"physicianDetails",
     },{
-        inputLabel:formInputLabel.phone,
+        inputLabel:formInputLabel.physicianPhone,
         childKey:"phone",
         rootKey:"physicianDetails",
         keyboard:"phone-pad"
@@ -119,14 +160,14 @@ export const slipInfoFormLabels={
         title:appLabels.medicationDetailsLabel,
         content:medDetails.medicationDetails
     },{
-        title:appLabels.pharmacyDetailsLabel,
-        content:pharma.pharmacyDetailsLabel
-    },{
         title:appLabels.physiciansDetailsLabel,
         content:physician.physiciansDetailsLabel
     },{
         title:appLabels.addistionDetailsLabel,
         content:additional.addistionDetailsLabel
+    },{
+        title:appLabels.pharmacyDetailsLabel,
+        content:pharma.pharmacyDetailsLabel
     }]
 }
 
@@ -194,12 +235,14 @@ export const myInfoFormLabels={
                             inputLabel:formInputLabel.phone,
                             childKey:"phone",
                             rootKey:"address",
-                            width:"49%"
+                            width:"49%",
+                            keyboard:'phone-pad'
                         },{
                             inputLabel:formInputLabel.email,
                             childKey:"email",
                             rootKey:"address",
                             width:"49%",
+                            keyboard:'email-address'
                         }]}
                     ],
                 },{
@@ -221,6 +264,7 @@ export const myInfoFormLabels={
                             childKey:"phone",
                             rootKey:"physicianDetails",
                             width:"100%",
+                            keyboard:'phone-pad'
                         }
                      ],
                 },
@@ -238,6 +282,7 @@ export const myInfoFormLabels={
                         childKey:"phone",
                         rootKey:"pharmacyDetails",
                         width:"100%",
+                        keyboard:'phone-pad'
                     }]
                 },{
                     title:appLabels.pinLabel,
@@ -247,7 +292,8 @@ export const myInfoFormLabels={
                         childKey:"pin",
                         rootKey:"personalInformation",
                         width:"100%",
-                        secureTextEntry:false
+                        secureTextEntry:false,
+                        keyboard:'number-pad'
                     }]
                 }
             ]

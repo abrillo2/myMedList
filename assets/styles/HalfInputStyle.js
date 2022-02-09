@@ -1,6 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
-import { wrp ,hrp} from './Dim';
+import { wrp ,hrp,color} from './Dim';
 
 
 export default StyleSheet.create({
@@ -8,23 +8,15 @@ export default StyleSheet.create({
     halfinput: {
      opacity: 1,
      position: "relative",
-     backgroundColor: "rgba(0, 0, 0, 0.043137254901960784)",
+     backgroundColor: color.textInputBgColor,
      marginTop: (hrp(5)),
-     marginRight: (wrp(0)),
-     marginBottom: (hrp(0)),
-     marginLeft: (wrp(0)),
-     paddingRight: (wrp(0)),
-     paddingBottom: (hrp(0)),
      borderTopLeftRadius: (wrp(4)),
      borderTopRightRadius: (wrp(4)),
-     borderBottomLeftRadius: (wrp(0)),
-     borderBottomRightRadius: (wrp(0)) 
   },
     halfinputLabel: {
      opacity: 1,
      position: "relative",
-     backgroundColor: "rgba(255, 255, 255, 0)",
-     color: "rgba(34, 171, 226, 1)",
+     color: color.inputLabelColor,
      fontSize: (wrp(14)),
      fontWeight: "500",
      fontFamily: "Roboto-Medium",
@@ -35,7 +27,6 @@ export default StyleSheet.create({
     halfinputLabelIcon: {
      opacity: 1,
      position: "relative",
-     backgroundColor: "transparent",
      flexDirection:"row",
      alignItems:'center',
      justifyContent:"space-between"
@@ -43,7 +34,7 @@ export default StyleSheet.create({
     halfinputInput: {
      opacity: 1,
      position: "relative",
-     color: "rgba(0, 0, 0, 0.8)",
+     color: color.inputTextColor,
      fontSize: (wrp(18)),
      fontWeight: "400",
      fontStyle: "normal",
@@ -58,7 +49,7 @@ export default StyleSheet.create({
     halfinputInput2: {
      opacity: 1,
      position: "relative",
-     color: "rgba(0, 0, 0, 0.8)",
+     color: color.inputTextColor,
      fontSize: (wrp(18)),
      fontWeight: "400",
      fontStyle: "normal",
@@ -77,7 +68,7 @@ export default StyleSheet.create({
     halfinputLayer2Indicator: {
      opacity: 1,
      position: "relative",
-     backgroundColor: "rgba(34, 171, 226, 1)",
+     backgroundColor: color.inputLabelColor,
      width: (("42%")),
      height: (hrp(2)),
      bottom:0
@@ -85,7 +76,7 @@ export default StyleSheet.create({
   //dropdown
   dropdown: {
     height: (hrp(24)),
-    borderColor: 'white',
+    borderColor: color.bgColorPrimary,
     borderWidth: 0.5,
     borderRadius: 8,
     width:"100%",
@@ -109,7 +100,7 @@ export default StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: (wrp(16)),
-     color: "rgba(0, 0, 0, 0.6)",
+     color: color.inputTextColor,
      marginLeft:(wrp(10))
   },
   iconStyle: {

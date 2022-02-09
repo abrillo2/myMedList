@@ -1,15 +1,13 @@
 //imports
 import {StyleSheet} from 'react-native';
-import { wrp ,hrp} from './Dim';
+import { wrp ,hrp,color} from './Dim';
 
 
 export default StyleSheet.create({
 
     
     buttonTextIconContainer:{
-        opacity: 1,
         position: "relative",
-        backgroundColor: "transparent",
         flexDirection:"row",
         flex:1,
         justifyContent:"center",
@@ -18,12 +16,12 @@ export default StyleSheet.create({
       },
     buttonContainer: {
         position: "relative",
-        backgroundColor: "#22bee2",
+        backgroundColor: color.primary,
         borderTopLeftRadius: (wrp(4)),
         borderTopRightRadius: (wrp(4)),
         borderBottomLeftRadius: (wrp(4)),
         borderBottomRightRadius: (wrp(4)),
-        shadowColor: "rgb(0,  0,  0)",
+        shadowColor: color.shadowColorPrimary,
         shadowOpacity: 0.1,
         elevation: (wrp(5)),
         shadowOffset: {
@@ -38,7 +36,7 @@ export default StyleSheet.create({
         position: "relative",
         marginLeft:(hrp(5)),
         backgroundColor: "transparent",
-        color: "rgba(255, 255, 255, 1)",
+        color: color.bgColorPrimary,
         fontSize: (wrp(16)),
         fontWeight: "400",
         letterSpacing: 1,
@@ -49,6 +47,5 @@ export default StyleSheet.create({
         position: "relative",
         width: (wrp(24)),
         height: (hrp(24)),
-        backgroundColor: "transparent",
       },
 });

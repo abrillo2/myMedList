@@ -12,7 +12,7 @@ export async function handelOption(option,navigation,itemkey,datakey){
     switch (action) {
       case 0:
         await update(navigation,itemkey,datakey)
-        return handelNavigation(navigation,appLabels.homeTitle)
+        return handelNavigation(navigation,appLabels.reconcileTitle)
         break;
 
       case 1:

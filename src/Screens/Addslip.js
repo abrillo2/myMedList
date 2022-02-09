@@ -14,10 +14,13 @@ import styles from '../../assets/styles/AddSlipPhotoStyle'
 import {appDescription} from '../../assets/static_resources/strings'
 //static resources
 import appLabels from '../../assets/static_resources/strings';
+import { UseOrientation } from '../hooks/UserORientation';
+
 export default function Addslip(props) {
 
   const [spinnerOf, setSpinner] = useState(true)
   const isFocused = useIsFocused();
+  const orientation = UseOrientation();
 
   async function openCam(funcArg){
     setSpinner(false)
@@ -46,10 +49,13 @@ export default function Addslip(props) {
     <View  style={styles.addslip}>
         {spinnerOf? 
         
-        <View style={styles.bodyContainer}>
-          <Text  style={styles.addSlipDescription}>{appDescription.addSlipDescription}</Text>
+        <View style={[styles.bodyContainer,
+          orientation === 'PORTRAIT' ?{justifyContent:'center'}:{justifyContent:'space-around'}]}>
+          <Text  style={styles.addSlipDescription}>
+            {appDescription.addSlipDescription}</Text>
           <TouchableOpacity onPress={() => openCam("photo")}>
-            <ReactImage  source={require('../../assets/img/photoCamera.png')} style={styles.cameraIconStyle} />
+            <ReactImage  source={require('../../assets/img/photoCamera.png')} 
+            style={[orientation === 'PORTRAIT' ?styles.cameraIconStyle:styles.cameraIconStyleLandscape]} />
           </TouchableOpacity>
           <Button w={2} buttonLabel={appLabels.addPhoto} iconName="add" onPress={openCam}/>
         </View>:<Spinner/>}

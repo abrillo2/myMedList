@@ -21,7 +21,6 @@ export default StyleSheet.create({
     },
     titleStyle:{
         position: "relative",
-        backgroundColor: "rgba(255, 255, 255, 0)",
         color: "#00bfe9",
         fontSize: (wrp(20)),
         fontWeight: "400",

@@ -198,3 +198,10 @@ export function shareWithEmail (data,Description,recipient){
       };
     return shareOptions;
 }
+
+export function selectToggelItem(jsonValue,active){
+    return active ? jsonValue["slipInfo"] : 
+                       (jsonValue["slipInfoDiscontinued"]?jsonValue["slipInfoDiscontinued"]:
+                                                         [] )
+}
+

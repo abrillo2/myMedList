@@ -21,6 +21,7 @@ import {getNavData,getCurrentData,
         prepSaveData,required,
         loadSavedData,
         onChangeInputData,isUpdateAble,requiredFieldsFullfilled} from '../helpers/AddSlipDetailsHelper'
+import { removeFile } from '../hooks/FsManager';
 
 
 export default function AddSlipInfo(props){
@@ -100,7 +101,12 @@ export default function AddSlipInfo(props){
    async function handelOptionMenu(item){
     setspinnerOn(true)
     let response = await handelOption(item, props.navigation,props.route.params.key,"@myMedListSlipInfo")
-  
+    
+    if(response){
+      if(response.key == itemKey){
+        setspinnerOn(false)
+      }
+    }
   }
 
 
@@ -154,7 +160,7 @@ export default function AddSlipInfo(props){
 return (
 
       spinnerOn? <Spinner/>:
-      <View style={{flex:1,opacity:opacity}}>
+      <View style={{flex:1}}>
 
 
       <FlatList
@@ -164,7 +170,7 @@ return (
         renderItem={({ item, index }) => (    
           
           
-        <View>
+        <View style={{opacity:opacity}}>
         <SlipPicEditContainer
           childKey={"imageData"}
           rootKey = {"medicationDetails"}
@@ -203,6 +209,10 @@ return (
                                 childKey={item.childKey}
                                 rootKey ={item.rootKey}
                                 editAble={item.editAble!=null?item.editAble:null}
+                                keyboard={item.keyboard!=null?item.keyboard:'default'}
+
+                                inputType={item.inputType!=null?item.inputType:'default'}
+                                data={item.data!=null?item.data:'default'}
                                 
                                 
                                 inputContent={getDataCurrent}
@@ -231,7 +241,9 @@ return (
                                 childKey={item.childKey}
                                 rootKey ={item.rootKey}
                                 editAble={item.editAble!=null?item.editAble:null}
-                                
+                                keyboard={item.keyboard!=null?item.keyboard:'default'}
+                                inputType={item.inputType!=null?item.inputType:'default'}
+                                data={item.data!=null?item.data:'default'}
                                 
                                 inputContent={getDataCurrent}
                                 onChangeText={onChangeData}
@@ -249,10 +261,22 @@ return (
                 rTitle={appLabels.no}
                 showTwin={true}
             /> 
-            <View  style={styles.twinButtonContainer}>
+
+            
+            {props.route.params.key?null:<View  style={styles.twinButtonContainer}>
                   <Button buttonLabel={appLabels.cancel} 
                       disabled={false}
-                      onPress={()=>{props.navigation.navigate(appLabels.reconcileTitle)}}
+                      onPress={()=>{
+                          
+                        
+                          if(!props.route.params.key && props.route.params.imageData){
+                            removeFile(props.route.params.imageData.uri)
+                          }else{
+                             
+                          }
+                          props.navigation.goBack()
+
+                        }}
                       h={2}
                       w={120}
                       />
@@ -262,7 +286,7 @@ return (
                       onPress={saveData}
                       h={2}
                       w={120}/>
-                  </View>
+                  </View>}
             </View>
       );
 
