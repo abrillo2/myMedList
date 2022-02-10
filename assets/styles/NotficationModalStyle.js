@@ -7,13 +7,12 @@ export default StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      marginTop: 22
     },
     modalView: {
       margin: 20,
       backgroundColor: "white",
       borderRadius: 20,
-      padding: 35,
+      padding: 20,
       alignItems: "center",
       shadowColor: "#000",
       width:"80%",
@@ -54,7 +53,7 @@ export default StyleSheet.create({
     },
     twinButtonContainer:{
       position:"relative",
-      marginTop:(hrp(50)),
+      marginTop:(hrp(20)),
       marginBottom:(hrp(20)),
       flexDirection:"row",
       width:"100%",

@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {Image, ScrollView, View} from 'react-native';
 import {getData, saveData} from '../helpers/AsyncHelper';
 import { removeItem,getItem} from '../helpers/editItemHelper';
 
@@ -54,19 +54,39 @@ export default function Reconcilelist(props) {
                 break
               case "edit":
         
-                  setScrollItems(<Spinner/>)
-
                   setTimeout(async()=>{
-                      let items = await getData('@myMedListSlipInfo')
+                      let items = listOfdata?listOfdata: await getData('@myMedListSlipInfo')
                       items = [...items['slipInfo']]
                       let item = getItem(items,itemId)
                       props.navigation.navigate(appLabels.addSlipTitle,{
                       item:item,key:itemId
                     })
                   },1000)
-               
-              
                 break  
+              
+              case 'view':
+
+                let items = listOfdata?listOfdata: await getData('@myMedListSlipInfo')
+                items = [...items['slipInfo']]
+                let item = getItem(items,itemId)
+                
+                let uri = item?item[itemId]["medicationDetails"]["imageData"].uri:null
+
+                  if(uri){
+                      setNotificationContent(
+                          <Image 
+                          source={{uri:uri}}
+                          style={{width:200,height:400}}
+                          />
+                         
+                      )
+                      setNotificationTitle('Slip photo')
+                      setOpenModal(true)
+                  }else{
+
+                  }
+
+                  
           }    
     } 
     //import item list
@@ -97,7 +117,7 @@ export default function Reconcilelist(props) {
     function dialogConfirmed(data,confirmed){
       setOpenModal(false)
       setOpacity(1)
-      if(confirmed){
+      if(confirmed && notificationTitle != 'Slip photo'){
          if(notificationContent){
             let items = listOfdata
             let date = stopDate != null? stopDate : new Date().toLocaleDateString("en-US")
@@ -182,7 +202,7 @@ export default function Reconcilelist(props) {
                           pTitle={notificationTitle}
                           lTitle={appLabels.ok}
                           rTitle={appLabels.cancel}
-                          data={notificationContent}
+                          data={notificationContent} 
                       />
     </View></ScrollView>
     );

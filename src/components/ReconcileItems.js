@@ -128,6 +128,11 @@ export default function ReconcileItems(props){
 
 {props.listButton?
           <View style={ReconcileStyle.butonIconContainer2}>
+
+              <ListActionButton icon = {"remove-red-eye"}
+                  onPress={props.listButtonPressed}
+                  action={"view"}
+                  itemId={item.key}/>
               <ListActionButton icon = {"edit"}
                   onPress={props.listButtonPressed}
                   action={"edit"}
@@ -136,8 +141,9 @@ export default function ReconcileItems(props){
                   onPress={props.listButtonPressed}
                   action={"delete"}
                   itemId={item.key}/>
+            
           </View>
-      : <View style={ReconcileStyle.butonIconContainer2}></View>}
+      :null}
  
       <SectionList
         sections={[item]}
@@ -174,6 +180,21 @@ export default function ReconcileItems(props){
            <ScrollView horizontal={true} styles={{flex:1}}>
             <View  style={ReconcileStyle.reconcilelist1_bodycontainerr} >
               <View  style={ReconcileStyle.listlabelcontainerr}>
+
+              {props.listButton?
+          <View style={[ReconcileStyle.butonIconContainer2,{opacity:0}]}>
+              <ListActionButton icon = {"edit"}
+                  onPress={()=>{}}
+                  action={"edit"}
+                  itemId={'item.key'}/>
+              <ListActionButton icon = {"delete"}
+                  onPress={()=>{}}onPress={()=>{}}
+                  action={"delete"}
+                  itemId={'item.key'}/>
+              <ListActionButton icon = {"view"}
+                 onPress={()=>{}}onPress={()=>{}}/>
+          </View>
+      :null}
                     
                 {props.itemLabels.map((item,index)=>{
                     return  <TouchableOpacity 

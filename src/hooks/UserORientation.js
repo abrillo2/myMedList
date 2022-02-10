@@ -24,7 +24,7 @@ export function UseOrientation(){
     Dimensions.addEventListener('change', callback);
 
     return () => {
-        Dimensions.removeEventListener('change', callback);
+        Dimensions.remove('change', callback);
       };
     }, []);
   

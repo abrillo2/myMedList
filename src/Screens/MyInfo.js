@@ -8,10 +8,12 @@ import Button from '../components/Button';
 import Fold from '../callBacks/Fold';
 import SolidInput from '../components/SolidInput';
 import Spinner from '../helpers/Spinner';
+import ItemReviewList from '../helpers/ItemReviewList';
+import Notification from '../hooks/Notification';
 //styles
 import styles from '../../assets/styles/AddSlipInfoStyle';
 //static resources
-import appLabels,{appMessages} from '../../assets/static_resources/strings'
+import appLabels,{appDescription, appMessages} from '../../assets/static_resources/strings'
 import appObjects,{myInfoFormLabels} from '../../assets/static_resources/objects';
 
 import { getUserInfo,saveUserProfile,required,onchangeInput,requiredFieldsFullfilled} from '../helpers/MyinfoHelper';
@@ -27,6 +29,9 @@ export default function MyInfo(props){
   const [spinnerOn, setSpinnerOn] = useState(false)
 
   const [formInputData, setFormInputData] = useState(null)
+
+  const[openModal,setOpenModal]=useState(false)
+  const [modalData, setModalData]=useState(null)
 
 
   useEffect(() => {
@@ -49,9 +54,6 @@ export default function MyInfo(props){
     }
 
   }
-
-
-
   function getDataCurrent(parent,child){
     
     return getUserInfo(parent,child,formInputData)
@@ -84,9 +86,26 @@ export default function MyInfo(props){
   function cancelPressed(){
       props.navigation.goBack()
     }
-    async function savePressed(){
-      await saveUserProfile(formInputData)
-      props.navigation.goBack()
+  async function savePressed(){
+     
+
+        setModalData(
+          <ItemReviewList
+              data={myInfoFormLabels.folds}
+              getDataCurrent={getDataCurrent}
+          />
+        )
+      setOpenModal(true)
+    }
+
+    async function saveDataConfirmed(data,confirmed){
+        setOpenModal(false)
+        if(confirmed){
+          await saveUserProfile(formInputData)
+          props.navigation.navigate(appLabels.homeTitle)
+        }else{
+          
+        }
     }
 
     return (
@@ -130,7 +149,7 @@ export default function MyInfo(props){
                             rootKey = {item.rootKey}
                             inputContent={getDataCurrent}
                             required = {required}
-                            
+                            keyboard={item.keyboard?item.keyboard:'default'}
                             iconName={item.iconName? item.iconName:null}
                             func={item.func? item.func:null}
                             editAble={item.editAble? item.editAble:true}
@@ -159,6 +178,7 @@ export default function MyInfo(props){
                               inputContent={getDataCurrent}
                               required = {required}
                               
+                            keyboard={item.keyboard?item.keyboard:'default'}
                               iconName={item.iconName? item.iconName:null}
                               func={item.func? item.func:null}
                               editAble={item.editAble? item.editAble:true}
@@ -190,6 +210,17 @@ export default function MyInfo(props){
                       h={2}
                       w={120}/>
                   </View>
+
+
+            <Notification
+                modalVisible={openModal}
+                data={modalData}
+                onPress={saveDataConfirmed}
+                pTitle={appDescription.addSlipInfoSaveDescription}
+                lTitle={appLabels.yes}
+                rTitle={appLabels.no}
+                showTwin={true}
+            /> 
             </View>
         
       );

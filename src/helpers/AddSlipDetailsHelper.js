@@ -27,7 +27,7 @@ export function getNavData(route){
     //console.log('current data being refreshed ', currentData)
     if(currentData){
       let parentData = {...currentData[parent]}
-      let result =  parentData[child] ? parentData[child] :null
+      let result =  parentData[child] ? parentData[child] :(child == 'refillsLeft'?0:null)
       return result
     }else{
       return null 

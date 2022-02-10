@@ -21,8 +21,8 @@ export default StyleSheet.create({
 
   cameraIconStyleLandscape: {
     position: "relative",
-    width: (wrp(100)),
-    height: (hrp(100)),
+    width: (wrp(120)),
+    height: (hrp(120)),
   },
    cameraIconStyle: {
      position: "relative",

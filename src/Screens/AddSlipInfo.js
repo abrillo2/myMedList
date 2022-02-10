@@ -11,6 +11,7 @@ import Button from '../components/Button';
 import styles from '../../assets/styles/AddSlipInfoStyle'
 //import notification modal
 import  Notification from '../hooks/Notification'
+import ItemReviewList from '../helpers/ItemReviewList';
 //static resources
 import appObjects,{slipInfoFormLabels} from '../../assets/static_resources/objects'
 import appLabels,{appDescription} from '../../assets/static_resources/strings'
@@ -33,6 +34,7 @@ export default function AddSlipInfo(props){
 
 
         const[openModal,setOpenModal]=useState(false)
+        const [modalData, setModalData]=useState(null)
         const[opacity,setopacity]=useState(1)
         const[formData,setformData]=useState(null)
         const[imageData,setimageData]=useState(null)
@@ -153,7 +155,12 @@ export default function AddSlipInfo(props){
    */
    function saveData(){
 
-    setopacity(0.2)
+    setModalData(
+      <ItemReviewList
+          data={slipInfoFormLabels.folds}
+          getDataCurrent={getDataCurrent}
+      />
+    )
     setOpenModal(true)
   }
 
@@ -253,14 +260,7 @@ return (
                     </Fold>
                   )}/></View>
     )}/>
-              <Notification
-                modalVisible={openModal}
-                onPress={saveDataConfirmed}
-                pTitle={appDescription.addSlipInfoSaveDescription}
-                lTitle={appLabels.yes}
-                rTitle={appLabels.no}
-                showTwin={true}
-            /> 
+
 
             
             {props.route.params.key?null:<View  style={styles.twinButtonContainer}>
@@ -287,6 +287,15 @@ return (
                       h={2}
                       w={120}/>
                   </View>}
+                  <Notification
+                modalVisible={openModal}
+                data={modalData}
+                onPress={saveDataConfirmed}
+                pTitle={appDescription.addSlipInfoSaveDescription}
+                lTitle={appLabels.yes}
+                rTitle={appLabels.no}
+                showTwin={true}
+            /> 
             </View>
       );
 

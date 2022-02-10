@@ -68,7 +68,7 @@ export default class Home extends Component {
                  </View>
             </View>
 
-                <Text>
+                <Text style={{color:colors.inputTextColor}}>
                    {appDescription.openDrawerDesctiption}
                 </Text>
                 

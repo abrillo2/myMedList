@@ -59,7 +59,7 @@ export default function HeaderSection(props){
                                     style={props.disabled?{opacity:0.5}:null}
                                     onPress={()=> props.iconPressed(item.name)}>
 
-                                    {item.name == appLabels.active ?icon('refresh',{width:24,height:24,marginLeft:24}):<Image style={{width:24,height:24,marginLeft:24}}
+                                    {item.name == appLabels.active ?null/*icon('refresh',{width:24,height:24,marginLeft:24})*/:<Image style={{width:24,height:24,marginLeft:24}}
                                     source={item.source}/>}
                                 </TouchableOpacity>
                                 )}
@@ -67,7 +67,7 @@ export default function HeaderSection(props){
                             />
                             
                           :null}
-                                                     {goback?<TouchableOpacity
+                            {goback?<TouchableOpacity
                                 onPress={()=>navigation.openDrawer()}
                            >
                             {icon('menu',headerStyle.iconStyle,30)}

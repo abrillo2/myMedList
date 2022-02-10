@@ -20,6 +20,8 @@ import ShareDiscontinued from './src/Screens/ShareDiscontinued'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from './assets/static_resources/colors';
+import { FlatList } from 'react-native';
+import MyInfo from './src/Screens/MyInfo';
 
 //react navigation 
 const Drawer = createDrawerNavigator();
@@ -108,9 +110,7 @@ function reviewTab(props){
 //stack nav
 function stackNav(props){
 return (  <Stack.Navigator
-
-            initialRouteName={appLabels.homeTitle}
-            
+            initialRouteName={appLabels.homeTitle}            
             screenOptions={
               {header:({ navigation, route, options }) => {
                 const title = getHeaderTitle(options, route.name);
@@ -121,15 +121,16 @@ return (  <Stack.Navigator
             }
         >
  
-  <Stack.Screen name={appLabels.shareTitle} options={{headerShown: false,unmountOnBlur: false}}component={ShareTab}/>
+  <Stack.Screen name={appLabels.shareTitle} options={{headerShown: false}} component={ShareTab}/>
   <Stack.Screen name={appLabels.reviewTitle} options={{headerShown: true}} component={reviewTab} />
+  
+
   {drawerItems.map((item,index)=>{
         
-        if(item.title != appLabels.exit && item.title != 'Review' && item.title != appScreenName.share){
+        if(item.screenTitle != appLabels.myInfoTitle &&item.title != appLabels.exit && item.title != 'Review' && item.title != appScreenName.share){
           let showHeader = item.screenTitle == appLabels.homeTitle ? false: true
-          let lazy = item.screenTitle == appLabels.addSlipTitle |
-                     item.screenTitle == appLabels.myInfoTitle   ? true:false;
-            let screen =(<Stack.Screen name={item.screenTitle} options={{headerShown: showHeader,unmountOnBlur: false}} component={item.component} />)
+          let lazy = item.screenTitle == appLabels.addSlipTitle   ? true:false;
+            let screen =(<Stack.Screen name={item.screenTitle} options={{headerShown: showHeader}} component={item.component} />)
           return screen
         }else if(item.title == 'Review'){
           
@@ -163,7 +164,8 @@ return (
         
         })
       }>
-        <Drawer.Screen name="stack" options={{headerShown: false,unmountOnBlur: false}}component={stackNav}/>
+        <Drawer.Screen name="stack" options={{headerShown: false}}component={stackNav}/>
+        <Drawer.Screen name={appLabels.myInfoTitle} options={{headerShown: true}}component={MyInfo}/>
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -11,7 +11,7 @@ export default class Fold extends Component {
         super(props);
         this.state = {       //Step 3
            title       : this.props.labelTitle,
-           expanded    : true,
+           expanded    : this.props.expand!=null?this.props.expand:true,
            animation   :  new Animated.Value(0),
            maxHeight: null,
            minHeight: null,
@@ -69,6 +69,8 @@ export default class Fold extends Component {
     }
 
     render(){
+
+        console.log(this.props.expand)
 
         let icon = "expand-less"
         

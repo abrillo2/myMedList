@@ -293,7 +293,8 @@ export const myInfoFormLabels={
                         rootKey:"personalInformation",
                         width:"100%",
                         secureTextEntry:false,
-                        keyboard:'number-pad'
+                        keyboard:'number-pad',
+                        editAble:true
                     }]
                 }
             ]
