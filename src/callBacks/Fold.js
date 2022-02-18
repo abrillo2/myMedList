@@ -69,9 +69,6 @@ export default class Fold extends Component {
     }
 
     render(){
-
-        console.log(this.props.expand)
-
         let icon = "expand-less"
         
         if(!(this.state.toggle)){

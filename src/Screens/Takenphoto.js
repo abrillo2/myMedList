@@ -40,7 +40,7 @@ export default function Takenphoto(props){
   function save(){
     setSpinnerOn(true)
     setTimeout(()=>{
-      props.navigation.navigate(appLabels.addSlipTitle,{
+      props.navigation.push(appLabels.addSlipTitle,{
         imageData:imageData
       }
     )},50)

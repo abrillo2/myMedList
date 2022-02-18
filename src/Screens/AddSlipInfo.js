@@ -11,9 +11,9 @@ import Button from '../components/Button';
 import styles from '../../assets/styles/AddSlipInfoStyle'
 //import notification modal
 import  Notification from '../hooks/Notification'
-import ItemReviewList from '../helpers/ItemReviewList';
+import ItemReviewList from '../helpers/ItemReviewList'
 //static resources
-import appObjects,{slipInfoFormLabels} from '../../assets/static_resources/objects'
+import {slipInfoFormLabels} from '../../assets/static_resources/objects'
 import appLabels,{appDescription} from '../../assets/static_resources/strings'
 //helpers
 import { handelOption } from '../helpers/UpdateSlipHelper';
@@ -21,8 +21,11 @@ import HeaderSection from '../components/HeaderSection';
 import {getNavData,getCurrentData,
         prepSaveData,required,
         loadSavedData,
+        getSuggesion,
         onChangeInputData,isUpdateAble,requiredFieldsFullfilled} from '../helpers/AddSlipDetailsHelper'
 import { removeFile } from '../hooks/FsManager';
+import { getData } from '../helpers/AsyncHelper';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function AddSlipInfo(props){
@@ -30,26 +33,26 @@ export default function AddSlipInfo(props){
         
         let halfList = []
 
-        const  requiredItems = appObjects.addSlipInfoRequiredItems
 
+        const focused = useIsFocused()
 
         const[openModal,setOpenModal]=useState(false)
         const [modalData, setModalData]=useState(null)
-        const[opacity,setopacity]=useState(1)
-        const[formData,setformData]=useState(null)
-        const[imageData,setimageData]=useState(null)
+       
+        const formData = React.useRef(null)
+       
+        const[suggesstions,setSuggestions]=useState([])
         const [itemKey,setItemKey] = useState(null)
 
         const[spinnerOn,setspinnerOn]=useState(true)
-        const[refresh,setrefresh]=useState(false)
         const [isRequired, setIsRequired] = useState(true)
 
 
 
   useEffect(() => {
-
-
-        loadData()
+      
+        if(focused)
+        {loadData()}
         return () => {
       }
       }, [props.route.params.key,props.route.params.imageData]);
@@ -58,50 +61,38 @@ export default function AddSlipInfo(props){
   /****
    * init screen
    */
-  function loadData(){
+  async function loadData(){
     let currentData = getNavData(props.route)
     if(currentData){
       
 
-      setformData(loadSavedData(currentData,props))
+      formData.current = loadSavedData(currentData,props)
       setItemKey(props.route.params.key)
-      // updateAbleItems:appObjects.addSlipInfoUpdateableItems,
       props.navigation.setOptions({
+      
         header:() => {
           return <HeaderSection navigation={props.navigation} Title={appLabels.addSlipTitle} 
           onPressOption={handelOptionMenu}
                 />;
         },
       });
-    }else{
-      console.log(" key response  ", props.route.params.imageData)    
+    }else{ 
       onChangeData("medicationDetails","dateAdded",new Date().toLocaleDateString("en-US"))
       onChangeData("medicationDetails","imageData",props.route.params.imageData)
 
     }
-
+    let suggessions = await getData('@suggession')
+    setSuggestions(suggessions)
     setspinnerOn(false)
 
   }
-
-  /**************
-   * check if refresh was recently called
-   */
-
-  function stopRefresh(){
-
-       if(refresh){
-         setrefresh(false)
-       }
-
-  }
-
   /**********************
    * 
    * handel option
    */
    async function handelOptionMenu(item){
     setspinnerOn(true)
+    props.navigation.setParams({slipData:{...formData.current}})
     let response = await handelOption(item, props.navigation,props.route.params.key,"@myMedListSlipInfo")
     
     if(response){
@@ -116,14 +107,17 @@ export default function AddSlipInfo(props){
   /*************************************
    * track form input value change
    */
-   function onChangeData(rootKey,childKey, value){ 
-    let formDataUpdated = onChangeInputData(formData,rootKey,childKey, value)
+   function onChangeData(rootKey,childKey, value,reload){ 
+    let formDataUpdated = onChangeInputData(formData.current,rootKey,childKey, value)
     if(requiredFieldsFullfilled(formDataUpdated)){
       setIsRequired(false)
     }
-    setformData(formDataUpdated)
-    props.navigation.setParams({slipData:{...formDataUpdated}})
-    
+    formData.current = formDataUpdated
+
+    if(reload){
+      props.navigation.setParams({slipData:{...formData.current}})
+    }
+
   }
   /*******************************
    * parse data from navigation params
@@ -131,23 +125,21 @@ export default function AddSlipInfo(props){
    */
    function getDataCurrent(parent,child){
     
-    return getCurrentData(formData, parent,child)
+    return getCurrentData(formData.current, parent,child)
   }
   /**************************
    * track pop up 
    */
-   function saveDataConfirmed(data,confirmed){
+   async function saveDataConfirmed(data,confirmed){
 
     setOpenModal(false)
-    setopacity(1)
-
     if(confirmed){
-
       setspinnerOn(true)
-      prepSaveData(formData,itemKey)
-
+      await prepSaveData(formData.current,itemKey)
+ 
       setTimeout(()=>{
-        props.navigation.navigate(!confirmed ?appLabels.reconcileTitle: appLabels.homeTitle)},500)}
+      props.navigation.navigate(!confirmed ?appLabels.reconcileTitle: appLabels.homeTitle)},500)
+    }
 
   }
   /******************************
@@ -173,11 +165,12 @@ return (
       <FlatList
         data={[1]}
         removeClippedSubviews={false}
-        extraData={refresh}
-        renderItem={({ item, index }) => (    
+        keyboardShouldPersistTaps={'always'}
+        extraData={props.itemKey}
+        renderItem={({ item }) => (    
           
           
-        <View style={{opacity:opacity}}>
+        <View>
         <SlipPicEditContainer
           childKey={"imageData"}
           rootKey = {"medicationDetails"}
@@ -189,21 +182,31 @@ return (
               <FlatList
                   data={slipInfoFormLabels.folds}
                   extraData={itemKey}
+                  keyboardShouldPersistTaps={'always'}
                   removeClippedSubviews={false}
-                  renderItem={({ item, index }) => (
+                  keyExtractor={(item,index)=> {
+                    return "fold"+index+item.title
+               }}
+                  renderItem={({ item }) => (
 
                     <Fold labelTitle = {item.title}>
                       {
                         <FlatList
                          data={item.content}
+                         removeClippedSubviews={false}
+                         keyboardShouldPersistTaps={'always'}
+                         keyExtractor={(item,index)=> {
+                          return item.group ? "group:"+index+item.group.length:
+                                 "item:"+index+item.childKey + item.rootKey
+                          }}
                          extraData={itemKey}
-                         renderItem={({ item, index }) => 
+                         renderItem={({ item }) => 
 
                            
                           item.group ? 
                           
                          
-                          item.group.map((item,index)=>{
+                          item.group.map((item)=>{
 
                               
 
@@ -216,11 +219,11 @@ return (
                                 childKey={item.childKey}
                                 rootKey ={item.rootKey}
                                 editAble={item.editAble!=null?item.editAble:null}
-                                keyboard={item.keyboard!=null?item.keyboard:'default'}
-
+                                keyboard={item.keyboard!=null?item.keyboard:null}
                                 inputType={item.inputType!=null?item.inputType:'default'}
                                 data={item.data!=null?item.data:'default'}
                                 
+                                suggessions={item.suggessions?( getSuggesion(suggesstions,item.suggessions)):null}
                                 
                                 inputContent={getDataCurrent}
                                 onChangeText={onChangeData}
@@ -250,7 +253,9 @@ return (
                                 editAble={item.editAble!=null?item.editAble:null}
                                 keyboard={item.keyboard!=null?item.keyboard:'default'}
                                 inputType={item.inputType!=null?item.inputType:'default'}
-                                data={item.data!=null?item.data:'default'}
+                                data={item.data!=null?item.data:null}
+                                
+                                suggessions={item.suggessions?(getSuggesion(suggesstions,item.suggessions)):null}
                                 
                                 inputContent={getDataCurrent}
                                 onChangeText={onChangeData}
@@ -263,7 +268,7 @@ return (
 
 
             
-            {props.route.params.key?null:<View  style={styles.twinButtonContainer}>
+            {props.route.params.key?null:<View  style={[{zIndex:0},styles.twinButtonContainer]}>
                   <Button buttonLabel={appLabels.cancel} 
                       disabled={false}
                       onPress={()=>{

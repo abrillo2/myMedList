@@ -14,7 +14,7 @@ export default function HeaderSection(props){
     //  this.setState(...)
     const navigation = props.navigation;
     const title = props.Title
-    const  goback = title == appLabels.addPhotoTitle |title == appLabels.shareTitle | title ==appLabels.reconcileTitle | title ==appLabels.myInfoTitle 
+    const  goback = title == appLabels.addPhotoTitle | title == appLabels.shareTitle | title ==appLabels.reconcileTitle | title ==appLabels.myInfoTitle 
 
     function onPressOpenDrawer(){
       goback ?navigation.navigate(appLabels.homeTitle): navigation.openDrawer();

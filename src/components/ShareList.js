@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import InputModal from '../hooks/InputModal';
 //components import
@@ -14,30 +14,26 @@ import appLabels,{appDescription} from '../../assets/static_resources/strings';
 
 
 export default function ShareList(props){
-   
-    const isFocused = useIsFocused();
-
-
-    const [listOfdata,setlistOfdata] = useState(null)
   
     const [openModal, setopenModal] = useState(false)
-    const [client,setCllient] = useState("email")
-    const [sortIndex,setSortIndex] = useState(0)
-
     const [openModal2, setOpenModal2] = useState(false)
-    const [opacity,setOpacity] = useState(1)
-    const [notificationTitle,setNotificationTitle] = useState(null)
 
-   const [refresh, setRefresh] = useState(true)
+    const client = useRef('email')
+    const sortIndex = useRef(0)
+    const notificationTitle = useRef(null)
+    
+
+    const [opacity,setOpacity] = useState(1)
+    const [refresh, setRefresh] = useState(true)
 
 
    function getSavedData(){ 
 
         if (props.data != null){
-            setlistOfdata(props.data)
+           
         }else{
             setOpacity(0.2)
-            setNotificationTitle(appDescription.reconcileListAddItemDescription)
+            notificationTitle.current=(appDescription.reconcileListAddItemDescription)
             setOpenModal2(true)
         }
     }
@@ -51,35 +47,34 @@ export default function ShareList(props){
         setOpenModal2(false)
         setOpacity(1)
 
-        if(listOfdata == null){
+        if(props.data == null){
             props.navigation.navigate(appLabels.addPhotoTitle)
         }else if(props.personalData == null){
             props.navigation.navigate(appLabels.myInfoTitle)
         }
     }
 
-    function iconPressed(client){
+    function iconPressed(cl){
             
-            if(client == appLabels.active){
+            if(cl == appLabels.active){
 
                 props.refreshHandler()
 
             }else if(props.personalData == null){
-                    setNotificationTitle(appDescription.shareSetprops.personalDataDescription)
-                    setOpenModal2(true)
+                notificationTitle.current=(appDescription.shareSetPersonalDataDescription)
+                setOpenModal2(true)
             }else{
                     setopenModal(true)
-                    setCllient(client)
+                    client.current=cl
             }
     }
 
     function sort(index){
         setRefresh(false)
-        setSortIndex(index)
+        sortIndex.current=(index)
     }
 
     useEffect(() => {
-          console.log('use effect share detail')
           getSavedData()
         return () => {
         }
@@ -105,14 +100,13 @@ export default function ShareList(props){
                 <ReconcileItems      
                                     refreshHandler={props.refreshHandler}
                                     listButton={false}
-                                     sortIndex={sortIndex}
+                                     sortIndex={sortIndex.current}
                                      listButton={false}
                                      data={props.data}
                                      dataKeys={props.dataKeys}
                                      itemlen={props.itemLabels.length}
                                      itemLabels={props.itemLabels}
                                      listButtonPressed={null}
-                                     
                                      onPress={sort}
                                      refresh={refresh}/>
 
@@ -120,7 +114,7 @@ export default function ShareList(props){
             <InputModal
                     modalVisible={openModal}
                     onPress={modalData}
-                    client={client}
+                    client={client.current}
                     status={props.status}
                     listOfdata={props.data}
                     navigation={props.navigation}
@@ -128,7 +122,7 @@ export default function ShareList(props){
             <Notification
                     modalVisible={openModal2}
                     onPress={dialogConfirmed}
-                    pTitle={notificationTitle}
+                    pTitle={notificationTitle.current}
                     lTitle={appLabels.ok}
                     rTitle={appLabels.cancel}
                     showTwin={true}

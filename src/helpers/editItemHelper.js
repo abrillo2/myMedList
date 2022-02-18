@@ -29,7 +29,6 @@ export function getItem(items,itemId) {
       let rootKey = Object.keys(item)[0]
       if(rootKey != itemId){
             let data = {data:item,key:rootKey}
-            console.log('returned item 1', data)
             return data
       }else{
           index = index + 1
@@ -39,9 +38,7 @@ export function getItem(items,itemId) {
        return getNextItem(items,itemId,0)
     }else{
        let item = getItem(items,itemId)
-       let data = {data:item,key:itemId}
-       console.log('returned item 2', data)
-       return data
+       return {data:item,key:itemId}
     }
  
   }
@@ -62,9 +59,9 @@ export function removeItem(slipData,itemId,stopDate) {
 
             item[itemId]["medicationDetails"]={...item[itemId]["medicationDetails"],"stopDate":stopDate}
             updatedItems["slipInfoDiscontinued"].push(item)
-            const uri = item[itemId]["medicationDetails"]["imageData"].uri
+            const uri = item[itemId]["medicationDetails"]["imageData"].uri?item[itemId]["medicationDetails"]["imageData"].uri:null
 
-            removeFile(uri)
+            uri!=null?removeFile(uri):null
       }
     }
     return updatedItems

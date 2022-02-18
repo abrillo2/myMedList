@@ -10,7 +10,7 @@ import Takenphoto from '../../src/Screens/Takenphoto'
 import AddSlipInfo from '../../src/Screens/AddSlipInfo';
 import MyInfo from '../../src/Screens/MyInfo';
 import PdfViewer from '../../src/Screens/PdfViewer'
-import About from '../../src/components/utilis/About'
+import About from '../../src/utilis/About'
 import Help from '../../src/Screens/Help'
 
 

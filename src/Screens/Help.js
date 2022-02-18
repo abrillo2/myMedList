@@ -4,7 +4,7 @@ import {View,BackHandler, Text, ScrollView} from 'react-native';
 //static res
 //import appLabels, { appDescription } from '../assets/static_resources/strings';
 //component
-import Logo from '../components/utilis/Logo';
+import Logo from '../utilis/Logo';
 //drawer list
 import drawerItems from '../../assets/data/drawerItem';
 //Style import
@@ -12,6 +12,7 @@ import styles from '../../assets/styles/drawerStyle'
 import Icon from '../hooks/Icon';
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import colors from '../../assets/static_resources/colors';
 
 export default function Help(props){
     return (
@@ -37,7 +38,7 @@ export default function Help(props){
                           </Text>
                         </View>
                          <Text
-                              style={{textAlign:'center'}}
+                              style={[styles.labelStyle,{textAlign:'center',color:colors.inputTextColor}]}
                           > 
                             {item.description?item.description:null}
                           </Text>

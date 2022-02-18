@@ -1,11 +1,10 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import {Image, ScrollView, View} from 'react-native';
 import {getData, saveData} from '../helpers/AsyncHelper';
 import { removeItem,getItem} from '../helpers/editItemHelper';
 
 //import header section
 //import body style
-import ReconcileStyle from '../../assets/styles/ReconcileStyle';
 import { useIsFocused } from '@react-navigation/native';
 //import notification modal
 import  Notification from '../hooks/Notification'
@@ -18,7 +17,6 @@ import appObjects from '../../assets/static_resources/objects';
 
 
 //test import
-
 export default function Reconcilelist(props) {
 
     const isFocused = useIsFocused();
@@ -34,53 +32,62 @@ export default function Reconcilelist(props) {
       const [openModal, setOpenModal] = useState(false)
       const [opacity,setOpacity] = useState(1)
       
-      const [itemActionId,setItemActionId] = useState(null)
-      const [stopDate,setStopDate] = useState(null)
-      const [notificationContent, setNotificationContent] = useState(null)
-      const [notificationTitle,setNotificationTitle] = useState(appDescription.reconcileListDeleteDescription)
-      
-      const [scrollItems,setScrollItems] = useState(<Spinner/>)
+      const itemActionId = useRef(null)
+      const stopDate = useRef(null)
+      const notificationContent = useRef(null)
+      const notificationTitle = useRef(null)
 
+      const [scrollItems,setScrollItems] = useState(<Spinner/>)
   
 
     async function listButtonPressed(action,itemId){
-
+          let items = listOfdata?listOfdata: await getData('@myMedListSlipInfo');
+          items = [...items['slipInfo']];
+          let item = getItem(items,itemId);
           switch (action){
               case "delete":
-                setItemActionId(itemId)
-                setNotificationTitle(appDescription.reconcileListDeleteDescription)
-                setOpenModal(true)
+
+                itemActionId.current=(itemId)
+                notificationTitle.current=(appDescription.reconcileListDeleteDescription)
+                notificationContent.current=(                 
+                                 <ReconcileItems      
+
+                                      refreshHandler={()=> {}}
+                                      listButton={false}
+                                      data={[item]}
+                                      dataKeys={state.dataKeys}
+                                      itemlen={4}
+                                      itemLabels={state.itemLabels}
+                                      sortIndex={0}
+                                      onPress={()=>{}}
+                                      refresh={()=>{}}/>)
+                
                 setOpacity(0.2)
+                setOpenModal(true)
                 break
               case "edit":
         
                   setTimeout(async()=>{
-                      let items = listOfdata?listOfdata: await getData('@myMedListSlipInfo')
-                      items = [...items['slipInfo']]
-                      let item = getItem(items,itemId)
                       props.navigation.navigate(appLabels.addSlipTitle,{
                       item:item,key:itemId
                     })
-                  },1000)
+                  },300)
                 break  
               
               case 'view':
 
-                let items = listOfdata?listOfdata: await getData('@myMedListSlipInfo')
-                items = [...items['slipInfo']]
-                let item = getItem(items,itemId)
                 
                 let uri = item?item[itemId]["medicationDetails"]["imageData"].uri:null
 
                   if(uri){
-                      setNotificationContent(
+                    notificationContent.current=(
                           <Image 
                           source={{uri:uri}}
                           style={{width:200,height:400}}
                           />
                          
                       )
-                      setNotificationTitle('Slip photo')
+                      notificationTitle.current=('Slip photo')
                       setOpenModal(true)
                   }else{
 
@@ -96,18 +103,19 @@ export default function Reconcilelist(props) {
               refresh(true,slipInfoData,0)
             }else{
               setOpacity(0.2)
-              setNotificationTitle(appDescription.reconcileListAddItemDescription)
+              notificationTitle.current=(appDescription.reconcileListAddItemDescription)
               setOpenModal(true)
+              setScrollItems(null)
             }
     }
 
     //handel notification and dialog box
     function onChangeDate(rootKey,childKey, value){
-      setStopDate(value)
+      stopDate.current=(value)
     }
     function getCurrentDate(){
-       if(stopDate){
-          return stopDate
+       if(stopDate.current){
+          return stopDate.current
        }else{
         let date=new Date()
         let dateFormatted =  date.toLocaleDateString("en-US");
@@ -117,24 +125,21 @@ export default function Reconcilelist(props) {
     function dialogConfirmed(data,confirmed){
       setOpenModal(false)
       setOpacity(1)
-      if(confirmed && notificationTitle != 'Slip photo'){
-         if(notificationContent){
+      if(confirmed&&(notificationTitle.current != appDescription.reconcileListAddItemDescription)){
+         if(notificationTitle.current == formInputLabel.stopDate){
             let items = listOfdata
-            let date = stopDate != null? stopDate : new Date().toLocaleDateString("en-US")
-            let updatedItems = removeItem(items,itemActionId,date);
+            let date = stopDate.current != null? stopDate.current : new Date().toLocaleDateString("en-US")
+            let updatedItems = removeItem(items,itemActionId.current,date);
             saveData(updatedItems,"@myMedListSlipInfo")
-            setItemActionId(null)
-            setNotificationContent(null)
-            setStopDate(null)
-            setNotificationTitle(appDescription.reconcileListDeleteDescription)
+            itemActionId.current=(null)
+            notificationContent.current=(null)
+            stopDate.current=(null)
             setReload(!reload)
         }else if(listOfdata === null){
             props.navigation.navigate(appLabels.addPhotoTitle)
-        }else{
-          setOpenModal(true)
-          setOpacity(0.2)
-          setNotificationTitle(formInputLabel.stopDate)
-          setNotificationContent(<SolidInput  width={"100%"} 
+        }else if(notificationTitle.current == appDescription.reconcileListDeleteDescription){
+          notificationTitle.current=formInputLabel.stopDate
+          notificationContent.current=(<SolidInput  width={"100%"} 
                           inputLabel={formInputLabel.stopDate}
                           childKey={"stopDate"}
                           rootKey = {"medicationDetails"}
@@ -143,16 +148,22 @@ export default function Reconcilelist(props) {
                           editAble={false}
                           onChangeText={onChangeDate}
                           inputContent={getCurrentDate}/>)
+          setOpenModal(true)
+          setOpacity(0.2)
         }
       }else{
-         setNotificationContent(null)
+         notificationContent.current=(null)
       }
 
     }
 
     function refresh(reload,data,sortIndex){
      
-      setScrollItems(<View style={{opacity:opacity}}>
+      
+      setlistOfdata(data);
+      setScrollItems(
+      
+      <View style={{opacity:opacity}}>
 
                   <ReconcileItems      
 
@@ -166,18 +177,18 @@ export default function Reconcilelist(props) {
                                      sortIndex={sortIndex}
                                      onPress={sort}
                                      refresh={reload}/>
-
-
             </View>
             
             
             )
-      setlistOfdata(data);
     }
 
-    function sort(index){
+    async function sort(index){
       if(listOfdata != null){
         refresh(false,listOfdata,index)
+      }else{
+        const slipInfoData = await getData('@myMedListSlipInfo')
+        refresh(false,slipInfoData,index)
       }
     }
 
@@ -190,21 +201,21 @@ export default function Reconcilelist(props) {
       }, [reload,useIsFocused()]);
 
     return (
+      <ScrollView horizontal={false}>
+        <View>
+        
+              {scrollItems}
 
-      <ScrollView
-      horizontal={false}>
-      <View style={[ReconcileStyle.reconcilelist]}>
-       
-            {scrollItems}
-            <Notification
-                          modalVisible={openModal}
-                          onPress={dialogConfirmed}
-                          pTitle={notificationTitle}
-                          lTitle={appLabels.ok}
-                          rTitle={appLabels.cancel}
-                          data={notificationContent} 
-                      />
-    </View></ScrollView>
+        </View> 
+        <Notification
+                            modalVisible={openModal}
+                            onPress={dialogConfirmed}
+                            pTitle={notificationTitle.current}
+                            lTitle={appLabels.ok}
+                            rTitle={appLabels.cancel}
+                            data={notificationContent.current} 
+                />       
+    </ScrollView>
     );
   
 }

@@ -13,10 +13,11 @@ import Notification from '../hooks/Notification';
 //styles
 import styles from '../../assets/styles/AddSlipInfoStyle';
 //static resources
-import appLabels,{appDescription, appMessages} from '../../assets/static_resources/strings'
+import appLabels,{appDescription} from '../../assets/static_resources/strings'
 import appObjects,{myInfoFormLabels} from '../../assets/static_resources/objects';
 
 import { getUserInfo,saveUserProfile,required,onchangeInput,requiredFieldsFullfilled} from '../helpers/MyinfoHelper';
+import { getSuggesion } from '../helpers/AddSlipDetailsHelper';
 const requiredItems =appObjects.myInfoRequiredItems
 
 export default function MyInfo(props){
@@ -25,58 +26,55 @@ export default function MyInfo(props){
   let halfList = []
 
   const [isRequired, setIsRequired] = useState(true)
-  const [savedData, setSavedData] = useState(null)
-  const [spinnerOn, setSpinnerOn] = useState(false)
+  const [spinnerOn, setSpinnerOn] = useState(true)
 
-  const [formInputData, setFormInputData] = useState(null)
+  const formInputData = React.useRef(null)
 
   const[openModal,setOpenModal]=useState(false)
   const [modalData, setModalData]=useState(null)
 
+  const[suggesstions,setSuggestions]=useState(null)
+
+
 
   useEffect(() => {
-    if(savedData == null){
+    if(suggesstions == null || formInputData.current == null){
       loadData()
     }else{
-      spinnerOn? null : setSpinnerOn(true)
+      spinnerOn? null : setSpinnerOn(false)
     }
   return () => {
   }
-}, [savedData]);
+}, [suggesstions]);
   
-  function onChangeData(rootKey,childKey, value){
+  function onChangeData(rootKey,childKey, value,reload){
 
-    let tempData = onchangeInput(formInputData,rootKey,childKey,value)
-    setFormInputData(tempData)
+    let tempData = onchangeInput(formInputData.current,rootKey,childKey,value)
+    formInputData.current=(tempData)
 
     if(requiredFieldsFullfilled(tempData)){
       setIsRequired(false)
     }
 
+    if(reload){
+      props.navigation.setParams({formInputData:formInputData.current})
+    }
   }
   function getDataCurrent(parent,child){
     
-    return getUserInfo(parent,child,formInputData)
-  }
-
-  function saveDataCurrent(data,currentData){
-    //setSpinnerOn(true)
-    saveUserProfile(formInputData)
-
-    setTimeout(()=>{
-      //setSpinnerOn(false)
-      props.navigation.navigate(appLabels.homeTitle)},200)
+    let val =  getUserInfo(parent,child,formInputData.current);
+    return val;
   }
 
   async function loadData(){
 
     let data = await getData("@myMedListMyInfo");
-    
-    data = JSON.parse(data)
-    if(data!=null && savedData == null){
-     setSavedData({...data["myInfo"]})
-     setFormInputData({...data["myInfo"]})
+    if(data!=null && formInputData.current == null){
+      formInputData.current=({...data["myInfo"]})
     }
+    let suggessions = await getData('@suggession')
+    setSuggestions(suggessions)
+    setSpinnerOn(false);
 
   }
 
@@ -101,18 +99,31 @@ export default function MyInfo(props){
     async function saveDataConfirmed(data,confirmed){
         setOpenModal(false)
         if(confirmed){
-          await saveUserProfile(formInputData)
+          await saveUserProfile(formInputData.current)
+          formInputData.current=null
+          loadData()
           props.navigation.navigate(appLabels.homeTitle)
+         
         }else{
-          
+          props.navigation.navigate(appLabels.homeTitle)
         }
     }
 
+    renderCell = ({ index, style, ...props }) => {
+      const { currentDragIndex } = this.state;
+      const zIndex = {
+          zIndex: index === currentDragIndex ? 2 : 0,
+        };
+    
+        return <View style={[style, zIndex]} {...props} />;
+      };
+
     return (
-      savedData == null?<Spinner message={appMessages.savingMyInfo}/> :
-      <View style={{flex:1}}>
+      spinnerOn?<Spinner/>:<View style={{flex:1}}>
             
             <FlatList
+
+                  keyboardShouldPersistTaps={'always'}
                   removeClippedSubviews={false}
                   data={myInfoFormLabels.folds}
                   extraData={spinnerOn}
@@ -120,13 +131,12 @@ export default function MyInfo(props){
                        return "fold"+index+item.title
                   }}
                   renderItem={({ item ,index}) => (
-
-                    <View>
-                    <Fold labelTitle = {item.title}>
+                    <Fold labelTitle = {item.title} index={index}>
                       {
                         <FlatList
                          data={item.content}
                          removeClippedSubviews={false}
+                         keyboardShouldPersistTaps={'always'}
                          extraData={spinnerOn}
                          keyExtractor={(item,index)=> {
                               return item.group ? "group:"+index+item.group.length:
@@ -152,8 +162,11 @@ export default function MyInfo(props){
                             keyboard={item.keyboard?item.keyboard:'default'}
                             iconName={item.iconName? item.iconName:null}
                             func={item.func? item.func:null}
-                            editAble={item.editAble? item.editAble:true}
+                            editAble={item.editAble !=null? item.editAble:true}
                             data={item.data? item.data:null}
+
+                            suggessions={item.suggessions?( getSuggesion(suggesstions,item.suggessions)):null}
+
                             inputType={item.inputType? item.inputType:null}/>
                               
                               halfList.push(content)
@@ -177,11 +190,14 @@ export default function MyInfo(props){
                               rootKey = {item.rootKey}
                               inputContent={getDataCurrent}
                               required = {required}
+
+                              suggessions={item.suggessions?( getSuggesion(suggesstions,item.suggessions)):null}
+                                
                               
                             keyboard={item.keyboard?item.keyboard:'default'}
                               iconName={item.iconName? item.iconName:null}
                               func={item.func? item.func:null}
-                              editAble={item.editAble? item.editAble:true}
+                              editAble={item.editAble!=null? item.editAble:true}
                               data={item.data? item.data:null}
                               inputType={item.inputType? item.inputType:null}/>
                               
@@ -193,7 +209,6 @@ export default function MyInfo(props){
 
                           
                     </Fold>
-                  </View>
                   )}/>
 
                   <View  style={styles.twinButtonContainer}>

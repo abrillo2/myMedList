@@ -37,7 +37,7 @@ const Notification = (props) => {
                   <View style={styles.centeredView}>
         
                     <Text style={styles.modalText}>{props.pTitle}</Text>
-                      {   props.data}
+                      {props.data}
                         
                    </View>
               

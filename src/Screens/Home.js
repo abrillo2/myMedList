@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Dimensions,View,BackHandler,ImageBackground,Text, ScrollView} from 'react-native';
 //component import
-import Logo from '../components/utilis/Logo';
+import Logo from '../utilis/Logo';
 import HomeButton from '../components/HomeButton';
 import Button from '../components/Button';
 import StatusBarContainer from '../components/StatusBarContainer';

@@ -5,7 +5,7 @@ import Icon from '../hooks/Icon.js';
 import ReconcileStyle from '../../assets/styles/ReconcileStyle.js';
 import ListActionButton from './ListActionButton.js';
 //reconcileitems section
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import colors from '../../assets/static_resources/colors.js';
 
@@ -13,7 +13,7 @@ export default function ReconcileItems(props){
 
 
     const [dataList, setListofData] = useState(null)
-    const [sortIndex,setSortIndex]  = useState(-1)
+    const sortIndex = useRef(-1)
 
 
     const [refreshing,setRefreshing] = useState(false)
@@ -82,17 +82,17 @@ export default function ReconcileItems(props){
     function sortData(data){
         
         let item = null
-        if(Number(props.sortIndex) === Number(sortIndex) && dataList != null){
+        if((Number(props.sortIndex) === Number(sortIndex.current)) && (dataList != null)){
           var sorted = data[0].data
           item=[{data:sorted,key:"root"+0}]  
         }else{
-            var sorted = data[0].data
-            sorted.sort(compare)
+            var tempData = data[0].data
+            let sorted = tempData.sort(compare)
 
             sorted = [{data:sorted,key:"root"+0}]      
             item = sorted
-        }
-        setSortIndex(props.sortIndex)
+        } 
+        sortIndex.current=(props.sortIndex)
         setListofData(item)    
 
         
@@ -103,11 +103,11 @@ export default function ReconcileItems(props){
         
         
         let sortIndex = Number(props.sortIndex);
-        var vala =""+a.data[sortIndex][props.itemLabels[sortIndex]];
-        var valb =""+b.data[sortIndex][props.itemLabels[sortIndex]];
+        var vala =a.data[sortIndex][props.itemLabels[sortIndex]];
+        var valb =b.data[sortIndex][props.itemLabels[sortIndex]];
       
-        vala = Number(vala) ? Number(vala.trim()) : vala.trim()
-        valb = Number(valb) ? Number(valb.trim()) : valb.trim()
+        vala = Number(vala) ? Number(vala.trim()) : vala.trim().toLowerCase()
+        valb = Number(valb) ? Number(valb.trim()) : valb.trim().toLowerCase()
 
         if ( vala < valb){
           return -1;
@@ -183,15 +183,11 @@ export default function ReconcileItems(props){
 
               {props.listButton?
           <View style={[ReconcileStyle.butonIconContainer2,{opacity:0}]}>
-              <ListActionButton icon = {"edit"}
-                  onPress={()=>{}}
-                  action={"edit"}
-                  itemId={'item.key'}/>
               <ListActionButton icon = {"delete"}
-                  onPress={()=>{}}onPress={()=>{}}
-                  action={"delete"}
-                  itemId={'item.key'}/>
-              <ListActionButton icon = {"view"}
+                 onPress={()=>{}}onPress={()=>{}}/>
+              <ListActionButton icon = {"delete"}
+                 onPress={()=>{}}onPress={()=>{}}/>
+                            <ListActionButton icon = {"delete"}
                  onPress={()=>{}}onPress={()=>{}}/>
           </View>
       :null}

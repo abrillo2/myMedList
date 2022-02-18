@@ -4,7 +4,7 @@ import {View,BackHandler} from 'react-native';
 //static res
 import appLabels, { } from '../../assets/static_resources/strings';
 //component
-import Logo from './utilis/Logo';
+import Logo from '../utilis/Logo';
 //drawer list
 import drawerItems from '../../assets/data/drawerItem';
 //Style import

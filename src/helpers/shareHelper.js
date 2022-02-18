@@ -116,7 +116,7 @@ export function makeHeaderHtml(header) {
     let tabelHTML = ""
     Object.keys(header).forEach( rootKey => {
         let elementVal = header[rootKey] != "undefined" ? header[rootKey]:""
-        if("headerTitle"== rootKey | "Shared with" == rootKey){
+        if("headerTitle"== rootKey || "Shared with" == rootKey){
             let rootKeyVal = rootKey == "headerTitle" ? "": rootKey+": "
             tabelHTML = tabelHTML+'<h2 align="center" style="color:#005c86;">'+rootKeyVal+" "+ elementVal +'</h2>'
         }else if("Date created"==rootKey){
@@ -136,7 +136,6 @@ export async function makeHtmlBody(reportType,sharedWithInfo,itemList,client) {
 export async function getMyInfoData() {
     
     let data = await getData("@myMedListMyInfo");
-    data = JSON.parse(data)
     data = data["myInfo"]
     return data;
 }

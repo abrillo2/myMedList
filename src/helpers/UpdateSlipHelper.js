@@ -48,7 +48,6 @@ function handelNavigation(navigation,screenName,data,itemId){
         let index = Number(getItemIndex(items,itemId))
         let item = getNextItem(items,itemId,index++)
 
-        console.log(" key initial response  ", itemId, 'key prev response ',item.key)
         navigation.setParams({
           item:item.data,key:item.key})
         return item

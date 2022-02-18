@@ -6,6 +6,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 import SolidInput from '../components/SolidInput';
 import Button from '../components/Button';
+import Spinner from '../helpers/Spinner'
 //static resources
 import appLabels, { formInputLabel } from "../../assets/static_resources/strings";
 
@@ -14,6 +15,7 @@ export default function InputModal(props){
   const [modalData, setModalData] = useState({});
   const [buttonState, setButtonState] = useState(true);
   const isFocused = useIsFocused();
+  const [spinnerOn,setSpinner] = useState(false)
 
   useEffect(() => {
     let btS = checkRequiredFilds()
@@ -28,7 +30,7 @@ export default function InputModal(props){
 
   const pressed=async(params)=>{
        if(params){
-            props.onPress()
+            setSpinner(true)
 
             let shareInfo = modalData["sharedWith"]
             let saredWithLabel = []
@@ -39,11 +41,15 @@ export default function InputModal(props){
             const statusShare = props.status
             let htmlString = await makeHtmlBody(statusShare,saredWithLabel,props.listOfdata,props.client)
             let pdfURIString = await createPDF(htmlString,statusShare)
+            
+            setModalData(null)
+            setSpinner(false)
+            props.onPress()
+            
             props.navigation.navigate(appLabels.PdfViewerTitle,{
                 pdfURI:pdfURIString,
                 client:[props.client,shareInfo[props.client],statusShare,shareInfo['name']]
-            })            
-            setModalData(null)
+            })
        }else{
            
            props.onPress()
@@ -112,7 +118,7 @@ export default function InputModal(props){
         }}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+{spinnerOn?<Spinner/>:          <View style={styles.modalView}>
 
             <Text style={styles.modalText}> {appLabels.sharingVia+" "+props.client}</Text>
             <SolidInput  width={"90%"} 
@@ -142,7 +148,7 @@ export default function InputModal(props){
                         h={1}
                         w={120}/>
             </View>
-          </View>
+          </View>}
         </View>
       </Modal>
     </View>

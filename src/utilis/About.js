@@ -2,8 +2,8 @@
 import React from 'react';
 import {Text, View,Image} from 'react-native';
 //static
-import { appDescription } from '../../../assets/static_resources/strings';
-import styles from '../../../assets/styles/Utilis'
+import { appDescription } from '../../assets/static_resources/strings';
+import styles from '../../assets/styles/Utilis'
 //componets
 import Logo from './Logo';
 export default function About(){

@@ -42,8 +42,8 @@ const appObjects = {
     myInfoRequiredItems:[["personalInformation","firstName"],["personalInformation","lastName"],
     ["physicianDetails","firstName"],["physicianDetails","lastName"]],
     myInfoSexChoices:[
-        { label: 'Male', value: 'Male' },
-        { label: 'Female', value: 'Female'}],
+        { id: 'Male', title: 'Male' },
+        { id: 'Female', title: 'Female'}],
 
     slipRefilLeftRange:slipRefillsRange,
 
@@ -83,7 +83,7 @@ const medDetails = {
         }]},
         {group:[{
             inputLabel:formInputLabel.dateRefilled,
-            childKey:"dateRefilled",
+            childKey:"dateRefilled", 
             rootKey:"medicationDetails",
             iconName:"dateRange",
             func:"datePicker",
@@ -92,12 +92,13 @@ const medDetails = {
             inputLabel:formInputLabel.refillsLeft,
             childKey:"refillsLeft",
             rootKey:"medicationDetails",
-            //iconName:"arrowRightBlack",
-            //iconName2:"arrowLefttBlack",
-            //func:"numberPicker",
-            inputType:"dropDown",
-            data:appObjects.slipRefilLeftRange,
-            editAble:false
+            iconName:"arrowRightBlack",
+            iconName2:"arrowLefttBlack",
+            func:"numberPicker",
+            //inputType:"dropDown",
+            //data:appObjects.slipRefilLeftRange,
+            editAble:true,
+            keyboard:'number-pad',
             
         }]}
     ,{
@@ -114,7 +115,8 @@ const pharma={
             inputLabel:formInputLabel.pharmacyName,
             childKey:"name",
             rootKey:"pharmacyDetails",
-            inputType:'autoCompelete'
+            inputType:'autoCompelete',
+            suggessions:'pharma'
         },{
             inputLabel:formInputLabel.pharmacyPhone,
             childKey:"phone",
@@ -130,6 +132,7 @@ const physician={
         inputLabel:formInputLabel.physicianName,
         childKey:"name",
         rootKey:"physicianDetails",
+        suggessions:'doc'
     },{
         inputLabel:formInputLabel.physicianPhone,
         childKey:"phone",
@@ -151,6 +154,7 @@ const additional={
         inputLabel:formInputLabel.diagnosis,
         childKey:"diagnosis",
         rootKey:"medicationDetails",
+        suggessions:'diag'
     }]
 }
 
@@ -192,7 +196,7 @@ export const myInfoFormLabels={
                             width:"49%",
                             iconName:"dateRange",
                             func:"datePicker",
-                            editAble:false,
+                            editAble:false, 
                            },{inputLabel:formInputLabel.sex,
                                childKey:"sex",
                                rootKey:"personalInformation",
@@ -246,7 +250,7 @@ export const myInfoFormLabels={
                         }]}
                     ],
                 },{
-                    title:appLabels.physiciansDetailsLabel,
+                    title:appLabels.myInfoPPrimaryCarePhysician,
                     subView:true,
                     content:[
                         {group:[ {
@@ -254,6 +258,7 @@ export const myInfoFormLabels={
                              childKey:"firstName",
                              rootKey:"physicianDetails",
                              width:"49%",
+                             suggessions:'doc',
                          },{
                              inputLabel:formInputLabel.lastName,
                              childKey:"lastName",
@@ -270,13 +275,14 @@ export const myInfoFormLabels={
                 },
                 
                 {
-                    title:appLabels.pharmacyDetailsLabel,
+                    title:appLabels.myInfoPreferredPharmacy,
                     subView:false,
                     content:[{
                         inputLabel:formInputLabel.name,
                         childKey:"name",
                         rootKey:"pharmacyDetails",
                         width:"100%",
+                        suggessions:'pharma'
                     },{
                         inputLabel:formInputLabel.phone,
                         childKey:"phone",

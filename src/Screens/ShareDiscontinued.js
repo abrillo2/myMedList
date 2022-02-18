@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useRef} from 'react';
 import {View} from 'react-native';
 import { getData } from '../helpers/AsyncHelper'
 import { useIsFocused } from '@react-navigation/native';
@@ -11,7 +11,6 @@ import appLabels from '../../assets/static_resources/strings';
 //static
 import {selectToggelItem} from '../helpers/shareHelper'
 import appObjects from '../../assets/static_resources/objects';
-import Spinner from '../helpers/Spinner';
 
 
 export default function ShareDiscontinued(props){
@@ -22,7 +21,7 @@ export default function ShareDiscontinued(props){
       interactionsComplete: false
     })
     const [currentDataDiscontinued,setcurrentDataDiscontinued] = useState(null)
-    const [personalData,setPersonalData] = useState(null)
+    const personalData = useRef(null)
 
     useEffect(() => {
         
@@ -33,31 +32,32 @@ export default function ShareDiscontinued(props){
         }
       }, []);
 
-   async function getSavedData(){
+  async function getSavedData(){
         const jsonValue = await getData('@myMedListSlipInfo')
-        let personalData =personalData?personalData: await getData("@myMedListMyInfo")
-
+        let personalInfo =personalData.current?personalData.current: await getData("@myMedListMyInfo")
+        personalData.current=(personalInfo)
         if (jsonValue != null){
+    
             let currentDataDiscontinued = selectToggelItem(jsonValue,false)
-          
+            
             setcurrentDataDiscontinued(currentDataDiscontinued)
-            setPersonalData(personalData)
+
         }
     }
     return (
          <View  style={styles.share}>
-          {currentDataDiscontinued !=null?<ShareList   
+          <ShareList   
 
                 refreshHandler={getSavedData}
-                data={currentDataDiscontinued}
+                data={currentDataDiscontinued?currentDataDiscontinued:[]}
                 itemLabels={state.itemLabels}
                 dataKeys={state.dataKeys}
                 status={appLabels.discontinued}
                 navigation={props.navigation}
-                personalData={personalData}
+                personalData={personalData.current}
                 title={props.route.name}
            
-           />:<Spinner/>}
+           />
 
         </View>
     );

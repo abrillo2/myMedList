@@ -12,6 +12,7 @@ import {useEffect,useState} from 'react';
 export default function SolidInput(props){
 
   const [openDatePicker, setOpenDatePicker] = useState(false)
+  const [inputVal, setInputVal] = useState(null)
   
   onPress=()=>{
       let func = props.func
@@ -23,24 +24,23 @@ export default function SolidInput(props){
   }
 
   setValue=(val)=>{
-
-       openDatePicker? setOpenDatePicker(false):null
-      
-      props.onChangeText(props.rootKey,props.childKey,val)
+      openDatePicker?setOpenDatePicker(false):null
+      setInputVal(val);
+      openDatePicker? setOpenDatePicker(false):null;
+      props.onChangeText(props.rootKey,props.childKey,val);
+  
   }
 
   getValue=()=>{
-     let val = props.inputContent ? props.inputContent(props.rootKey,props.childKey):null
-    
-    
-      return val
+     let val =inputVal!=null?inputVal: props.inputContent ? props.inputContent(props.rootKey,props.childKey):null
+     return val?val+"":null
 
   }
 
   required=()=>{
     if(props.required){
         let val =  props.required(props.childKey,props.rootKey)
-        return val
+        return val && getValue()==null
     }else{
         return false
     }
@@ -58,7 +58,7 @@ export default function SolidInput(props){
              <View  style={styles.labelContainer}>
                 <Text  style={styles.labelTextStyle}>
                             {props.inputLabel}
-                            {required() && getValue() == null?<Text style={[styles.halfinputLabel,
+                            {required() && inputVal==null?<Text style={[styles.halfinputLabel,
                             {color:"red"}]}> *</Text>:null}
                 </Text>
             </View>

@@ -1,6 +1,6 @@
 import RNFetchBlob from 'react-native-fetch-blob'
-import { PermissionsAndroid } from "react-native";
-
+import { PermissionsAndroid, ToastAndroid } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -20,8 +20,7 @@ export async function removeFile(uri){
 
         if(exists){
           RNFetchBlob.fs.unlink(path)
-          .then(() => { console.log('file removed ',path);
-                       listPath(path)})
+          .then(() => { console.log('file removed ',path);})
           .catch((err) => { console.log('err')})
         }else{
           console.log('file does not exist ',path)
@@ -86,10 +85,9 @@ async function requestStoragePermision(){
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the storage");
         return true
       } else {
-        console.log("storage permission denied");
+        ToastAndroid.show("Storage permission denied\nApp might not work as expected",ToastAndroid.LONG);
         return false
       }
     } catch (err) {
