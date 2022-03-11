@@ -33,7 +33,7 @@ const appLabels = {
     myInfoTitle:'MY INFO',
     takenPhotoTitle:"SLIP PHOTO",
     homeTitle:"HOME",
-    reviewTitle: "REVIEW SLIP",
+    reviewTitle: "REVIEW",
 
     PdfViewerTitle : "PREVIEW",
     medicationDetailsLabel:"MEDICATION DETAILS",
@@ -83,7 +83,7 @@ export const appDescription={
     homeDesccription:"MY MED LIST",
     addSlipDescription:`Add photo of prescription slip or medicine bottle\n\nPress the camera Icon to take a photo`,
     addSlipInfoSaveDescription:"Are the entries correct?",
-    reconcileListDeleteDescription:"Are you sure?",
+    reconcileListDeleteDescription:"Do you want to discontinue this medication?",
     reconcileListAddItemDescription:"No slip found, add slip? ",
     shareToggelDescription:"No slips to share,\n for ",
     shareSetPersonalDataDescription:"Please set your personal data,\nbefore starting to share",

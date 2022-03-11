@@ -70,8 +70,11 @@ export default function ShareList(props){
     }
 
     function sort(index){
-        setRefresh(false)
+        
         sortIndex.current=(index)
+
+        let Temprefresh = !refresh
+        setRefresh(Temprefresh)
     }
 
     useEffect(() => {

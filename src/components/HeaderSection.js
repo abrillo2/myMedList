@@ -14,7 +14,7 @@ export default function HeaderSection(props){
     //  this.setState(...)
     const navigation = props.navigation;
     const title = props.Title
-    const  goback = title == appLabels.addPhotoTitle | title == appLabels.shareTitle | title ==appLabels.reconcileTitle | title ==appLabels.myInfoTitle 
+    const  goback = title == appLabels.addPhotoTitle  | title ==appLabels.reconcileTitle | title ==appLabels.myInfoTitle |title == appLabels.shareTitle;
 
     function onPressOpenDrawer(){
       goback ?navigation.navigate(appLabels.homeTitle): navigation.openDrawer();
@@ -34,12 +34,15 @@ export default function HeaderSection(props){
               
                <View  style={headerStyle.appBarTopRectangle}></View>
                <View  style={headerStyle.opitionContainer}>
-                       <TouchableOpacity onPress={onPressOpenDrawer}>
+                      
                          <View  style={headerStyle.leftOpitionContainer}>
+                         {goback ?<TouchableOpacity onPress={onPressOpenDrawer}>
                          {icon(iconName,headerStyle.iconStyle,30)}
+                         </TouchableOpacity>:null}
+                         
                              <Text  style={headerStyle.pageTitleStyle}>{props.onPressOption?appLabels.reconcileTitle:props.Title}</Text>
                          </View>  
-                       </TouchableOpacity>
+                       
                        <View  style={headerStyle.rightOpitionContainer}>
 
                             
@@ -67,13 +70,14 @@ export default function HeaderSection(props){
                             />
                             
                           :null}
-                            {goback?<TouchableOpacity
+                            {props.onPressOption ? <Options onPressOption={props.onPressOption}/>:  null
+                                }
+
+                          <TouchableOpacity
                                 onPress={()=>navigation.openDrawer()}
                            >
                             {icon('menu',headerStyle.iconStyle,30)}
-                           </TouchableOpacity>:null}
-                            {props.onPressOption ? <Options onPressOption={props.onPressOption}/>:  null
-                                }
+                           </TouchableOpacity>
                         </View>
                  </View>
               

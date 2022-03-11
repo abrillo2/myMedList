@@ -105,8 +105,7 @@ export function required(child,parent){
   // save suggestions
   export async function saveSuggession(currentData){
 
-    let tempPhysicianFirstName =getCurrentData(currentData,'physicianDetails','firstName')
-    let tempPhysicianLastName =getCurrentData(currentData,'physicianDetails','lastName')
+    let tempPhysicianName =getCurrentData(currentData,'physicianDetails','name')
     let tempPhysicianphone =getCurrentData(currentData,'physicianDetails','phone')
 
     let tempPharmaName =getCurrentData(currentData,'pharmacyDetails','name')
@@ -117,7 +116,6 @@ export function required(child,parent){
      
      let doc = []
      let docPhone = []
-     let docLast = []
      let docFirst = []
      let pharma = []
      let pharmaPhone = []
@@ -130,26 +128,23 @@ export function required(child,parent){
         doc = suggessions.docs.physicianDetails['name']
       
         docPhone = suggessions.docs.physicianDetails['phone']
-        docLast = suggessions.docs.physicianDetails['lastName']?suggessions.docs.physicianDetails['lastName']:[]
-        docFirst = suggessions.docs.physicianDetails['firstName']?suggessions.docs.physicianDetails['firstName']:[]
+       
       
         pharma = suggessions.pharmas.pharmacyDetails['name']
         pharmaPhone = suggessions.pharmas.pharmacyDetails['phone']
     }
       //append doc sugesstion
-      if(tempPhysicianFirstName!=null || tempPhysicianLastName!=null){
-          if(doc.includes((tempPhysicianFirstName+" "+tempPhysicianLastName))){
-            let index = doc.indexOf(tempPhysicianFirstName+" "+tempPhysicianLastName)
+      if(tempPhysicianName!=null){
+          if(doc.includes((tempPhysicianName))){
+            let index = doc.indexOf(tempPhysicianName)
             docPhone[index] = tempPhysicianphone
         }else{
-            doc.push(tempPhysicianFirstName+" "+tempPhysicianLastName)
+            doc.push(tempPhysicianName)
             docPhone.push(tempPhysicianphone)
-            docLast.push(tempPhysicianLastName)
-            docFirst.push(tempPhysicianFirstName)
         }
       }
 
-      //append doc sugesstion
+      //append pharma sugesstion
       if(tempPharmaName!=null){
           if(pharma.includes(tempPharmaName)){
             let index = pharma.indexOf(tempPharmaName)
@@ -161,7 +156,7 @@ export function required(child,parent){
       }
 
 
-      const docs = {physicianDetails:{'name':[...doc],'phone':[...docPhone],'lastName':[...docLast],'firstName':[...docFirst]}}
+      const docs = {physicianDetails:{'name':[...doc],'phone':[...docPhone]}}
       const pharmas = {pharmacyDetails:{'name':[...pharma],'phone':[...pharmaPhone]}}
       let diags = suggessions? suggessions.diags:null
 

@@ -9,6 +9,8 @@ import Button from '../components/Button';
 import Spinner from '../helpers/Spinner'
 //static resources
 import appLabels, { formInputLabel } from "../../assets/static_resources/strings";
+import { UseOrientation } from './UserORientation';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
 export default function InputModal(props){
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,6 +18,8 @@ export default function InputModal(props){
   const [buttonState, setButtonState] = useState(true);
   const isFocused = useIsFocused();
   const [spinnerOn,setSpinner] = useState(false)
+
+  const orientation = UseOrientation();
 
   useEffect(() => {
     let btS = checkRequiredFilds()
@@ -141,12 +145,12 @@ export default function InputModal(props){
                         disabled={false}
                         onPress={()=> pressed(true)}
                         disabled={buttonState}
-                        h={1}
-                        w={120}/>
+                        h={2}
+                        w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
                 <Button buttonLabel={appLabels.cancel}
                         onPress={()=> pressed(false)} 
-                        h={1}
-                        w={120}/>
+                        h={2}
+                        w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
             </View>
           </View>}
         </View>

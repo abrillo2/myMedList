@@ -20,14 +20,9 @@ return(
         style={styles.drawerHeaderIcon}
         source={require("../../assets/img/logo.png")}
     />
-    <Text style={styles.drawerHeaderText}>
+    <Text style={props.home?styles.drawerHeaderText2:styles.drawerHeaderText}>
       {appDescription.drawerTitleDescription}
     </Text>
-    <View
-        style={styles.cpContianer}
-      >
-   {/* <Copyright/>*/}
-    </View>
 </View>
 )
 }

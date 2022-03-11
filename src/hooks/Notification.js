@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { FlatList, Modal, ScrollView, Text, View } from "react-native";
+import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import styles from "../../assets/styles/NotficationModalStyle";
 
 import Button from '../components/Button';
+import { UseOrientation } from "./UserORientation";
 
 const Notification = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState(null);
+
+  const orientation = UseOrientation();
 
   const pressed=async(confirmed)=>{
     props.onPress(data,confirmed)
@@ -48,13 +52,12 @@ const Notification = (props) => {
                 <Button buttonLabel={props.lTitle} 
                         onPress={()=> pressed(true)}
                         h={2}
-                        w={100}
-                        />
+                        w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
                 <Button buttonLabel={props.rTitle}
                         onPress={()=> pressed(false)}
                         h={2}
                         w={100}
-                        />
+                        w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
             </View>
       </View>
    </View>

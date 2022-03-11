@@ -40,10 +40,11 @@ const appObjects = {
     ["medicationDetails","dateRefilled"],["physicianDetails","name"]],
     addSlipInfoUpdateableItems:["dateRefilled","refillsLeft"],
     myInfoRequiredItems:[["personalInformation","firstName"],["personalInformation","lastName"],
-    ["physicianDetails","firstName"],["physicianDetails","lastName"]],
+    ["physicianDetails","name"]],
     myInfoSexChoices:[
         { id: 'Male', title: 'Male' },
-        { id: 'Female', title: 'Female'}],
+        { id: 'Female', title: 'Female'},
+        { id: 'Prefer not to say', title: 'Prefer not to say'}],
 
     slipRefilLeftRange:slipRefillsRange,
 
@@ -228,8 +229,6 @@ export const myInfoFormLabels={
                             childKey:"state",
                             rootKey:"address",
                             width:"49%",
-                            inputType:"dropDown",
-                            data:require("../data/states.json")
                         },{
                             inputLabel:formInputLabel.zipCode,
                             childKey:"zipCode",
@@ -253,18 +252,12 @@ export const myInfoFormLabels={
                     title:appLabels.myInfoPPrimaryCarePhysician,
                     subView:true,
                     content:[
-                        {group:[ {
-                             inputLabel:formInputLabel.firstName,
-                             childKey:"firstName",
-                             rootKey:"physicianDetails",
-                             width:"49%",
-                             suggessions:'doc',
-                         },{
-                             inputLabel:formInputLabel.lastName,
-                             childKey:"lastName",
-                             rootKey:"physicianDetails",
-                             width:"49%",
-                         }]},{
+                        {inputLabel:formInputLabel.physicianName,
+                        childKey:"name",
+                        rootKey:"physicianDetails",
+                        width:"100%",
+                        suggessions:'doc',
+                     },{
                             inputLabel:formInputLabel.phone,
                             childKey:"phone",
                             rootKey:"physicianDetails",

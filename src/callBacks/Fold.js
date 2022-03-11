@@ -80,9 +80,9 @@ export default class Fold extends Component {
         return(    
             <View style={
             {backgroundColor: '#fff',
-                marginHorizontal: 15,
+                marginHorizontal: 10,
                 paddingBottom:10,
-                paddingHorizontal: 15,}
+                paddingHorizontal: 10,}
             }>   
                 <Animated.View style={{ maxHeight: this.state.animation}}>
 

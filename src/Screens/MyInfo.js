@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {FlatList,View} from 'react-native';
+import {FlatList,View,Keyboard} from 'react-native';
 import {getData} from '../helpers/AsyncHelper'
 
 
@@ -18,6 +18,8 @@ import appObjects,{myInfoFormLabels} from '../../assets/static_resources/objects
 
 import { getUserInfo,saveUserProfile,required,onchangeInput,requiredFieldsFullfilled} from '../helpers/MyinfoHelper';
 import { getSuggesion } from '../helpers/AddSlipDetailsHelper';
+import { UseOrientation } from '../hooks/UserORientation';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 const requiredItems =appObjects.myInfoRequiredItems
 
 export default function MyInfo(props){
@@ -35,6 +37,9 @@ export default function MyInfo(props){
 
   const[suggesstions,setSuggestions]=useState(null)
 
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const orientation = UseOrientation();
 
 
   useEffect(() => {
@@ -43,7 +48,25 @@ export default function MyInfo(props){
     }else{
       spinnerOn? null : setSpinnerOn(false)
     }
+
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+
+
   return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
   }
 }, [suggesstions]);
   
@@ -105,7 +128,7 @@ export default function MyInfo(props){
           props.navigation.navigate(appLabels.homeTitle)
          
         }else{
-          props.navigation.navigate(appLabels.homeTitle)
+          //props.navigation.navigate(appLabels.homeTitle)
         }
     }
 
@@ -165,7 +188,7 @@ export default function MyInfo(props){
                             editAble={item.editAble !=null? item.editAble:true}
                             data={item.data? item.data:null}
 
-                            suggessions={item.suggessions?( getSuggesion(suggesstions,item.suggessions)):null}
+                            suggessions={item.suggessions?( getSuggesion(item.suggessions)):null}
 
                             inputType={item.inputType? item.inputType:null}/>
                               
@@ -191,7 +214,7 @@ export default function MyInfo(props){
                               inputContent={getDataCurrent}
                               required = {required}
 
-                              suggessions={item.suggessions?( getSuggesion(suggesstions,item.suggessions)):null}
+                              suggessions={item.suggessions?( getSuggesion(item.suggessions)):null}
                                 
                               
                             keyboard={item.keyboard?item.keyboard:'default'}
@@ -211,20 +234,19 @@ export default function MyInfo(props){
                     </Fold>
                   )}/>
 
-                  <View  style={styles.twinButtonContainer}>
+                 {isKeyboardVisible?null: <View  style={styles.twinButtonContainer}>
                   <Button buttonLabel={appLabels.cancel} 
                       disabled={false}
                       onPress={cancelPressed}
                       h={2}
-                      w={120}
-                      />
+                      w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
 
-              <Button buttonLabel={appLabels.save} 
+                  <Button buttonLabel={appLabels.save} 
                       disabled={isRequired}
                       onPress={savePressed}
                       h={2}
-                      w={120}/>
-                  </View>
+                      w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
+                  </View>}
 
 
             <Notification

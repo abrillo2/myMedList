@@ -1,5 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 import { wrp ,hrp} from './Dim';
 
 export default StyleSheet.create ({
@@ -26,10 +27,9 @@ export default StyleSheet.create ({
     },
     twinButtonContainer:{
         flexDirection:"row",
-        width : ("85%"),
+        width : widthPercentageToDP("85%"),
         justifyContent:"space-between",
         position:"relative",
-        paddingTop:'5%',
    }
   
   });

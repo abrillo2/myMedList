@@ -3,7 +3,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {Image as ReactImage} from 'react-native';
 import ListActionButton from './ListActionButton.js';
-import {openGalery} from '../helpers/slipPhotohelper.js';
+import {openCamera, openGalery} from '../helpers/slipPhotohelper.js';
 
 //import heaader style
 import slipPicEditContainerStyle from '../../assets/styles/SlipPicEditContainerStyle.js'
@@ -26,7 +26,7 @@ export default class SlipPicEditContainer extends React.Component{
     }
 
     editSlipImg=async()=>{
-       let val = await openGalery()
+       let val = await openCamera()
        if(val.assets){
           this.setValue(val.assets[0])
        }

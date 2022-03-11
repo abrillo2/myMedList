@@ -197,6 +197,7 @@ export default function Reconcilelist(props) {
           getSlipInfoData();
         }
         return () => {
+          
         }
       }, [reload,useIsFocused()]);
 

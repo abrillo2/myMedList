@@ -4,13 +4,20 @@ import DatePicker from 'react-native-date-picker';
 export default function DatePickerHelper(props){
 
     //open modal
+    const today = new Date();
+    const dateString = today.getFullYear()+"-"+(today.getMonth() + 1).toString()+"-"+today.getDate()
     
     return (<><DatePicker
         modal
         mode='date'
-        textColor='black'
+        textColor='black' 
+        locale='en-US'
         open={props.open}
-        date={new Date()}
+        date={today}
+
+        maximumDate={props.childKey == "birthDate"| props.childKey == "dateRefilled"?new Date(dateString):null}
+        minimumDate={props.childKey == "dateAppointed"?new Date(dateString):null}
+
         onConfirm={(date) => {
             let dateFormatted =  date.toLocaleDateString("en-US");
             props.setVal(dateFormatted)

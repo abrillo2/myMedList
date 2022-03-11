@@ -11,10 +11,14 @@ import appLabels from '../../assets/static_resources/strings';
 //import { Button } from 'react-native-share';
 import { removeFile } from '../hooks/FsManager';
 
+import { UseOrientation } from '../hooks/UserORientation';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+
 export default function Takenphoto(props){
   const isFocused = useIsFocused();
   const [imageData,setImageData] = useState(null)
   const [spinnerOn, setSpinnerOn] = useState(false)
+  const orientation = UseOrientation();
 
   useEffect(() => {
     setSpinnerOn(false)
@@ -50,18 +54,20 @@ export default function Takenphoto(props){
                       contentContainerStyle= {spinnerOn?{flex:1}:{flex:0}}>
           {spinnerOn ? <Spinner/>:<View style ={styles.takenPhotoBody}>
 
-            {imageData?<ReactImage  source={{uri:imageData.uri+""}} style={styles.slipimagecontainer}/>
+            {imageData?
+            
+               <ReactImage  source={{uri:imageData.uri+""}} style={[styles.slipimagecontainer, orientation === 'PORTRAIT'?{height:heightPercentageToDP('80%')}:{height:widthPercentageToDP('60%'),}]}/>
                :null}   
                     <View style={styles.twinButtonContainer}>
                       <Button buttonLabel="Cancel" onPress={cancel}  
                               h={2}
-                              w={120}/>
+                              w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
                       <Button buttonLabel="Save"  onPress={save}
                                h={2}
-                               w={120}/>
+                               w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
                       <Button buttonLabel="Retake"  onPress={retake}
                                h={2}
-                               w={120}/>
+                               w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
                     </View>
             </View>}
     </ScrollView>

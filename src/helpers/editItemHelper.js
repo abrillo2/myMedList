@@ -35,6 +35,7 @@ export function getItem(items,itemId) {
           return getNextItem(items,itemId,index)
       }
     }else if(items.length > 1 && index > 0){
+       
        return getNextItem(items,itemId,0)
     }else{
        let item = getItem(items,itemId)

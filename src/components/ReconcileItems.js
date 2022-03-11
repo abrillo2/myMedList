@@ -1,5 +1,5 @@
 //imports
-import {Text, View,TouchableOpacity,SectionList,RefreshControl} from 'react-native';
+import {Text, View,TouchableOpacity,SectionList} from 'react-native';
 import Icon from '../hooks/Icon.js';
 //import reconcile items
 import ReconcileStyle from '../../assets/styles/ReconcileStyle.js';
@@ -14,25 +14,17 @@ export default function ReconcileItems(props){
 
     const [dataList, setListofData] = useState(null)
     const sortIndex = useRef(-1)
-
-
-    const [refreshing,setRefreshing] = useState(false)
+    const ascending = useRef(true)
     
 
-    const onRefresh = React.useCallback(() => {
-        setRefreshing(true);
-        props.refreshHandler()
-        setRefreshing(false)
-      }, []);
     
-
       useEffect(() => {
 
         loadListofItems()
         
         return () => {
         }
-      }, [props.data,props.sortIndex]);
+      }, [props.data,props.sortIndex,props.refresh]);
 
 
     function byString(o, s){
@@ -80,18 +72,18 @@ export default function ReconcileItems(props){
     }
 
     function sortData(data){
-        
         let item = null
-        if((Number(props.sortIndex) === Number(sortIndex.current)) && (dataList != null)){
-          var sorted = data[0].data
-          item=[{data:sorted,key:"root"+0}]  
+        if((Number(props.sortIndex) === Number(sortIndex.current))){
+          ascending.current = !ascending.current
         }else{
-            var tempData = data[0].data
-            let sorted = tempData.sort(compare)
+          ascending.current = true;
+        }
+        var tempData = data[0].data
+        let sorted = tempData.sort(compare)
 
-            sorted = [{data:sorted,key:"root"+0}]      
-            item = sorted
-        } 
+        sorted = [{data:sorted,key:"root"+0}]      
+        item = sorted
+        
         sortIndex.current=(props.sortIndex)
         setListofData(item)    
 
@@ -109,11 +101,12 @@ export default function ReconcileItems(props){
         vala = Number(vala) ? Number(vala.trim()) : vala.trim().toLowerCase()
         valb = Number(valb) ? Number(valb.trim()) : valb.trim().toLowerCase()
 
+
         if ( vala < valb){
-          return -1;
+          return ascending.current?-1:1;
         }
         if ( vala > valb){
-          return 1;
+          return ascending.current? 1:-1;
         }
         return 0; 
     }
@@ -152,12 +145,6 @@ export default function ReconcileItems(props){
         extraData={dataList}
         keyExtractor={(item, index) => item + index}
 
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />}
-
         renderItem={({ item,index }) => 
     
                 
@@ -193,15 +180,19 @@ export default function ReconcileItems(props){
       :null}
                     
                 {props.itemLabels.map((item,index)=>{
-                    return  <TouchableOpacity 
-                    onPress={()=>{
-                      props.onPress(index)} } 
-                    key={index}  style={ReconcileStyle.labelTopContainerR}>
+                    return  <View key={index}  style={ReconcileStyle.labelTopContainerR}>
                               <View  style={ReconcileStyle.labelContainerR}>
                                 <Text  style={ReconcileStyle.labelTextStyleR}>{item}</Text>
-                                {Icon("filter-list",ReconcileStyle.iconStyle)}
+                                <TouchableOpacity 
+                                      onPress={()=>{
+                                      props.onPress(index)} 
+                                      } key={index+"sort"}
+                                  >
+                                
+                                    {Icon("filter-list",ReconcileStyle.iconStyle)}
+                                </TouchableOpacity>
                               </View>
-                            </TouchableOpacity>
+                            </View>
                 })}
 
             </View>

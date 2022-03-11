@@ -66,7 +66,7 @@ labelContainerR: {
   width: (wrp( 150)),
   height: (hrp( 28)),
   flexDirection:"row",
-  justifyContent:"center"
+  justifyContent:"space-around",
 },
 labelTextStyleR: {
   opacity: 1,

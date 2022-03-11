@@ -1,5 +1,6 @@
 //imports
 import {StyleSheet} from 'react-native';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 import { wrp ,hrp} from './Dim';
 
 
@@ -11,10 +12,10 @@ export default StyleSheet.create({
         width:"100%",
         height:"100%"
   },
-    slipimagecontainer: {
+    slipimagecontainer: { 
         position: "relative",
         width: '90%',
-        height:hrp(600),
+        height:heightPercentageToDP('70%'),
   },
     takenPhotoBody:{
         position:"relative",

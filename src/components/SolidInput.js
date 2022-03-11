@@ -63,7 +63,7 @@ export default function SolidInput(props){
                 </Text>
             </View>
 
-            {props.func == 'datePicker' ? <DatePickerHelper getVal={getValue} open={openDatePicker} setVal={setValue}/>:null}
+            {props.func == 'datePicker' ? <DatePickerHelper {...props} getVal={getValue} open={openDatePicker} setVal={setValue}/>:null}
         </View>
     );
   

@@ -67,8 +67,7 @@ export async function makeHeaderData(status,sharedWith,client) {
     let fName = pInfo["firstName"] != null ? pInfo["firstName"] : ""
     let lName   = pInfo["lastName"] != null? pInfo["lastName"] : "";
     let phone = pInfo["phone"]!= null ? pInfo["phone"] : "";
-    let dfName = dInfo["firstName"]!= null ? dInfo["firstName"] : "";
-    let dlName = dInfo["lastName"]!= null ? dInfo["lastName"] : "";
+    let dName = dInfo["name"]!= null ? dInfo["name"] : "";
     let dPhone =  dInfo["phone"]!= null ? dInfo["phone"] : "";
     let phName = phInfo["name"]!= null ? phInfo["name"] : "";
     let phPhone =  phInfo["phone"]!= null ? phInfo["phone"] : "";
@@ -79,7 +78,7 @@ export async function makeHeaderData(status,sharedWith,client) {
         +'<h2 align="center" style="color:#005c86;">'+fName + " "+lName+ ", "+phone+'</h2>',
         "Date created": new Date().toLocaleDateString("en-us"),
         "Shared with":sharedWith[0] +" " + '<h2 align="center" style="color:#005c86;">'+client+": "+sharedWith[1]+'</h2>',
-        "Primary care doctor": dfName + " "+ dlName + ", Phone: " +dPhone,
+        "Primary care doctor": dName+ ", Phone: " +dPhone,
         "preferred pharmacy":phName+ ", Phone: " + phPhone,
         
     }

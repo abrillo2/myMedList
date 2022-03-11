@@ -34,7 +34,6 @@ export default class HalfInputContainer extends React.Component{
                   this.handelFunc(val);
                   break;
           default:
-                 console.log("default");
               break;
               
         }
@@ -119,7 +118,7 @@ export default class HalfInputContainer extends React.Component{
                         </View>                   
                         <View  style={[styles.halfinputLayer2Indicator,{width:"100%"}]}></View>
                        
-                        {this.props.func == 'datePicker' ? <DatePickerHelper getVal={this.getValue} open={this.state.openDatePicker} setVal={this.setValue}/>:null}
+                        {this.props.func == 'datePicker' ? <DatePickerHelper {...this.props}  getVal={this.getValue} open={this.state.openDatePicker} setVal={this.setValue}/>:null}
                     </View>
     )
   }

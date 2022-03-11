@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import {FlatList,View} from 'react-native';
+import {FlatList,View,Keyboard} from 'react-native';
 
 //components import
 import HalfInputContainer from '../components/HalfInputContainer';
@@ -26,6 +26,8 @@ import {getNavData,getCurrentData,
 import { removeFile } from '../hooks/FsManager';
 import { getData } from '../helpers/AsyncHelper';
 import { useIsFocused } from '@react-navigation/native';
+import { UseOrientation } from '../hooks/UserORientation';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
 
 export default function AddSlipInfo(props){
@@ -47,13 +49,33 @@ export default function AddSlipInfo(props){
         const[spinnerOn,setspinnerOn]=useState(true)
         const [isRequired, setIsRequired] = useState(true)
 
+        const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+        const orientation = UseOrientation();
 
   useEffect(() => {
       
-        if(focused)
-        {loadData()}
-        return () => {
+        if(focused){
+          loadData()
+        }
+        const keyboardDidShowListener = Keyboard.addListener(
+          'keyboardDidShow',
+          () => {
+            setKeyboardVisible(true); // or some other action
+          }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+          'keyboardDidHide',
+          () => {
+            setKeyboardVisible(false); // or some other action
+          }
+        );
+    
+    
+    
+      return () => {
+          keyboardDidHideListener.remove();
+          keyboardDidShowListener.remove();
       }
       }, [props.route.params.key,props.route.params.imageData]);
        
@@ -94,9 +116,8 @@ export default function AddSlipInfo(props){
     setspinnerOn(true)
     props.navigation.setParams({slipData:{...formData.current}})
     let response = await handelOption(item, props.navigation,props.route.params.key,"@myMedListSlipInfo")
-    
     if(response){
-      if(response.key == itemKey){
+      if((response.key == itemKey) |(itemKey == null)){
         setspinnerOn(false)
       }
     }
@@ -223,7 +244,7 @@ return (
                                 inputType={item.inputType!=null?item.inputType:'default'}
                                 data={item.data!=null?item.data:'default'}
                                 
-                                suggessions={item.suggessions?( getSuggesion(suggesstions,item.suggessions)):null}
+                                suggessions={item.suggessions?( getSuggesion(item.suggessions)):null}
                                 
                                 inputContent={getDataCurrent}
                                 onChangeText={onChangeData}
@@ -255,7 +276,7 @@ return (
                                 inputType={item.inputType!=null?item.inputType:'default'}
                                 data={item.data!=null?item.data:null}
                                 
-                                suggessions={item.suggessions?(getSuggesion(suggesstions,item.suggessions)):null}
+                                suggessions={item.suggessions?(getSuggesion(item.suggessions)):null}
                                 
                                 inputContent={getDataCurrent}
                                 onChangeText={onChangeData}
@@ -268,7 +289,7 @@ return (
 
 
             
-            {props.route.params.key?null:<View  style={[{zIndex:0},styles.twinButtonContainer]}>
+            {props.route.params.key | isKeyboardVisible?null:<View  style={[{zIndex:0},styles.twinButtonContainer]}>
                   <Button buttonLabel={appLabels.cancel} 
                       disabled={false}
                       onPress={()=>{
@@ -283,14 +304,15 @@ return (
 
                         }}
                       h={2}
-                      w={120}
-                      />
+                      
+                      w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
+                      
 
                 <Button buttonLabel={appLabels.save} 
                       disabled={isRequired}
                       onPress={saveData}
                       h={2}
-                      w={120}/>
+                      w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
                   </View>}
                   <Notification
                 modalVisible={openModal}

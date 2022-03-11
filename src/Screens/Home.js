@@ -48,10 +48,11 @@ export default class Home extends Component {
     return (
 
       <View  style={styles.Home}>
+
           <StatusBarContainer hidden={false}/>
           <ImageBackground resizeMode="cover"  imageStyle={{opacity:0.5}}  source={require('../../assets/img/bgIcon.android.png')} 
-          style={[styles.homeBgStyle,this.state.orientation === 'portrait'?{paddingBottom:"15%",paddingTop:'30%'}:{paddingTop:'1%',paddingBottom:'1%'}]}>
-               <Logo/>
+          style={[styles.homeBgStyle,this.state.orientation === 'portrait'?{paddingBottom:"15%",paddingTop:'30%'}:{paddingTop:1,paddingBottom:1}]}>
+               <Logo home={true}/>
                <View>
                  <View style={[this.state.orientation === 'portrait'?{marginBottom:"5%"}:{marginBottom:'2%'}]}>
                  <HomeButton iconName="add" buttonLabel={appLabels.addSlipButton} navigation={()=>this.props.navigation.navigate(appLabels.addPhotoTitle)}/>
@@ -72,14 +73,32 @@ export default class Home extends Component {
                    {appDescription.openDrawerDesctiption}
                 </Text>
                 
-                    {this.state.orientation === 'portrait'?<View style={styles.twinButtonContainer}>
+                  <View style={styles.twinButtonContainer}>
                       <Button w={120} h={2} onPress={()=>{this.props.navigation.navigate(appLabels.myInfoTitle)}} buttonLabel={appLabels.myInfoButton}/>
                       <Button w={120} h={2} onPress={()=>{BackHandler.exitApp()}} buttonLabel={appLabels.exit}/>
-                    </View>:null}
+                  </View>
 
 
 
           </ImageBackground>
+
+        <View style={{position:'absolute',top:0,right:0,paddingRight:'5%',
+                      justiftyContent:"center", alignItems:"center"}}>
+            <Icon.Button 
+                  name='menu'
+                  size={30}
+                  color={colors.primary}
+                  backgroundColor={"transparent"}
+                  style={{alignContent:'center'}}
+                  underlayColor={colors.underlayColor}
+                  onPress={
+                    ()=>{
+                      this.props.navigation.openDrawer()
+                    }
+                  }
+              />
+        </View>
+
 
        </View>
 

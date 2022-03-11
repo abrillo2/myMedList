@@ -9,7 +9,7 @@ export default StyleSheet.create({
         opacity : 1,
         position : "relative",
         backgroundColor : "transparent",
-        width : "85%",
+        width : "90%",
         height : (hrp(209)),
         alignSelf:'center'
   },

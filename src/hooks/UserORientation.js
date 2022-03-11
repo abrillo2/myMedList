@@ -1,4 +1,5 @@
 // useOrientation.tsx
+import { useIsFocused } from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 
@@ -17,16 +18,17 @@ const isPortrait = () => {
 export function UseOrientation(){
   // State to hold the connection status
   const [orientation, setOrientation] = useState('PORTRAIT')
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    const callback = () => setOrientation(isPortrait() ? 'PORTRAIT' : 'LANDSCAPE');
+    
+    const callback = () =>  isFocused? setOrientation(isPortrait() ? 'PORTRAIT' : 'LANDSCAPE'):null;
 
-    Dimensions.addEventListener('change', callback);
+    isFocused?Dimensions.addEventListener('change', callback):nulll;
 
     return () => {
         Dimensions.remove('change', callback);
       };
     }, []);
-  
-    return orientation;
+    return isPortrait() ? 'PORTRAIT' : 'LANDSCAPE';
   }

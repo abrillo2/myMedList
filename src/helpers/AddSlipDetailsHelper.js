@@ -23,14 +23,15 @@ export function getNavData(route){
      
     if(currentData){
       let parentData = {...currentData[parent]}
-      let result =  parentData[child] ? parentData[child] :(child == 'refillsLeft'?0:null)
+      let result =  parentData[child] ? parentData[child] :(child == 'refillsLeft'?null:null)
       return result
     }else{
       return null 
     }
   }
 
-  export function getSuggesion(suggessions,key){ 
+  export async function getSuggesion(key){ 
+    let suggessions =await getData('@suggession')
     let suggession = []
     
     if(suggessions){
@@ -38,15 +39,10 @@ export function getNavData(route){
     if(key=='doc'){
        let doc = suggessions.docs.physicianDetails['name']
        let docPhone = suggessions.docs.physicianDetails['phone']
-       let docLast = suggessions.docs.physicianDetails['lastName']
-       let docFirst = suggessions.docs.physicianDetails['firstName']
-
        
        for (let index = 0; index < doc.length; index++) {
          const element = doc[index];
-         const docLastName =docLast ? docLast[index]: element.split(" ").length > 0?element.split(" ")[0]:element
-         const docFirstName =docFirst? docFirst[index]:element.split(" ").length > 1?element.split(" ")[1]:element
-         element?suggession.push({id:index,title:element,phone:docPhone[index],lastName:docLastName,firstName:docFirstName}):null
+         element?suggession.push({id:index,title:element,phone:docPhone[index]}):null
          
        }
     }else if(key == 'pharma'){
@@ -64,6 +60,13 @@ export function getNavData(route){
         const element = diag[index];
         element? suggession.push({id:index,title:element}) :null
       }
+    }
+  }else if(key == 'diag'){
+    
+    let diag = ['Hypertension', 'Diabetes', 'Heart disease']
+    for (let index = 0; index < diag.length; index++) {
+      const element = diag[index];
+      element? suggession.push({id:index,title:element}) :null
     }
   }
     return suggession;
@@ -94,8 +97,7 @@ export function getNavData(route){
          
           doc = suggessions.docs.physicianDetails['name']
           docPhone = suggessions.docs.physicianDetails['phone']
-          docLast = suggessions.docs.physicianDetails['lastName']?suggessions.docs.physicianDetails['lastName']:[]
-          docFirst = suggessions.docs.physicianDetails['firstName']?suggessions.docs.physicianDetails['firstName']:[]
+        
             
           pharma = suggessions.pharmas.pharmacyDetails['name']
           pharmaPhone = suggessions.pharmas.pharmacyDetails['phone']
@@ -138,12 +140,69 @@ export function getNavData(route){
       
 
 
-        const docs = {physicianDetails:{'name':[...doc],'phone':[...docPhone],'lastName':[...docLast],'firstName':[...docFirst]}}
+        const docs = {physicianDetails:{'name':[...doc],'phone':[...docPhone]}}
         const pharmas = {pharmacyDetails:{'name':[...pharma],'phone':[...pharmaPhone]}}
         const diags = {medicationDetails:{'diagnosis':[...diag]}}
 
         let AddSlipSuggessions = {docs,pharmas,diags}
         await saveData(AddSlipSuggessions,'@suggession')
+
+  }
+
+  //remove suggestion
+  export async function removeSuggestion(parentKey,value){
+    let suggessions = await getData('@suggession')
+
+    let doc = []
+    let docPhone = []
+    let diag = []
+    let pharma = []
+    let pharmaPhone = []
+
+    if(suggessions){
+         
+      doc = suggessions.docs.physicianDetails['name']
+      docPhone = suggessions.docs.physicianDetails['phone']
+    
+        
+      pharma = suggessions.pharmas.pharmacyDetails['name']
+      pharmaPhone = suggessions.pharmas.pharmacyDetails['phone']
+
+      diag = suggessions.diags?suggessions.diags.medicationDetails['diagnosis']:[]
+
+      if(parentKey == "doc"){
+          let removeIndex = doc.indexOf(value);
+
+          if (removeIndex > -1) {
+            doc.splice(removeIndex, 1);
+            docPhone.splice(removeIndex, 1); // 2nd parameter means remove one item only
+            
+          }
+      }else if(parentKey == "pharma"){
+          let removeIndex = pharma.indexOf(value);
+
+          if (removeIndex > -1) {
+            pharma.splice(removeIndex, 1);
+            pharmaPhone.splice(removeIndex, 1); // 2nd parameter means remove one item only
+          }
+      }else if(parentKey == "diag"){
+        let removeIndex = diag.indexOf(value);
+        
+        if (removeIndex > -1) {
+          diag.splice(removeIndex, 1);
+        }
+      }
+    }
+
+
+
+
+    const docs = {physicianDetails:{'name':[...doc],'phone':[...docPhone]}}
+    const pharmas = {pharmacyDetails:{'name':[...pharma],'phone':[...pharmaPhone]}}
+    const diags = {medicationDetails:{'diagnosis':[...diag]}}
+
+    let AddSlipSuggessions = {docs,pharmas,diags}
+    await saveData(AddSlipSuggessions,'@suggession')
 
   }
 

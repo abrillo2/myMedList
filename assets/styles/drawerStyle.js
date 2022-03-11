@@ -10,6 +10,7 @@ export default StyleSheet.create({
         position:"relative",
         marginTop:-4,
         paddingTop:(hrp(15)),
+        paddingBottom:(hrp(15)),
         shadowColor: color.shadowColorPrimary,
         shadowOpacity: 0.2,
         elevation: (wrp(8)),
@@ -35,6 +36,17 @@ export default StyleSheet.create({
         fontFamily: "Roboto-Medium",
         textAlign: "center",
     },
+
+    drawerHeaderText2:{
+        position: "relative",
+        color: color.primary,
+        fontSize: (wrp(24)),
+        fontWeight: "800",
+        fontFamily: "Roboto-Bold",
+        textAlign: "center",
+        letterSpacing:1
+    },
+
     cpContianer:{
         marginTop:(hrp(10)),
         marginBottom:(hrp(10))
