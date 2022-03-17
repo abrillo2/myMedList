@@ -1,9 +1,28 @@
 import appObjects from '../../assets/static_resources/objects'
 import { updateItem } from './editItemHelper'
 import { saveData ,getData} from './AsyncHelper'
+import { getMyInfoData } from './shareHelper';
 /*********************************
 * track drawer navigation params
 */
+  let myInfoDetail = [null,null];
+  getMyInfoData().then((result)=>{
+    console.log("result is"+result)
+    if(result !=null){
+      let dInfo = result["physicianDetails"];
+      let phInfo = result["pharmacyDetails"]?result["pharmacyDetails"]:{};
+      let dName = dInfo ?dInfo["name"]!= null ? dInfo["name"] : "":null;
+      let phName =phInfo? phInfo["name"]!= null ? phInfo["name"] : "":null;
+
+      myInfoDetail = [dName,phName];
+      console.log(myInfoDetail)
+    }
+
+
+  });
+
+
+
 export function getNavData(route){
     let item=route.params.item
     let key =route.params.key
@@ -42,7 +61,7 @@ export function getNavData(route){
        
        for (let index = 0; index < doc.length; index++) {
          const element = doc[index];
-         element?suggession.push({id:index,title:element,phone:docPhone[index]}):null
+         element?suggession.push({id:index,title:element,phone:docPhone[index],ex:myInfoDetail}):null
          
        }
     }else if(key == 'pharma'){
@@ -50,12 +69,13 @@ export function getNavData(route){
       let pharmaPhone = suggessions.pharmas.pharmacyDetails['phone']
       for (let index = 0; index < pharma.length; index++) {
         const element = pharma[index];
-        element?suggession.push({id:index,title:element,phone:pharmaPhone[index]}):null
+        element?suggession.push({id:index,title:element,phone:pharmaPhone[index],ex:myInfoDetail}):null
         
       }
     }else if(key == 'diag'){
       let diag = suggessions.diags?suggessions.diags.medicationDetails['diagnosis']:[]
-      diag = [...diag,'Hypertension', 'Diabetes', 'Heart disease']
+      diag = [...diag,'Hypertension', 'Diabetes', 'Heart disease','Cholesterol']
+      diag.sort()
       for (let index = 0; index < diag.length; index++) {
         const element = diag[index];
         element? suggession.push({id:index,title:element}) :null
@@ -63,7 +83,8 @@ export function getNavData(route){
     }
   }else if(key == 'diag'){
     
-    let diag = ['Hypertension', 'Diabetes', 'Heart disease']
+    let diag = ['Hypertension', 'Diabetes', 'Heart disease','Cholesterol']
+    diag.sort()
     for (let index = 0; index < diag.length; index++) {
       const element = diag[index];
       element? suggession.push({id:index,title:element}) :null
@@ -132,7 +153,7 @@ export function getNavData(route){
           
 
       if(diagnosisName)  {
-          let tempDiag = [...diag,'Hypertension', 'Diabetes', 'Heart disease']
+          let tempDiag = [...diag,'Hypertension', 'Diabetes', 'Heart disease','Cholesterol']
           if(!tempDiag.includes(diagnosisName)){
               diag.push(diagnosisName)
         }

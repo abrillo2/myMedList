@@ -80,8 +80,10 @@ export default function PdfReviewList(props){
                     onPress={()=>{
                        
                         removeFile(item.uri)
+                        deletePdf(index).then(()=>{
+                            onRefresh()
+                        })
                         
-                        deletePdf(index)
                     }}
                 />
             </View>
@@ -103,7 +105,7 @@ export default function PdfReviewList(props){
                       }}
                       fitPolicy={2}
                       style={stylesPdf.pdf}/>
-                 <Text>Shared Via : {item.via}</Text>
+                 <Text style={{color:colors.inputTextColor}}>Last shared with: {item.via}</Text>
           </View>
         );
     }

@@ -128,7 +128,7 @@ return (  <Stack.Navigator
   {drawerItems.map((item,index)=>{
         
         if(item.screenTitle != appLabels.myInfoTitle &&item.title != appLabels.exit && item.title != 'Review' && item.title != appScreenName.share){
-          let showHeader = item.screenTitle == appLabels.homeTitle ? false: true
+          let showHeader = item.screenTitle == appLabels.homeTitle ? true: true
           let lazy = item.screenTitle == appLabels.addSlipTitle   ? true:false;
             let screen =(<Stack.Screen name={item.screenTitle} options={{headerShown: showHeader}} component={item.component} />)
           return screen

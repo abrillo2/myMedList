@@ -40,7 +40,7 @@ export default function HeaderSection(props){
                          {icon(iconName,headerStyle.iconStyle,30)}
                          </TouchableOpacity>:null}
                          
-                             <Text  style={headerStyle.pageTitleStyle}>{props.onPressOption?appLabels.reconcileTitle:props.Title}</Text>
+                             {props.Title!=appLabels.homeTitle?<Text  style={headerStyle.pageTitleStyle}>{props.onPressOption?appLabels.reconcileTitle:props.Title}</Text>:null}
                          </View>  
                        
                        <View  style={headerStyle.rightOpitionContainer}>
@@ -73,6 +73,13 @@ export default function HeaderSection(props){
                             {props.onPressOption ? <Options onPressOption={props.onPressOption}/>:  null
                                 }
 
+                          {props.Title == appLabels.homeTitle ?
+                                                          <TouchableOpacity
+                                                          onPress={()=>navigation.navigate("HELP")}
+                                                     >
+                                                      {icon('help',headerStyle.iconStyle,30)}
+                                                     </TouchableOpacity>:null
+                          }
                           <TouchableOpacity
                                 onPress={()=>navigation.openDrawer()}
                            >

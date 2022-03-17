@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
-import {Dimensions,View,BackHandler,ImageBackground,Text, ScrollView} from 'react-native';
+import {Dimensions,View,BackHandler,ImageBackground,Text} from 'react-native';
 //component import
 import Logo from '../utilis/Logo';
-import HomeButton from '../components/HomeButton';
-import Button from '../components/Button';
 import StatusBarContainer from '../components/StatusBarContainer';
 import colors from '../../assets/static_resources/colors';
 //Style import
 import styles from '../../assets/styles/HomeStyle'
 import appLabels, { appDescription } from '../../assets/static_resources/strings';
 import SplashScreen from 'react-native-splash-screen'
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { color } from 'react-native-reanimated';
+import Button from '../components/Button';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 export default class Home extends Component {
 
   constructor() {
@@ -51,55 +49,58 @@ export default class Home extends Component {
 
           <StatusBarContainer hidden={false}/>
           <ImageBackground resizeMode="cover"  imageStyle={{opacity:0.5}}  source={require('../../assets/img/bgIcon.android.png')} 
-          style={[styles.homeBgStyle,this.state.orientation === 'portrait'?{paddingBottom:"15%",paddingTop:'30%'}:{paddingTop:1,paddingBottom:1}]}>
-               <Logo home={true}/>
+          style={[styles.homeBgStyle,this.state.orientation === 'portrait'?{paddingBottom:"15%",paddingTop:'15%'}:{paddingTop:1,paddingBottom:1}]}>
+               
+               <Logo 
+               fontSize={this.state.orientation === 'portrait'?heightPercentageToDP("4%"):widthPercentageToDP("4%")}
+               home={true}/>
                <View>
-                 <View style={[this.state.orientation === 'portrait'?{marginBottom:"5%"}:{marginBottom:'2%'}]}>
-                 <HomeButton iconName="add" buttonLabel={appLabels.addSlipButton} navigation={()=>this.props.navigation.navigate(appLabels.addPhotoTitle)}/>
+                 <View style={[this.state.orientation === 'portrait'?{marginBottom:"5%"}:{marginBottom:'1%'}]}>
+                 <Button
+                 home={true}
+                 h={this.state.orientation === 'portrait'?heightPercentageToDP("7%"):widthPercentageToDP("10%")}
+                 w={ this.state.orientation === 'portrait'?widthPercentageToDP("85%"):heightPercentageToDP("85%")}
+                 iconName="add" buttonLabel={appLabels.addSlipButton} onPress={()=>this.props.navigation.navigate(appLabels.addPhotoTitle)}/>
                
                  </View>
 
-                 <View style={[this.state.orientation === 'portrait'?{marginBottom:"5%"}:{marginBottom:'2%'}]}>
-                           <HomeButton iconName="update" buttonLabel={appLabels.reconcileButton} navigation={()=>this.props.navigation.navigate(appLabels.reconcileTitle)}/>
+                 <View style={[this.state.orientation === 'portrait'?{marginBottom:"5%"}:{marginBottom:'1%'}]}>
+                           <Button 
+                            home={true}
+                            h={this.state.orientation === 'portrait'?heightPercentageToDP("7%"):widthPercentageToDP("10%")}
+                            w={ this.state.orientation === 'portrait'?widthPercentageToDP("85%"):heightPercentageToDP("85%")}
+                           iconName="update" buttonLabel={appLabels.reconcileButton} onPress={()=>this.props.navigation.navigate(appLabels.reconcileTitle)}/>
                
                  </View>
                  <View>
-                 <HomeButton iconName="share" buttonLabel={appLabels.share} navigation={()=>this.props.navigation.navigate(appLabels.shareTitle)}/>
+                 <Button 
+                   home={true}
+                   h={this.state.orientation === 'portrait'?heightPercentageToDP("7%"):widthPercentageToDP("10%")}
+                   w={ this.state.orientation === 'portrait'?widthPercentageToDP("85%"):heightPercentageToDP("85%")}
+                  iconName="share" buttonLabel={appLabels.share} onPress={()=>this.props.navigation.navigate(appLabels.shareTitle)}/>
     
                  </View>
             </View>
 
-                <Text style={{color:colors.inputTextColor}}>
+                <Text style={{color:colors.inputTextColor,fontSize:this.state.orientation === 'portrait'?heightPercentageToDP("3%"):widthPercentageToDP("3%")}}>
                    {appDescription.openDrawerDesctiption}
                 </Text>
                 
                   <View style={styles.twinButtonContainer}>
-                      <Button w={120} h={2} onPress={()=>{this.props.navigation.navigate(appLabels.myInfoTitle)}} buttonLabel={appLabels.myInfoButton}/>
-                      <Button w={120} h={2} onPress={()=>{BackHandler.exitApp()}} buttonLabel={appLabels.exit}/>
+                      <Button 
+                              
+                              h={this.state.orientation === 'portrait'?heightPercentageToDP("5%"):widthPercentageToDP("8%")}
+                              w={ this.state.orientation === 'portrait'?widthPercentageToDP("35%"):heightPercentageToDP("35%")}
+                              onPress={()=>{this.props.navigation.navigate(appLabels.myInfoTitle)}} buttonLabel={appLabels.myInfoButton}/>
+                      <Button 
+                              h={this.state.orientation === 'portrait'?heightPercentageToDP("5%"):widthPercentageToDP("8%")}
+                              w={ this.state.orientation === 'portrait'?widthPercentageToDP("35%"):heightPercentageToDP("35%")}
+                              onPress={()=>{BackHandler.exitApp()}} buttonLabel={appLabels.exit}/>
                   </View>
 
 
 
           </ImageBackground>
-
-        <View style={{position:'absolute',top:0,right:0,paddingRight:'5%',
-                      justiftyContent:"center", alignItems:"center"}}>
-            <Icon.Button 
-                  name='menu'
-                  size={30}
-                  color={colors.primary}
-                  backgroundColor={"transparent"}
-                  style={{alignContent:'center'}}
-                  underlayColor={colors.underlayColor}
-                  onPress={
-                    ()=>{
-                      this.props.navigation.openDrawer()
-                    }
-                  }
-              />
-        </View>
-
-
        </View>
 
     );

@@ -27,7 +27,7 @@ export default StyleSheet.create ({
     },
     twinButtonContainer:{
         flexDirection:"row",
-        width : widthPercentageToDP("85%"),
+        width : '80%',
         justifyContent:"space-between",
         position:"relative",
    }

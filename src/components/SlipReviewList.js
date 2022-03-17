@@ -81,7 +81,7 @@ export default function SlipReviewList(props){
                 source={{uri:item['imageData'].uri}}
                 style={{width:'100%',height:300}}
             />
-            <Text>Added on: {item['dateRefilled']}</Text>
+            <Text style={{color:colors.inputTextColor}}>Added on: {item['dateRefilled']}</Text>
         </View>
    
     );

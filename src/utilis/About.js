@@ -26,6 +26,9 @@ export default function About(){
                                         <Text style= {styles.cpTitle}>
                                         {appDescription.appCopyRight}
                                         </Text>
+                                        <Text style= {styles.cpTitle}>
+                                        {"\n"+appDescription.Disclaimer}
+                                        </Text>
                                         </View>
                         </View>
                 </View>

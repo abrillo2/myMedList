@@ -89,11 +89,13 @@ export const appDescription={
     shareSetPersonalDataDescription:"Please set your personal data,\nbefore starting to share",
     drawerTitleDescription: " MY MED LIST",
     appCopyRight: "Copyright "+ new Date().getFullYear()+"\nMango Consulting Corp. USA. All rights reserved.",
-    appVersion:"v0.0.1",
+    appVersion:"v1.0",
     openDrawerDesctiption:'Swipe right to open sidebar menu',
     AddSlipHelpDesctiption:' Take a photo of medication label or prescription slip received from the pharmacy',
     ReconcileHelpDesctiption: 'Update prescription information when a new prescription is received from pharmacy or medication is discontinued by the physician',
-    ShareHelpDesctiption: 'Review and share the active or discontinued medication list'
+    ShareHelpDesctiption: 'Review and share the active or discontinued medication list',
+    Disclaimer: 'This app is provided as is with no claims, benefits, or warranties. Please secure your device due to sensitive personal information in this app.'
+
 }
 
 export const appScreenName={
@@ -111,7 +113,7 @@ export const appScreenName={
 export const appMessages={
     wait:'please wait a second...',
     savingSlip:'please wait saving slip details...',
-    savingMyInfo:'please wait updating personal information...' 
-}
+    savingMyInfo:'please wait updating personal information...',
+   }
 
 export default appLabels

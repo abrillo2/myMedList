@@ -31,7 +31,7 @@ export function makeTabelRowData(data,statusShare){
 
         tabelItemList.push(tempTabelItemList)
     }
-
+    tabelItemList.sort(compare)  
     return tabelItemList
 }
 
@@ -78,8 +78,8 @@ export async function makeHeaderData(status,sharedWith,client) {
         +'<h2 align="center" style="color:#005c86;">'+fName + " "+lName+ ", "+phone+'</h2>',
         "Date created": new Date().toLocaleDateString("en-us"),
         "Shared with":sharedWith[0] +" " + '<h2 align="center" style="color:#005c86;">'+client+": "+sharedWith[1]+'</h2>',
-        "Primary care doctor": dName+ ", Phone: " +dPhone,
-        "preferred pharmacy":phName+ ", Phone: " + phPhone,
+        "Primary care physician": dName+ ", Phone: " +dPhone,
+        "Preferred pharmacy":phName+ ", Phone: " + phPhone,
         
     }
     return pdfheader
@@ -120,6 +120,8 @@ export function makeHeaderHtml(header) {
             tabelHTML = tabelHTML+'<h2 align="center" style="color:#005c86;">'+rootKeyVal+" "+ elementVal +'</h2>'
         }else if("Date created"==rootKey){
             tabelHTML = tabelHTML+'<h2 align="center" style="color:#005c86;">'+elementVal +'</h2>'
+        }else if("Primary care physician"==rootKey || "Preferred pharmacy"==rootKey){
+            tabelHTML = tabelHTML+'<p><strong>'+rootKey+'</strong> : '+ elementVal +'</p>'
         }else{
             tabelHTML = tabelHTML+'<p>'+rootKey+' : '+ elementVal +'</p>'
         }
@@ -203,3 +205,12 @@ export function selectToggelItem(jsonValue,active){
                                                          [] )
 }
 
+function compare( a, b ) {
+    if ( a["medicine"] < b["medicine"] ){
+      return -1;
+    }
+    if ( a["medicine"] > b["medicine"] ){
+      return 1;
+    }
+    return 0;
+  }

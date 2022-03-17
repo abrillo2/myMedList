@@ -101,13 +101,16 @@ render() {
                         this.props.disabled?{ opacity:0.5}:{ opacity:1}
                         ]}>
                     <View style={styles.buttonTextIconContainer}>                            
+                          <View style={this.props.iconName && this.props.home ? {flexDirection:'row',justifyContent:'flex-start',width:'100%',paddingLeft:'30%'}:styles.buttonTextIconContainer}>
                             {this.props.iconName ?                        
                             <Icon
                             name={this.props.iconName}
                             style={styles.iconStyle}
+                            color={"white"}
                             size={24}/>
                             :null }    
                             <Text  style={styles.homeButtonLabel}>{this.props.buttonLabel}</Text>
+                          </View>
                     </View>
                 </TouchableHighlight>
             </View>)

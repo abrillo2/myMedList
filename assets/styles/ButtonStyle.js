@@ -32,19 +32,18 @@ export default StyleSheet.create({
         margin:(wrp(1))
       },
     homeButtonLabel: { 
-        opacity: 0.8,
         position: "relative",
         marginLeft:(hrp(5)),
         backgroundColor: "transparent",
         color: color.bgColorPrimary,
-        fontSize: (wrp(16)),
-        fontWeight: "400",
+        fontSize: (wrp(17)),
+        fontWeight: "600",
         letterSpacing: 1,
         fontFamily: "Roboto-Regular"
       }, 
     iconStyle: {
-        opacity: 1,
         position: "relative",
+        marginRight:"5%",
         width: (wrp(24)),
         height: (hrp(24)),
       },

@@ -3,7 +3,6 @@ import {TextInput, View,FlatList, ScrollView ,Text} from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import drawerStyle from '../../assets/styles/drawerStyle.js';
 import icon from '../hooks/Icon.js';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
 //import heaader style
 import styles from '../../assets/styles/HalfInputStyle.js'
 import colors from '../../assets/static_resources/colors.js';
@@ -17,7 +16,8 @@ export default  function InputType(props){
     const [loading,setloading] = useState(false)
     const [data,setData] = useState([])
     const removeList = useRef([])
-    const [submitted,setSubmitted] = useState(false)
+
+    const diagSuggestions=['Cholesterol', 'Diabetes', 'Heart disease', 'Hypertension']
 
     const onSelectItem= (item) => {
       if(item){                
@@ -25,7 +25,6 @@ export default  function InputType(props){
            item['phone']? props.onChangeText(props.rootKey,'phone',item['phone']+"",true):null
       
            removeList.current=[]
-           setSubmitted(true)
       }
          
     }
@@ -44,7 +43,9 @@ export default  function InputType(props){
                   
             }>
             <Text style={[drawerStyle.labelStyle,{marginLeft:'5%'}]}>{item.title}</Text></TouchableOpacity> 
-          <TouchableOpacity style={{backgroundColor:colors.primary,justifyContent:'center',alignItems:'center',height:"100%"}} onPressIn={()=>{
+          <TouchableOpacity 
+          disabled={diagSuggestions.includes(item.title) | (item.ex && item.ex.includes(item.title))}
+          style={{backgroundColor:colors.primary,justifyContent:'center',alignItems:'center',height:"100%",opacity:diagSuggestions.includes(item.title) | (item.ex && item.ex.includes(item.title))?0:1}} onPressIn={()=>{
                         setloading(true)
                         if(props.rootKey == "physicianDetails" && props.childKey == "name"){
                              removeSuggestion("doc",item.title)
@@ -102,6 +103,7 @@ export default  function InputType(props){
        props.suggessions.then((result) => {
           setData(result);
        })
+
         return (
             <View style={{flex:1,position:'relative'}}>
             <AutocompleteDropdown

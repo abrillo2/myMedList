@@ -1,6 +1,5 @@
 import RNFetchBlob from 'react-native-fetch-blob'
 import { PermissionsAndroid, ToastAndroid } from "react-native";
-import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -18,7 +17,7 @@ export async function removeFile(uri){
 
         const exists = await fileExists(path)
 
-        if(exists){
+        if(exists){ 
           RNFetchBlob.fs.unlink(path)
           .then(() => { console.log('file removed ',path);})
           .catch((err) => { console.log('err')})

@@ -20,9 +20,17 @@ return(
         style={styles.drawerHeaderIcon}
         source={require("../../assets/img/logo.png")}
     />
-    <Text style={props.home?styles.drawerHeaderText2:styles.drawerHeaderText}>
+    
+    {props.home?
+    
+                <View style={{backgroundColor:'white',borderColor:"black",borderWidth:1,padding:2,marginTop:5}}>
+                    <Text style={[styles.drawerHeaderText,{fontSize:props.fontSize,fontWeight:'700'}]}>
+                    {appDescription.drawerTitleDescription}
+                  </Text>
+                </View>
+    :<Text style={props.home?styles.drawerHeaderText2:styles.drawerHeaderText}>
       {appDescription.drawerTitleDescription}
-    </Text>
+    </Text>}
 </View>
 )
 }

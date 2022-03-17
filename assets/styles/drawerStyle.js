@@ -6,7 +6,7 @@ import { wrp ,hrp,color} from './Dim';
 export default StyleSheet.create({
 
     contentBody:{
-        backgroundColor:color.bgColorSecondary,
+        backgroundColor:color.bgColorPrimary,
         position:"relative",
         marginTop:-4,
         paddingTop:(hrp(15)),
