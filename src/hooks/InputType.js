@@ -29,7 +29,7 @@ export default  function InputType(props){
          
     }
     const renderItem = (item,index) => {
-     
+      
       return (removeList.current.includes(item.title)?null:
         <View style={[drawerStyle.drawerItems,{flex:1,paddingTop:0,height:hrp(30)},index == data.length -1?{marginBottom:hrp(15)}:null,
               index%2==0?{backgroundColor:'white'}:null]}>

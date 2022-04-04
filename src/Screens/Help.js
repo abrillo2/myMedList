@@ -28,7 +28,7 @@ export default function Help(props){
                               style={[styles.drawerItems,]}
                               onPress={()=>props.navigation.navigate(item.screenTitle)}
                               >
-
+                        <View  style={[styles.separator,{marginTop:10,width:'100%'}]}></View>
                         <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                              {Icon(item.icon,null,null, "#3685b5")}
                              <Text
@@ -38,11 +38,11 @@ export default function Help(props){
                           </Text>
                         </View>
                          <Text
-                              style={[styles.labelStyle,{textAlign:'center',color:colors.inputTextColor,fontSize:26}]}
+                              style={[styles.labelStyle,{textAlign:'center',color:colors.inputTextColor,fontSize:24}]}
                           > 
                             {item.description?item.description:null}
                           </Text>
-                          <View  style={[styles.separator,{marginTop:10,width:'100%'}]}></View>
+                         
                       </TouchableOpacity>)}
                   })}
                   <TouchableOpacity 
@@ -52,9 +52,14 @@ export default function Help(props){
                   }}
                    
                   style={{wdith:'100%',justifyContent:'center',alignItems:'center'}}>
-                    <Text style={[styles.labelStyle]}>
-                          www.mangoconsultancy.com/apps
+                    <View  style={[styles.separator,{marginTop:10,width:'100%'}]}></View>
+                    <Text  style={[styles.labelStyle,{textAlign:'center',color:colors.inputTextColor}]}>
+                      For more info and updates visit:
                     </Text>
+                    <Text style={[styles.labelStyle]}>
+                            www.mangoconsultancy.com/apps
+                    </Text>
+                    <View  style={[styles.separator,{marginTop:10,width:'100%'}]}></View>
                   </TouchableOpacity>
                  </ScrollView>
           )

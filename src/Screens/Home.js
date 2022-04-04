@@ -59,7 +59,7 @@ export default class Home extends Component {
                  <Button
                  home={true}
                  h={this.state.orientation === 'portrait'?heightPercentageToDP("7%"):widthPercentageToDP("10%")}
-                 w={ this.state.orientation === 'portrait'?widthPercentageToDP("85%"):heightPercentageToDP("85%")}
+                 w={ widthPercentageToDP("85%")}
                  iconName="add" buttonLabel={appLabels.addSlipButton} onPress={()=>this.props.navigation.navigate(appLabels.addPhotoTitle)}/>
                
                  </View>
@@ -68,7 +68,7 @@ export default class Home extends Component {
                            <Button 
                             home={true}
                             h={this.state.orientation === 'portrait'?heightPercentageToDP("7%"):widthPercentageToDP("10%")}
-                            w={ this.state.orientation === 'portrait'?widthPercentageToDP("85%"):heightPercentageToDP("85%")}
+                            w={ widthPercentageToDP("85%")}
                            iconName="update" buttonLabel={appLabels.reconcileButton} onPress={()=>this.props.navigation.navigate(appLabels.reconcileTitle)}/>
                
                  </View>
@@ -76,7 +76,7 @@ export default class Home extends Component {
                  <Button 
                    home={true}
                    h={this.state.orientation === 'portrait'?heightPercentageToDP("7%"):widthPercentageToDP("10%")}
-                   w={ this.state.orientation === 'portrait'?widthPercentageToDP("85%"):heightPercentageToDP("85%")}
+                   w={ widthPercentageToDP("85%")}
                   iconName="share" buttonLabel={appLabels.share} onPress={()=>this.props.navigation.navigate(appLabels.shareTitle)}/>
     
                  </View>
@@ -90,11 +90,11 @@ export default class Home extends Component {
                       <Button 
                               
                               h={this.state.orientation === 'portrait'?heightPercentageToDP("5%"):widthPercentageToDP("8%")}
-                              w={ this.state.orientation === 'portrait'?widthPercentageToDP("35%"):heightPercentageToDP("35%")}
+                              w={ widthPercentageToDP("35%")}
                               onPress={()=>{this.props.navigation.navigate(appLabels.myInfoTitle)}} buttonLabel={appLabels.myInfoButton}/>
                       <Button 
                               h={this.state.orientation === 'portrait'?heightPercentageToDP("5%"):widthPercentageToDP("8%")}
-                              w={ this.state.orientation === 'portrait'?widthPercentageToDP("35%"):heightPercentageToDP("35%")}
+                              w={ widthPercentageToDP("35%")}
                               onPress={()=>{BackHandler.exitApp()}} buttonLabel={appLabels.exit}/>
                   </View>
 
