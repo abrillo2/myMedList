@@ -15,6 +15,8 @@
         icon = "keyboard-arrow-right"
     }else if(iconName == "arrowLefttBlack"){
         icon = "keyboard-arrow-left"
+    }else if(iconName == "contacts"){
+        icon = "contacts"
     }else{
         icon=iconName
         color=colorIn?colorIn:"white"

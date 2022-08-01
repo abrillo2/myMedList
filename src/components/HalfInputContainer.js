@@ -12,6 +12,7 @@ export default class HalfInputContainer extends React.Component{
 
     constructor(props) {
         super(props);
+        this.isDatePickerOpen = React.createRef(false);
         this.state = {
           openDatePicker:false,
           value:null,
@@ -53,6 +54,7 @@ export default class HalfInputContainer extends React.Component{
     }
 
     setValue=(val)=>{
+        this.isDatePickerOpen.current=false;
         if(this.props.func == 'numberPicker'){
             this.handelFunc(val)
         }else{
@@ -79,7 +81,6 @@ export default class HalfInputContainer extends React.Component{
             if(Number(val) > 12){
                 value = 12
             }else if(Number(val) < 0){
-
                 value = 0
             }else if(!(Number(val)<=12 && Number(val)>=0)){
                 value=0
@@ -93,7 +94,20 @@ export default class HalfInputContainer extends React.Component{
     required=()=>{
        let val =  this.props.required(this.props.childKey,this.props.rootKey)
        return val && this.getValue() == null
-    }    
+    }   
+    
+    showDatePicker=()=>{
+
+        if(this.props.func == 'datePicker' && this.state.openDatePicker && !this.isDatePickerOpen.current){
+            this.isDatePickerOpen.current=true;
+            return(<DatePickerHelper {...this.props} getVal={this.getValue} open={this.state.openDatePicker} setVal={this.setValue}/>)
+        }else{
+            return null
+        }
+       
+    }
+    
+
     render() {
     return(
                     <View pointerEvents={this.props.updateAble ? 'auto' : 'none'} style={[styles.halfinput,{width:this.props.width},
@@ -118,7 +132,7 @@ export default class HalfInputContainer extends React.Component{
                         </View>                   
                         <View  style={[styles.halfinputLayer2Indicator,{width:"100%"}]}></View>
                        
-                        {this.props.func == 'datePicker' ? <DatePickerHelper {...this.props}  getVal={this.getValue} open={this.state.openDatePicker} setVal={this.setValue}/>:null}
+                        {this.props.func == 'datePicker' ?this.showDatePicker():null}
                     </View>
     )
   }

@@ -56,7 +56,6 @@ const Notification = (props) => {
                 <Button buttonLabel={props.rTitle}
                         onPress={()=> pressed(false)}
                         h={2}
-                        w={100}
                         w={ orientation === 'PORTRAIT'?widthPercentageToDP("30%"):heightPercentageToDP("30%")}/>
             </View>
       </View>

@@ -16,8 +16,8 @@ import appObjects from '../../assets/static_resources/objects';
 export default function ShareDiscontinued(props){
     const isFocused = useIsFocused();
     const [state,setState] = useState({
-      itemLabels : [...appObjects.shareitemLabels,"Stop date"],
-      dataKeys:[...appObjects.sharedataKeys,'["medicationDetails"]["stopDate"]'],
+      itemLabels : [...appObjects.shareitemLabels2],
+      dataKeys:[...appObjects.sharedataKeys2],
       interactionsComplete: false
     })
     const [currentDataDiscontinued,setcurrentDataDiscontinued] = useState(null)

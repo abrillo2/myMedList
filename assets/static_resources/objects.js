@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import appLabels,{formInputLabel,appMessages} from './strings'
 
 
@@ -38,7 +32,7 @@ for (let index = 0; index < 13; index++) {
 const appObjects = {
     addSlipInfoRequiredItems: [["medicationDetails","name"],["medicationDetails","strength"],
     ["medicationDetails","dateRefilled"],["physicianDetails","name"]],
-    addSlipInfoUpdateableItems:["dateRefilled","refillsLeft"],
+    addSlipInfoUpdateableItems:["dateRefilled","refillsLeft","dateAppointed"],
     myInfoRequiredItems:[["personalInformation","firstName"],["personalInformation","lastName"],
     ["physicianDetails","name"]],
     myInfoSexChoices:[
@@ -60,11 +54,17 @@ const appObjects = {
                 '["medicationDetails"]["refillsLeft"]','["medicationDetails"]["imageData"]'],
     
     labelsReview:['name','dateRefilled','refillsLeft','imageData'],
-    shareitemLabels : ["Medicine", "Date filled", "Doctor", "Refills left","Strength","Direction","Disease"],
-    sharedataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
-               '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]',
-               '["medicationDetails"]["strength"]','["medicationDetails"]["direction"]',
-               '["medicationDetails"]["diagnosis"]'], 
+    shareitemLabels : ["Medicine", "Date filled","Refill", "Strength","Direction", "Disease","Doctor","Next appt.","Date added"],
+    shareitemLabels2 : ["Medicine","Stop date","Strength","Direction","Disease", "Doctor", "Date filled",],
+    sharedataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]','["medicationDetails"]["refillsLeft"]',
+                  '["medicationDetails"]["strength"]','["medicationDetails"]["direction"]','["medicationDetails"]["diagnosis"]',
+                  '["physicianDetails"]["name"]','["medicationDetails"]["dateAppointed"]','["medicationDetails"]["dateAdded"]'],
+
+    sharedataKeys2:['["medicationDetails"]["name"]','["medicationDetails"]["stopDate"]',
+                    '["medicationDetails"]["strength"]','["medicationDetails"]["direction"]',
+                    '["medicationDetails"]["diagnosis"]','["physicianDetails"]["name"]',
+                    '["medicationDetails"]["dateRefilled"]'],
+
     reconcileitemLabels : ["Medicine", "Date Filled", "Doctor", "Refills Left"],
     reconciledataKeys:['["medicationDetails"]["name"]','["medicationDetails"]["dateRefilled"]',
     '["physicianDetails"]["name"]','["medicationDetails"]["refillsLeft"]'],
@@ -197,7 +197,7 @@ export const myInfoFormLabels={
                             width:"49%",
                             iconName:"dateRange",
                             func:"datePicker",
-                            editAble:false, 
+                            //editAble:false, 
                            },{inputLabel:formInputLabel.sex,
                                childKey:"sex",
                                rootKey:"personalInformation",

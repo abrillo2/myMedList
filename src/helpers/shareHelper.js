@@ -6,28 +6,46 @@ import appLabels,{} from '../../assets/static_resources/strings';
 export function makeTabelRowData(data,statusShare){
     let tabelItemList = []
 
-    for (let index = 0; index < data.length; index++) {
+    for (let index = 0; index < data.length; index++) { 
         let tempItem = data[index]
         let rootKey = Object.keys(tempItem)[0]
 
         let currentItem = tempItem[rootKey]
         let dateInfo;
+        let reFillsLeft;
+        let tempTabelItemList;
 
         if(statusShare === appLabels.active){
             dateInfo = {"dateAdded":currentItem["medicationDetails"]["dateAdded"]}
+            reFillsLeft={"refillsLeft":currentItem["medicationDetails"]["refillsLeft"]}
+
+            tempTabelItemList = {
+                "medicine": currentItem["medicationDetails"]["name"],
+                "dateRefilled":currentItem["medicationDetails"]["dateRefilled"],
+                "refillsLeft":currentItem["medicationDetails"]["refillsLeft"],
+                "strength":currentItem["medicationDetails"]["strength"],
+                "direction":currentItem["medicationDetails"]["direction"],
+                "disease":currentItem["medicationDetails"]["diagnosis"],
+                "doctorName":currentItem["physicianDetails"]["name"],
+                "dateAppointed":currentItem["physicianDetails"]["dateAppointed"],
+                "dateAdded":currentItem["medicationDetails"]["dateAdded"]
+            }
         }else{
             dateInfo = {"stopDate":currentItem["medicationDetails"]["stopDate"]}
+
+            tempTabelItemList = {
+                "medicine": currentItem["medicationDetails"]["name"],
+                "stopDate":currentItem["medicationDetails"]["stopDate"],
+                "strength":currentItem["medicationDetails"]["strength"],
+                "direction":currentItem["medicationDetails"]["direction"],
+                "disease":currentItem["medicationDetails"]["diagnosis"],
+                "doctorName":currentItem["physicianDetails"]["name"],
+                "dateRefilled":currentItem["medicationDetails"]["dateRefilled"],
+                
+                
+            }
         }
-        let tempTabelItemList = {
-            "medicine": currentItem["medicationDetails"]["name"],
-            "dateRefilled":currentItem["medicationDetails"]["dateRefilled"],
-            "doctorName":currentItem["physicianDetails"]["name"],
-            "strength":currentItem["medicationDetails"]["strength"],
-            "direction":currentItem["medicationDetails"]["direction"],
-            "disease":currentItem["medicationDetails"]["diagnosis"],
-            ...dateInfo
-            
-        }
+
 
         tabelItemList.push(tempTabelItemList)
     }
@@ -36,22 +54,35 @@ export function makeTabelRowData(data,statusShare){
 }
 
 export function makeTabelHeaderData(statusShare) {
-    let dateInfo;
+    let header;
     if(statusShare === appLabels.active){
-        dateInfo = {"dateAdded":"Date added"}
+
+        header = {
+            "medicine":"Medicine",
+            "dateRefilled":"Date filled",
+            "refillsLeft":"Refills",
+            "strength":"Strength",
+            "direction":"Directions",
+            "disease":"Disease",
+            "doctorName":"Doctor",
+            "dateAppointed":"Next appt.",
+            "dateAdded":"Date added"
+        }
     }else{
-        dateInfo = {"stopDate":"Stop date"}
+
+        header = {
+            "medicine":"Medicine",
+            "stopDate":"Stop date",
+            "strength":"Strength",
+            "direction":"Directions",
+            "disease":"Disease",
+            "doctorName":"Doctor",
+            "dateRefilled":"Date filled",
+            
+        }
     }
     
-    const header = {
-        "medicine":"Medicine",
-        "dateRefilled":"Date filled",
-        "doctorName":"Doctor",
-        "strength":"Strength",
-        "direction":"Directions",
-        "disease":"Disease",
-        ...dateInfo
-    }
+
 
     return header
 }
@@ -77,7 +108,7 @@ export async function makeHeaderData(status,sharedWith,client) {
         "headerTitle": status+ " prescription list for "
         +'<h2 align="center" style="color:#005c86;">'+fName + " "+lName+ ", "+phone+'</h2>',
         "Date created": new Date().toLocaleDateString("en-us"),
-        "Shared with":sharedWith[0] +" " + '<h2 align="center" style="color:#005c86;">'+client+": "+sharedWith[1]+'</h2>',
+        "Shared with":sharedWith[1] +" " + '<h2 align="center" style="color:#005c86;">'+client+": "+sharedWith[0]+'</h2>',
         "Primary care physician": dName+ ", Phone: " +dPhone,
         "Preferred pharmacy":phName+ ", Phone: " + phPhone,
         
@@ -182,6 +213,7 @@ export function shareWithSMS(data,Description,recipient){
         message:Description,
         social: Share.Social.SMS,
         recipient: recipient,
+        //url: data
         ...urlOpt  // country code + phone number
       };
     return shareOptions;

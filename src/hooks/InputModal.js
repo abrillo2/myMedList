@@ -136,13 +136,15 @@ export default function InputModal(props){
                                  inputLabel={makeClientInputlabel()[0]}
                                  keyboard={makeClientInputlabel()[1]}
                                  childKey={props.client}
+                                 func = {(props.client == appLabels.whatsApp) | (props.client == appLabels.sms)?"selectContact":null}
+                                 iconName={(props.client == appLabels.whatsApp) | (props.client == appLabels.sms)?"contacts":null}
+                                 editAble={props.client == appLabels.whatsApp?false:true}
                                  rootKey = {"sharedWith"}
                                  onChangeText={onChangeInput}
                                  inputContent={inputContent}
                                  />
             <View style={styles.twinButtonContainer}>
-                <Button buttonLabel={appLabels.preview} 
-                        disabled={false}
+                <Button buttonLabel={appLabels.preview}
                         onPress={()=> pressed(true)}
                         disabled={buttonState}
                         h={2}

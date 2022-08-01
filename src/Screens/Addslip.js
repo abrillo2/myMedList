@@ -43,8 +43,6 @@ export default function Addslip(props) {
     return () => {
     }
   }, [useIsFocused()]);
-
-
   return (
     <View  style={styles.addslip}>
         {spinnerOf? 

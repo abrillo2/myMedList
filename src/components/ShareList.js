@@ -6,7 +6,6 @@ import ReconcileItems from './ReconcileItems';
 import HeaderSection from './HeaderSection';
 //import styles
 import styles from '../../assets/styles/ShareStyles'
-import { useIsFocused } from '@react-navigation/native';
 //import notification modal
 import  Notification from '../hooks/Notification'
 //static
@@ -104,7 +103,6 @@ export default function ShareList(props){
                                     refreshHandler={props.refreshHandler}
                                     listButton={false}
                                      sortIndex={sortIndex.current}
-                                     listButton={false}
                                      data={props.data}
                                      dataKeys={props.dataKeys}
                                      itemlen={props.itemLabels.length}

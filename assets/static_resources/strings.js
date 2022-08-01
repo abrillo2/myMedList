@@ -1,4 +1,3 @@
-
 const appLabels = {
     preview:"Preview",
     addPhoto:"Add photo",
@@ -65,7 +64,7 @@ export const formInputLabel={
     phone:"Phone",
     physicianPhone:"Physician phone",
     nextAppointment:"Next appointment",
-    diagnosis:"Reason for taking/ Diagnosis",
+    diagnosis:"Reason/ Diagnosis",
     firstName:"First name",
     lastName:"Last name",
     birthDate:"Birth date",
@@ -74,7 +73,7 @@ export const formInputLabel={
     zipCode:"Zip code",
     email:"Email",
     name:"Name",
-    pin:"Pin",
+    pin:"Pin (for future use)",
     sex:"Sex",
     stopDate:"Stop Date",
 
@@ -88,13 +87,14 @@ export const appDescription={
     shareToggelDescription:"No slips to share,\n for ",
     shareSetPersonalDataDescription:"Please set your personal data,\nbefore starting to share",
     drawerTitleDescription: " MY MED LIST",
-    appCopyRight: "Copyright "+ new Date().getFullYear()+"\nMango Consulting Corp. USA. All rights reserved.",
+    appCopyRight: "Copyright "+ new Date().getFullYear()+"\nMango Consulting Corp. USA. \n All rights reserved.",
     appVersion:"v1.0",
     openDrawerDesctiption:'Swipe right to open sidebar menu',
     AddSlipHelpDesctiption:' Take a photo of medication label or prescription slip received from the pharmacy',
     ReconcileHelpDesctiption: 'Update prescription information when a new prescription is received from pharmacy or medication is discontinued by the physician',
     ShareHelpDesctiption: 'Review and share the active or discontinued medication list',
-    Disclaimer: 'This app is provided as is with no claims, benefits, or warranties. Please secure your device due to sensitive personal information in this app.'
+    Disclaimer: 'This app is provided as is with no \nclaims, benefits, or warranties. \n\nPlease secure your device due to sensitive personal information in this app.',
+    shareDisclaimer: 'The usual data charges as imposed by your SMS carrier may apply, while sharing this list via SMS / Email/ Whatspp'
 
 }
 
