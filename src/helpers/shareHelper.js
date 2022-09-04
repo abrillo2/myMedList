@@ -190,18 +190,25 @@ export async function createPDF(htmlString,statusInfo) {
 
   export function shareWithWhatsUp(data,Description,recipient){
     recipient = recipient.replace("+","")
+    let urlOpt = {}
+    if(data.length > 1){
+        urlOpt = {urls: data}
+    }else{
+        urlOpt = {url: data[0]}
+    }
     const shareOptions = {
         title: Description,
         message:Description,
         social: Share.Social.WHATSAPP,
         filename:Description,
         whatsAppNumber: recipient,  // country code + phone number
-        url: data , // only for base64 file in Android
+        //url: data , // only for base64 file in Android
+        ...urlOpt
       };
     return shareOptions;
 }
 
-export function shareWithSMS(data,Description,recipient){
+export function shareWithSMS(data,Description,recipient){ 
     let urlOpt = {}
     if(data.length > 1){
         urlOpt = {urls: data}
@@ -217,16 +224,25 @@ export function shareWithSMS(data,Description,recipient){
         ...urlOpt  // country code + phone number
       };
     return shareOptions;
-}
+}3
 
 export function shareWithEmail (data,Description,recipient){
+
+    let urlOpt = {}
+    if(data.length > 1){
+        urlOpt = {urls: data}
+    }else{
+        urlOpt = {url: data[0]}
+    }
+
     const shareOptions = {
         title: Description,
         subject:Description,
         social: Share.Social.EMAIL,
         filename:Description,
         email: recipient,  // country code + phone number
-        url: data , // only for base64 file in Android
+        //url: data , // only for base64 file in Android
+        ...urlOpt
       };
     return shareOptions;
 }

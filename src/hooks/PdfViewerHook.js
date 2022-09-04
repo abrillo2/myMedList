@@ -4,6 +4,7 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import Share from 'react-native-share';
 //pdf to img
 import RNPdfToImage from 'react-native-pdf-to-image';
+import axios from 'axios';
 
 import Pdf from 'react-native-pdf';
 import Button from '../components/Button';
@@ -85,7 +86,7 @@ export default class PdfViewerHook extends React.Component {
             data = `data:${'application/pdf'};base64,` + data;
 
             try {
-              Share.shareSingle(this.shareData(data,Description,recipient));
+              Share.shareSingle(this.shareData(data,Description,recipient));  
             } catch (error) {
               console.log('Error =>', error);
             }
@@ -97,15 +98,16 @@ export default class PdfViewerHook extends React.Component {
 
     shareData=(data,Description,recipient)=>{
         let inputLabel = null
+        let imgData = this.state.imgData
         switch(this.props.client[0]){
           case appLabels.whatsApp:
-            inputLabel =shareWithWhatsUp(data,Description,recipient)
+            inputLabel =shareWithWhatsUp(imgData,Description,recipient)
             break;
           case appLabels.email:
-            inputLabel =shareWithEmail(data,Description,recipient)
+            inputLabel =shareWithEmail(imgData,Description,recipient)
             break;
           case appLabels.sms:
-            let imgData = this.state.imgData
+            
             inputLabel =shareWithSMS(imgData,Description,recipient)
             break;
           default:
@@ -114,6 +116,44 @@ export default class PdfViewerHook extends React.Component {
         return inputLabel;
     }
 
+
+    fetchImage=async()=>{
+
+        const formData = new FormData();
+        formData.append('instructions', JSON.stringify({
+          parts: [
+            {
+              file: "document"
+            }
+          ],
+          output: {
+            type: "image",
+            format: "png",
+            dpi: 500
+          }
+        }))
+
+      formData.append('document', RNFetchBlob.fs.readStream("file://"+this.props.pdfURI))
+
+      console.log(formData)
+
+      axios({
+        url    : "https://api.pspdfkit.com/build",
+        method : 'POST',
+        data   : formData,
+        responseType:"stream",
+        headers: {
+                     'Authorization':'Bearer pdf_live_r4t3XSke7QCjqtrlC0qC59sTW7pdnwqZ5TsePJsGeUO'
+                 }
+             })
+             .then(function (response) {
+                     console.log("response :", response);
+            })
+            .catch(function (error) {
+                     console.log(error);
+            })
+
+    }
 
     render() {
       const resourceType = 'url';

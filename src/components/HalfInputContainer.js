@@ -47,6 +47,8 @@ export default class HalfInputContainer extends React.Component{
           case "numberPicker":
             let val = this.getValue()
 
+            val = Number(val)?val:1
+
             val = Number(val)> 0 ? Number(val) - Number(1): val
             this.handelFunc(val);
             break; 

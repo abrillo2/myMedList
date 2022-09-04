@@ -32,12 +32,7 @@ export default function Options(props){
        
             <Dropdown
                 
-                renderRightIcon={()=> <Icon
-                                  color={colors.placeHolderTextColor}
-                                  name="options-vertical"
-                                  backgroundColor="rgba(34, 171, 226, 1)"
-                                  size={24}
-                                />}
+                renderRightIcon={()=><Text style={[{color:"white",fontSize:hrp(24)}]}>OK</Text>}
                 style={stylesDr.dropdown}
                 data={appObjects.reconCileUpdateMenu}
                 labelField="value"
@@ -52,7 +47,7 @@ export default function Options(props){
                     props.onPressOption(item)
                 }}
           />
-                      <View style={stylesDr.moreButton}>
+                     {/* <View style={stylesDr.moreButton}>
               <TouchableOpacity
                       onPress={()=>props.onPressOption(appObjects.reconCileUpdateMenu[0])}
                   >
@@ -64,7 +59,7 @@ export default function Options(props){
                 {icon('cancel',null,24,'white')}</TouchableOpacity>
                  
                  
-            </View>
+              </View>*/}
          </View>
         )
     

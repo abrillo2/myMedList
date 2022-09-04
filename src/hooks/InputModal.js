@@ -138,7 +138,7 @@ export default function InputModal(props){
                                  childKey={props.client}
                                  func = {(props.client == appLabels.whatsApp) | (props.client == appLabels.sms)?"selectContact":null}
                                  iconName={(props.client == appLabels.whatsApp) | (props.client == appLabels.sms)?"contacts":null}
-                                 editAble={props.client == appLabels.whatsApp?false:true}
+                                 editAble={props.client == appLabels.whatsApp?true:true}
                                  rootKey = {"sharedWith"}
                                  onChangeText={onChangeInput}
                                  inputContent={inputContent}
